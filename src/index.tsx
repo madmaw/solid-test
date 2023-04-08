@@ -1,9 +1,10 @@
 import { render } from "solid-js/web";
-import { CountView } from "./count";
+import { CountView } from "./view/count";
 import { listDescriptor } from "./model/descriptor/list";
 import { numberDescriptor } from "./model/descriptor/literals";
 import { recordDescriptor } from "./model/descriptor/record";
 import { signalDescriptor } from "./model/descriptor/signal";
+import { App } from "./view/app";
 
 const catDescriptor = recordDescriptor({
     meows: signalDescriptor(numberDescriptor),
@@ -22,9 +23,9 @@ const cat = catDescriptor.create({
     }],
 });
 
-window.onload = function() {
+window.onload = function () {
     const app = document.getElementById('app')!;
-    render(() => <CountView count={cat.meows[0]()}/>, app);
+    render(() => <App />, app);
 };
 
 window.setInterval(() => {
