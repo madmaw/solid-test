@@ -1,5 +1,3 @@
-import { Signal } from "solid-js";
-
 export interface TypeDescriptor<StateType = any, MutableType = any> {
     aState: StateType;
 
