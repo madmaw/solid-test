@@ -1,4 +1,3 @@
-import { Signal } from "solid-js";
 import { TypeDescriptor, TypeDescriptors } from "./types";
 
 type RecordState<
@@ -9,7 +8,7 @@ type RecordMutable<
     Attributes extends TypeDescriptors,
 > = { [K in keyof Attributes]: Attributes[K]['aMutable'] };
 
-export class RecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescriptors>
+class RecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescriptors>
         implements TypeDescriptor<RecordState<AttributeTypeDescriptors>, RecordMutable<AttributeTypeDescriptors>> {
     constructor(private readonly attributeTypes: AttributeTypeDescriptors) {}
 
@@ -38,4 +37,10 @@ export class RecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescripto
         }
         return snapshot;
     }
+}
+
+export function recordDescriptor<AttributeTypeDescriptors extends TypeDescriptors>(
+        attributeTypes: AttributeTypeDescriptors,
+) {
+    return new RecordTypeDescriptor(attributeTypes);
 }

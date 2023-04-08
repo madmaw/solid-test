@@ -9,7 +9,7 @@ type ListMutable<
 > = ElementTypeDescriptor['aMutable'][];
 
 
-export class ListTypeDescriptor<ElementTypeDescriptor extends TypeDescriptor>
+class ListTypeDescriptor<ElementTypeDescriptor extends TypeDescriptor>
         implements TypeDescriptor<ListState<ElementTypeDescriptor>, ListMutable<ElementTypeDescriptor>> {
 
     constructor(private readonly elementTypeDescriptor: ElementTypeDescriptor) {}
@@ -25,4 +25,8 @@ export class ListTypeDescriptor<ElementTypeDescriptor extends TypeDescriptor>
     snapshot(m: ListMutable<ElementTypeDescriptor>): ListState<ElementTypeDescriptor> {
         return m.map(v => this.elementTypeDescriptor.snapshot(v));
     }
+}
+
+export function listDescriptor<ElementTypeDescriptor extends TypeDescriptor,>(elementTypeDescriptor: ElementTypeDescriptor) {
+    return new ListTypeDescriptor(elementTypeDescriptor);
 }
