@@ -6,7 +6,7 @@ type ListState<
 
 type ListMutable<
     ElementTypeDescriptor extends TypeDescriptor,
-> = ElementTypeDescriptor['aMutable'][];
+> = readonly ElementTypeDescriptor['aMutable'][];
 
 
 class ListTypeDescriptor<ElementTypeDescriptor extends TypeDescriptor>
