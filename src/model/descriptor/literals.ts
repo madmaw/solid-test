@@ -1,3 +1,4 @@
+import { Component } from "solid-js";
 import { TypeDescriptor } from "./types";
 
 class LiteralTypeDescriptor<LiteralType> implements TypeDescriptor<LiteralType, LiteralType> {
@@ -23,3 +24,5 @@ export const numberDescriptor = new LiteralTypeDescriptor<number>();
 export const stringDescriptor = new LiteralTypeDescriptor<string>();
 
 export const booleanDescriptor = new LiteralTypeDescriptor<boolean>();
+
+export const componentDescriptor = new LiteralTypeDescriptor<Component>();
