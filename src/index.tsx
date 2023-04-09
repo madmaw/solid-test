@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal, onCleanup } from "solid-js";
 import { render } from "solid-js/web";
 import { Game } from "./model/domain";
 import { createHome } from "./pages/home/create";
@@ -7,16 +7,18 @@ import { createPlay } from "./pages/play/create";
 window.onload = function() {
     function launchGame(game: Game) {
         const TopLevelComponent = function() {
-            return <PlayComponent game={game}/>;
+            return <Play game={game}/>;
         };
-        topLevelElementSetter(<TopLevelComponent/>);
-        setTimeout(() => {
-            topLevelElementSetter(<HomeComponent/>);
-        }, 5000);
+        // solid gets confused because a component is a function
+        appSetter(() => TopLevelComponent);
     };
-    const HomeComponent = createHome({ launchGame });
-    const PlayComponent = createPlay();
-    const [topLevelElementAccessor, topLevelElementSetter] = createSignal(<HomeComponent/>);
+    const Home = createHome({ launchGame });
+    const Play = createPlay();
+
+    const [appAccessor, appSetter] = createSignal(Home);
     const app = document.getElementById('app')!;
-    render(() => <>{topLevelElementAccessor()}</>, app);
+    createEffect(() => {
+        const cleanUp = render(appAccessor(), app);
+        onCleanup(cleanUp);
+    });
 };
