@@ -1,0 +1,19 @@
+.cutout {
+  background: green;
+  width: 32px;
+  height: 64px;
+  animation-name: popup;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+  transform-style: preserve-3d;
+}
+
+@keyframes popup {
+  from {
+    transform: rotateX(0deg);
+  }
+
+  to {
+    transform: rotateX(90deg);
+  }
+}

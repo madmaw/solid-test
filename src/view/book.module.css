@@ -1,0 +1,53 @@
+.book {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotateX(45deg);
+  transform-style: preserve-3d;
+}
+
+.page {
+  width: 256px;
+  height: 256px;
+  transform-style: preserve-3d;
+}
+
+.page.left {
+  transform-origin: right;
+}
+
+.page.right {
+  transform-origin: left;
+}
+
+.page.right.open {
+  animation-name: open_right;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+.page.left.open {
+  animation-name: open_left;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes open_left {
+  from {
+    transform: rotateY(90deg);
+  }
+
+  to {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes open_right {
+  from {
+    transform: rotateY(-90deg);
+  }
+
+  to {
+    transform: rotateY(0deg);
+  }
+}

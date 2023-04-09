@@ -4,10 +4,10 @@ import { Game } from "./model/domain";
 import { createHome } from "./pages/home/create";
 import { createPlay } from "./pages/play/create";
 
-window.onload = function() {
+window.onload = function () {
     function launchGame(game: Game) {
-        const TopLevelComponent = function() {
-            return <Play game={game}/>;
+        const TopLevelComponent = function () {
+            return <Play game={game} />;
         };
         // solid gets confused because a component is a function
         appSetter(() => TopLevelComponent);
