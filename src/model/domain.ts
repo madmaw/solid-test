@@ -17,3 +17,10 @@ export const catDescriptor = activeRecordDescriptor({
 });
 export type Cat = typeof catDescriptor.aMutable;
 export type CatState = typeof catDescriptor.aState;
+
+export const gameDescriptor = valueRecordDescriptor({
+    creationTimestamp: numberDescriptor,
+    lastUpdatedTimestamp: signalDescriptor(numberDescriptor),
+});
+export type Game = typeof gameDescriptor.aMutable;
+export type GameState = typeof gameDescriptor.aState;

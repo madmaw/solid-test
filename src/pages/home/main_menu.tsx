@@ -1,4 +1,4 @@
-import * as styles from './main_menu.module.css';
+import styles from './main_menu.module.css';
 
 export function MainMenu(props: {
     newGame: () => void,

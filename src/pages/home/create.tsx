@@ -1,12 +1,13 @@
+import { onMount } from "solid-js";
+import { Game, gameDescriptor } from "../../model/domain";
 import { MainMenu } from "./main_menu";
 
-export function createHome({
-
-}: {
-
-}) {
-    const newGame = () => console.log('new game');
-    return () => {
+export function createHome({ launchGame }: { launchGame: (game: Game) => void }) {
+    return function() {
+        const newGame = () => launchGame(gameDescriptor.create({
+            creationTimestamp: Date.now(),
+            lastUpdatedTimestamp: Date.now(),
+        }));
         return <MainMenu newGame={newGame}/>
     };
 }

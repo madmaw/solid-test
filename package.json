@@ -3,16 +3,29 @@
   "version": "1.0.0",
   "description": "testing",
   "main": "index.js",
+  "watch": {
+    "tcm": {
+      "patterns": ["src"],
+      "extensions": "css",
+      "delay": 3000,
+      "runOnChangeOnly": false
+    }
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "parcel": "parcel index.html"
+    "parcel": "parcel index.html",
+    "tcm": "tcm src -o temp",
+    "dev": "concurrently --kill-others \"npm-watch\" \"npm run parcel\""
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "babel-preset-solid": "^1.7.2",
-    "parcel": "^2.8.3"
+    "concurrently": "^8.0.1",
+    "npm-watch": "^0.11.0",
+    "parcel": "^2.8.3",
+    "typed-css-modules": "^0.7.2"
   },
   "dependencies": {
     "solid-js": "^1.7.2"
