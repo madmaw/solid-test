@@ -1,8 +1,15 @@
 .container {
-    display: flex;
-    flex-direction: horizontal;
+    transform: rotateX(90deg);
 }
 
 .page {
-    flex: 1;
+    transform-origin: 0 0;
+}
+
+.paper {
+    fill: lightgray;
+}
+
+.page.none {
+    /* intentionally left empty */
 }

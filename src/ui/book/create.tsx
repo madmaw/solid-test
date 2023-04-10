@@ -1,10 +1,10 @@
 import { Component } from "solid-js";
 import { newSkippablePromise } from "base/skippable_promise";
-import { booleanDescriptor, componentDescriptor } from "model/descriptor/literals";
+import { componentDescriptor } from "model/descriptor/literals";
 import { optionalDescriptor } from "model/descriptor/option";
 import { activeRecordDescriptor, valueRecordDescriptor } from "model/descriptor/record";
 import { BookController, PagePair } from "./types";
-import { Book } from "./book";
+import { Book, PageAnimation } from "./book";
 
 const pagePairDescriptor = valueRecordDescriptor({
     Left: componentDescriptor,
@@ -15,6 +15,10 @@ const bookDescriptor = activeRecordDescriptor({
     currentPage: pagePairDescriptor,
     previousPage: optionalDescriptor(pagePairDescriptor),
 });
+
+function onPageAnimationComplete() {
+
+};
 
 export function createBook({ initialPage }: { initialPage: PagePair }): {
     controller: BookController,
@@ -27,7 +31,15 @@ export function createBook({ initialPage }: { initialPage: PagePair }): {
 
     function Component() {
         return (
-            <Book>
+            <Book
+                    pageAnimation={PageAnimation.LeftToRight}
+                    onPageAnimationComplete={onPageAnimationComplete}>
+                {book.previousPage && (
+                    <>
+                        <book.previousPage.Left/>
+                        <book.previousPage.Right/>
+                    </>
+                )}
                 <book.currentPage.Left/>
                 <book.currentPage.Right/>
             </Book>

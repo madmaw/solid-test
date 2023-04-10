@@ -5,6 +5,7 @@ import { Game } from "model/domain";
 import { createHome } from "pages/home/create";
 import { createPlay } from "pages/play/create";
 import { newSkippablePromise } from "base/skippable_promise";
+import { Board } from "ui/board/board";
 
 window.onload = function() {
     function launchGame(game: Game) {
@@ -30,5 +31,6 @@ window.onload = function() {
         }
     });
     const app = document.getElementById('app')!;
-    render(() => <Book/>, app);
+    render(() => <Board Book={Book}/>, app);
+    //render(() => <Empty/>, app);
 };

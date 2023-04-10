@@ -1,6 +1,6 @@
 
 export function createEmpty() {
     return function () {
-        return <div/>;
+        return <text>Empty</text>;
     };
 }

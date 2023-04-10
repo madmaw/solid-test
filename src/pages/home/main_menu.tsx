@@ -4,10 +4,11 @@ export function MainMenu(props: {
     newGame: () => void,
 }) {
     return (
-        <div>
-            <button classList={{
-                [styles.button]: true,
-            }} onClick={props.newGame}>New Game</button>
-        </div>
+        <text>Shit</text>
+        // <div>
+        //     <button classList={{
+        //         [styles.button]: true,
+        //     }} onClick={props.newGame}>New Game</button>
+        // </div>
     );
 }
