@@ -5,7 +5,9 @@
   "main": "index.js",
   "watch": {
     "tcm": {
-      "patterns": ["src"],
+      "patterns": [
+        "src"
+      ],
       "extensions": "css",
       "delay": 3000,
       "runOnChangeOnly": false
@@ -21,6 +23,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.21.4",
+    "@parcel/transformer-sass": "^2.8.3",
     "babel-preset-solid": "^1.7.2",
     "concurrently": "^8.0.1",
     "npm-watch": "^0.11.0",
