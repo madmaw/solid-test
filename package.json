@@ -29,5 +29,12 @@
   },
   "dependencies": {
     "solid-js": "^1.7.2"
+  },
+  "TODO: (chris.g) how do I just set an alias for src?": "",
+  "alias": {
+    "pages": "./src/pages",
+    "model": "./src/model",
+    "ui": "./src/ui",
+    "base": "./src/base"
   }
 }

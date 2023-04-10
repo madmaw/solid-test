@@ -4,41 +4,48 @@ import { booleanDescriptor, componentDescriptor } from "model/descriptor/literal
 import { optionalDescriptor } from "model/descriptor/option";
 import { activeRecordDescriptor, valueRecordDescriptor } from "model/descriptor/record";
 import { BookController, PagePair } from "./types";
+import { Book } from "./book";
 
 const pagePairDescriptor = valueRecordDescriptor({
     Left: componentDescriptor,
     Right: componentDescriptor,
-
-})
-
-const bookDescriptor = activeRecordDescriptor({
-    currentPage: optionalDescriptor(pagePairDescriptor),
-    previousPage: optionalDescriptor(pagePairDescriptor),
-    turnRight: booleanDescriptor,
 });
 
-export function createBook(): {
+const bookDescriptor = activeRecordDescriptor({
+    currentPage: pagePairDescriptor,
+    previousPage: optionalDescriptor(pagePairDescriptor),
+});
+
+export function createBook({ initialPage }: { initialPage: PagePair }): {
     controller: BookController,
     Component: Component,
 } {
     const book = bookDescriptor.create({
-        currentPage: undefined,
+        currentPage: initialPage,
         previousPage: undefined,
-        turnRight: true,
     });
 
     function Component() {
-        return <div>Book</div>;
+        return (
+            <Book>
+                <book.currentPage.Left/>
+                <book.currentPage.Right/>
+            </Book>
+        );
     };
     return {
         controller: {
             next: function(page: PagePair) {
                 return newSkippablePromise(resolve => {
+                    book.previousPage = book.previousPage;
+                    book.currentPage = page;    
                     resolve();
                 });
             },
             previous: function(page: PagePair) {
                 return newSkippablePromise(resolve => {
+                    book.previousPage = book.previousPage;
+                    book.currentPage = page;
                     resolve();
                 });
             },
