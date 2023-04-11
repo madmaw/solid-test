@@ -2,7 +2,6 @@
   "name": "test",
   "version": "1.0.0",
   "description": "testing",
-  "main": "index.js",
   "watch": {
     "tcm": {
       "patterns": [
@@ -18,7 +17,8 @@
     "parcel": "parcel index.html",
     "tcm": "tcm src -o temp/css -w",
     "tsm": "typed-scss-modules src -o temp/css -w -n none -e default",
-    "dev": "concurrently --kill-others \"npm run tsm\" \"npm run parcel\""
+    "dev": "concurrently --kill-others \"npm run tsm\" \"npm run parcel\"",
+    "deploy": "del-cli deploy && parcel build index.html --public-url ./ --dist-dir deploy --no-scope-hoist && gh-pages -d deploy"
   },
   "author": "",
   "license": "ISC",
@@ -27,6 +27,8 @@
     "@parcel/transformer-sass": "^2.8.3",
     "babel-preset-solid": "^1.7.2",
     "concurrently": "^8.0.1",
+    "del-cli": "^5.0.0",
+    "gh-pages": "^5.0.0",
     "npm-watch": "^0.11.0",
     "parcel": "^2.8.3",
     "postcss": "^8.4.21",

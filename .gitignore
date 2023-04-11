@@ -3,3 +3,4 @@ node_modules
 .parcel-cache
 temp
 package-lock.json
+deploy
