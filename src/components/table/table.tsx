@@ -1,7 +1,7 @@
 import { Component } from "solid-js";
-import styles from './board.module.scss';
+import styles from './table.module.scss';
 
-export function Board(props: { Book: Component, flat: boolean }) {
+export function Table(props: { Book: Component, flat: boolean }) {
     return (
         <div class={styles.container}>
             <div classList={{

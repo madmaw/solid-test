@@ -1,7 +1,11 @@
-@use "../book/book.module.scss";
-
 @value tableWidth: min(120vw, 100vh);
 @value tableHeight: min(100vw, 120vh);
+
+@value pageWidth: 40%;
+@value pageHeight: 60%;
+
+@value bookWidth: pageWidth;
+@value bookHeight: pageHeight;
 
 .container {
     position: absolute;

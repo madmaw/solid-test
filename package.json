@@ -15,10 +15,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "parcel": "parcel index.html",
-    "tcm": "tcm src -o temp/css -w",
-    "tsm": "typed-scss-modules src -o temp/css -w -n none -e default",
-    "dev": "concurrently --kill-others \"npm run tsm\" \"npm run parcel\"",
-    "deploy": "del-cli deploy && parcel build index.html --public-url ./ --dist-dir deploy --no-scope-hoist && gh-pages -d deploy"
+    "tsm": "typed-scss-modules src -o temp/css -n none -e default",
+    "tsmw": "typed-scss-modules src -o temp/css -w -n none -e default",
+    "dev": "concurrently --kill-others \"npm run tsmw\" \"npm run parcel\"",
+    "clean": "del-cli deploy && del-cli temp && del-cli dist",
+    "build": "parcel build index.html --public-url ./ --dist-dir deploy --no-scope-hoist",
+    "deploy": "npm run clean && npm run tsm && npm run build && gh-pages -d deploy"
   },
   "author": "",
   "license": "ISC",
@@ -41,8 +43,7 @@
   },
   "TODO: (chris.g) how do I just set an alias for src?": "",
   "alias": {
-    "view": "./src/view",
-    "pages": "./src/pages",
+    "components": "./src/components",
     "model": "./src/model",
     "ui": "./src/ui",
     "base": "./src/base"
