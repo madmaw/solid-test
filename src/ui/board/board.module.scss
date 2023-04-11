@@ -1,0 +1,25 @@
+@use "../book/book.module.scss";
+
+@value tableWidth: 200px;
+@value tableHeight: 200px;
+
+.board {
+    perspective: 400px;
+    perspective-origin: 0 0;
+}
+
+.table {
+    transform: rotateX(90deg);
+    transform-origin: 0 calc(tableHeight / 2);
+}
+
+.table-top {
+    fill: pink;
+    width: tableWidth;
+    height: tableHeight;
+}
+
+.book {
+    width: pageWidth;
+    height: pageHeight;
+}

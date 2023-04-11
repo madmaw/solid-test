@@ -5,4 +5,6 @@ body {
 
 * {
     transform-style: preserve-3d;
+    perspective: inherit;
+    perspective-origin: inherit;
 }

@@ -1,5 +1,5 @@
 import { onCleanup, onMount } from "solid-js";
-import { Game, gameDescriptor } from "../../model/domain";
+import { Game, gameDescriptor } from "model/domain";
 import { MainMenu } from "./main_menu";
 
 export function createHome({ launchGame }: { launchGame: (game: Game) => void }) {

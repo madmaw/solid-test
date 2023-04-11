@@ -16,8 +16,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "parcel": "parcel index.html",
-    "tcm": "tcm src -o temp",
-    "dev": "concurrently --kill-others \"npm-watch\" \"npm run parcel\""
+    "tcm": "tcm src -o temp/css -w",
+    "tsm": "typed-scss-modules src -o temp/css -w -n none -e default",
+    "dev": "concurrently --kill-others \"npm run tsm\" \"npm run parcel\""
   },
   "author": "",
   "license": "ISC",
@@ -28,7 +29,10 @@
     "concurrently": "^8.0.1",
     "npm-watch": "^0.11.0",
     "parcel": "^2.8.3",
-    "typed-css-modules": "^0.7.2"
+    "postcss": "^8.4.21",
+    "postcss-modules": "^4.3.1",
+    "typed-scss-modules": "^7.1.0",
+    "values": "^0.2.0"
   },
   "dependencies": {
     "solid-js": "^1.7.2"

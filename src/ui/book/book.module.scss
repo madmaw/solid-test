@@ -1,6 +1,5 @@
-.container {
-    transform: rotateX(90deg);
-}
+@value pageWidth: 50;
+@value pageHeight: 80;
 
 .page {
     transform-origin: 0 0;
@@ -8,6 +7,8 @@
 
 .paper {
     fill: lightgray;
+    width: pageWidth;
+    height: pageHeight;
 }
 
 .page.none {

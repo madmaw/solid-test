@@ -6,6 +6,7 @@ import { createHome } from "pages/home/create";
 import { createPlay } from "pages/play/create";
 import { newSkippablePromise } from "base/skippable_promise";
 import { Board } from "ui/board/board";
+import { createScene } from "pages/scene/create";
 
 window.onload = function() {
     function launchGame(game: Game) {
@@ -20,17 +21,17 @@ window.onload = function() {
         });
     };
     const Empty = createEmpty();
+    const Scene = createScene();
     const Home = createHome({ launchGame });
     const Play = createPlay();
     const { Component: Book, controller: bookController } = createBook({
         initialPage: {
-            Left: Empty,
-            Right: Home,
+            Left: Scene,
+            Right: Empty,
             popdown: () => newSkippablePromise(resolve => resolve),
             popup: () => newSkippablePromise(resolve => resolve),
         }
     });
     const app = document.getElementById('app')!;
-    render(() => <Board Book={Book}/>, app);
-    //render(() => <Empty/>, app);
+    render(() => <Board Book={Scene}/>, app);
 };
