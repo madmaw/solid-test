@@ -1,4 +1,4 @@
-import { Index, JSX, createSignal } from 'solid-js';
+import { Index, JSX, children, createSignal } from 'solid-js';
 import styles from './book.module.css'
 
 const FAKE_PAGE_COUNT = 128;
@@ -9,17 +9,21 @@ export type Page = {
 export function Page({
   z,
   onClick,
-  style
+  style,
+  children,
 }: {
   z: number,
   onClick?: () => void,
   style?: JSX.CSSProperties,
+  children?: JSX.Element
 }) {
   return (
     <div class={styles.page} onClick={onClick} style={{
       transform: `translateZ(${z}px)`,
       ...style
-    }} />
+    }}>
+      {children}
+    </div>
   );
 }
 
@@ -37,7 +41,7 @@ export function Book({
   return <div class={styles.book} style={{ transform: `rotateX(45deg) translateX(${open() ? 50 : 0}%)` }}>
     {/* Back half */}
     <Page z={-0.5 - FAKE_PAGE_COUNT / 2} style={{
-      background: 'blue'
+      background: 'black'
     }} />
 
     <Index each={[...Array(FAKE_PAGE_COUNT / 2).keys()]}>{(page) =>
@@ -61,8 +65,12 @@ export function Book({
       }</Index>
 
       <Page z={0.5 + FAKE_PAGE_COUNT / 2} onClick={onClickHandler} style={{
-        background: 'red'
-      }} />
+        background: 'black',
+        'text-align': 'center',
+        color: 'white'
+      }}>
+        <h1>GRAND TERMINUS</h1>
+      </Page>
     </div>
   </div >;
 }
