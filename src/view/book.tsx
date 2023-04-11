@@ -3,9 +3,6 @@ import styles from './book.module.css'
 
 const FAKE_PAGE_COUNT = 128;
 
-export type Page = {
-
-}
 export function Page({
   z,
   onClick,
@@ -38,7 +35,7 @@ export function Book({
   }
 
   /* TODO: use an animation to center book */
-  return <div class={styles.book} style={{ transform: `rotateX(45deg) translateX(${open() ? 50 : 0}%)` }}>
+  return <div class={styles.book} style={{ transform: `rotateX(22.25deg) translateX(${open() ? 50 : 0}%)` }}>
     {/* Back half */}
     <Page z={-0.5 - FAKE_PAGE_COUNT / 2} style={{
       background: 'black'

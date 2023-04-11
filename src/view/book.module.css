@@ -1,8 +1,7 @@
 .book {
   position: relative;
-  transform: rotateX(45deg);
   transform-style: preserve-3d;
-  width: 500px;
+  width: 600px;
   height: 800px;
   /* TODO: use an animation to center book */
   transition: transform 1s;
