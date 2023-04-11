@@ -1,26 +1,24 @@
 import { Component } from "solid-js";
 import styles from './board.module.scss';
-import { boardHeight, boardWidth } from "./board.constants";
 
-export function Board(props: { Book: Component }) {
+export function Board(props: { Book: Component, flat: boolean }) {
     return (
-        <svg
-            width="100%"
-            height="100%"
-            viewBox={`${-boardWidth/2} ${-boardHeight/2} ${boardWidth} ${boardHeight}`}
-            preserveAspectRatio="xMidYMid meet">
-            <g class={styles.board}>
-                <g class={styles.table}>
-                    <rect
-                        x={-boardWidth/2}
-                        y={-boardHeight/2}
+        <div class={styles.container}>
+            <div classList={{
+                [styles.board]: true,
+            }}>
+                <div classList={{
+                    [styles.table]: true,
+                    [styles.flat]: props.flat,
+                }}>
+                    <div
                         class={styles["table-top"]}/>
-                    <g class={styles.book}>
+                    <div class={styles.book}>
                         <props.Book/>
-                    </g>
-                </g>
+                    </div>
+                </div>
+            </div>
 
-            </g>
-        </svg>
+        </div>
     );
 }

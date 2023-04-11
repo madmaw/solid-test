@@ -1,5 +1,8 @@
-@value pageWidth: 50;
-@value pageHeight: 80;
+@value pageWidth: 40%;
+@value pageHeight: 60%;
+
+@value bookWidth: calc(pageWidth * 2);
+@value bookHeight: pageHeight;
 
 .page {
     transform-origin: 0 0;

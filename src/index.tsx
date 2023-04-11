@@ -7,6 +7,7 @@ import { createPlay } from "pages/play/create";
 import { newSkippablePromise } from "base/skippable_promise";
 import { Board } from "ui/board/board";
 import { createScene } from "pages/scene/create";
+import { createSignal } from "solid-js";
 
 window.onload = function() {
     function launchGame(game: Game) {
@@ -33,5 +34,9 @@ window.onload = function() {
         }
     });
     const app = document.getElementById('app')!;
-    render(() => <Board Book={Scene}/>, app);
+    const [flat, setFlat] = createSignal(false);
+    render(() => <Board Book={Scene} flat={flat()}/>, app);
+    setTimeout(() => {
+        setFlat(true);
+    }, 1000);
 };
