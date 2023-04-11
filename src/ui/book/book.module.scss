@@ -1,7 +1,7 @@
 @value pageWidth: 40%;
 @value pageHeight: 60%;
 
-@value bookWidth: calc(pageWidth * 2);
+@value bookWidth: pageWidth;
 @value bookHeight: pageHeight;
 
 .page {

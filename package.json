@@ -39,6 +39,7 @@
   },
   "TODO: (chris.g) how do I just set an alias for src?": "",
   "alias": {
+    "view": "./src/view",
     "pages": "./src/pages",
     "model": "./src/model",
     "ui": "./src/ui",

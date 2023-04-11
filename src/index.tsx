@@ -8,11 +8,12 @@ import { newSkippablePromise } from "base/skippable_promise";
 import { Board } from "ui/board/board";
 import { createScene } from "pages/scene/create";
 import { createSignal } from "solid-js";
+import { App } from "view/app";
 
-window.onload = function() {
+window.onload = function () {
     function launchGame(game: Game) {
-        const TopLevelComponent = function() {
-            return <Play game={game}/>;
+        const TopLevelComponent = function () {
+            return <Play game={game} />;
         };
         bookController.next({
             Left: Home,
@@ -35,7 +36,7 @@ window.onload = function() {
     });
     const app = document.getElementById('app')!;
     const [flat, setFlat] = createSignal(false);
-    render(() => <Board Book={Scene} flat={flat()}/>, app);
+    render(() => <Board Book={App} flat={flat()}/>, app);
     setTimeout(() => {
         setFlat(true);
     }, 1000);
