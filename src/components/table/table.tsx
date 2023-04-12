@@ -26,7 +26,6 @@ export function TableComponent(props: {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

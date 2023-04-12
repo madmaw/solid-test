@@ -1,8 +1,8 @@
 @value tableWidth: min(120vw, 100vh);
 @value tableHeight: min(100vw, 120vh);
 
-@value pageWidth: 30%;
-@value pageHeight: 40%;
+@value pageWidth: 35%;
+@value pageHeight: 45%;
 
 @value bookWidth: pageWidth;
 @value bookHeight: pageHeight;
@@ -33,12 +33,16 @@
 }
 
 .table.topDown {
-  transform: rotateX(0deg) translateZ(calc(-1 * tableWidth));
+  transform:
+      rotateX(0deg)
+      translateZ(calc(-1 * tableWidth));
 }
 
 .table.topDownBookCentered {
   // TODO this math is wrong to centre the book
-  transform: rotateX(0deg) translate(calc(-1 * (tableWidth / 4) + bookWidth / 2), calc(tableHeight / 4));
+  transform:
+      rotateX(0deg)
+      translate(calc(-1 * (tableWidth / 4) + bookWidth / 2), calc(tableHeight / 4));
 }
 
 .table.tilted {

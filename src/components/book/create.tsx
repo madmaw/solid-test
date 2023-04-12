@@ -2,16 +2,14 @@ import { Book } from "./book";
 import { BookController, bookDescriptor } from "./book_controller";
 
 export function createBook() {
-
   const book = bookDescriptor.create({
-    open: false,
-  });
-
+    opened: false,
+    pages: undefined,
+  })
   const controller = new BookController(book);
 
-  function Component(props: { onRequestOpenBook: () => void }) {
-    return <Book open={book.open} onClickCover={props.onRequestOpenBook}/>;
-  };
+  const Component = (props: { onClickCover: () => void }) =>
+    <Book opened={book.opened} pages={book.pages} onClickCover={props.onClickCover} />;
 
   return {
     Component,
