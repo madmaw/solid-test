@@ -10,10 +10,8 @@ export function TableComponent(props: {
 }) {
   let tableElement: HTMLDivElement | undefined;
   return (
-    <div class={styles.container}>
-      <div classList={{
-        [styles.board]: true,
-      }}>
+    <div class={styles.room}>
+      <div class={styles.container}>
         <div
             classList={{
               [styles.table]: true,

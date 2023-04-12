@@ -7,7 +7,7 @@
 @value bookWidth: pageWidth;
 @value bookHeight: pageHeight;
 
-.container {
+.room {
   position: absolute;
   perspective: calc(tableWidth * 3);
   perspective-origin: 50% 50%;
@@ -15,7 +15,7 @@
   height: 100%;
 }
 
-.board {
+.container {
   position: absolute;
   left: calc((100vw - tableWidth)/2);
   top: calc((100vh - tableHeight)/2);
