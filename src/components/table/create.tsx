@@ -7,9 +7,16 @@ export function createTable() {
     view: View.TopDownBookCentered,
   })
   const controller = new TableController(table);
+  
 
   function Component(props: { Book: Component }) {
-    return <TableComponent Book={props.Book} view={table.view} />;
+    return (
+      <TableComponent
+          Book={props.Book}
+          view={table.view[0]()} 
+          viewAnimationRef={controller.viewAnimationHandler.elementReference}
+      />
+    );
   }
 
   return {

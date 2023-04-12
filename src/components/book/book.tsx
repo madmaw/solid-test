@@ -1,12 +1,9 @@
-import { Index, JSX, children, createSignal } from 'solid-js';
+import { Index, JSX, children } from 'solid-js';
 import styles from './book.module.scss'
 
 const FAKE_PAGE_COUNT = 128;
 
-export type Page = {
-
-}
-export function Page({
+function Page({
   z,
   onClick,
   style,
@@ -27,20 +24,14 @@ export function Page({
   );
 }
 
-export function Book({
-}: {
-  }) {
+export function Book(props: {
+  open: boolean,
+  onClickCover: () => void,
+}) {
 
-  const [open, setOpen] = createSignal(false);
-
-  function onClickHandler() {
-    setOpen(true);
-  }
-
-  /* TODO: use an animation to center book */
   return (
     <div class={styles.container}>
-      <div class={styles.book} style={{ transform: `translateX(${open() ? 50 : 0}%)` }}>
+      <div class={styles.book}>
         {/* Back half */}
         <Page z={-0.5 - FAKE_PAGE_COUNT / 2} style={{
           background: 'black'
@@ -56,7 +47,7 @@ export function Book({
 
         <div classList={{
           [styles.spine]: true,
-          [styles.open]: open(),
+          [styles.open]: props.open,
         }}>
           {/* Front page */}
           <Page z={0.5} />
@@ -66,7 +57,7 @@ export function Book({
             <Page z={1.5 + page()} />
           }</Index>
 
-          <Page z={0.5 + FAKE_PAGE_COUNT / 2} onClick={onClickHandler} style={{
+          <Page z={0.5 + FAKE_PAGE_COUNT / 2} onClick={props.onClickCover} style={{
             background: 'black',
             'text-align': 'center',
             color: 'white'
