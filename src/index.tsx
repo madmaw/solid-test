@@ -1,5 +1,4 @@
 import { render } from "solid-js/web";
-import { Book } from "components/book/book";
 import { createTable } from "components/table/create";
 import { View } from "components/table/table_controller";
 import { createBook } from "components/book/create";

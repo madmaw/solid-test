@@ -1,4 +1,4 @@
-import { SkippablePromise } from "base/skippable_promise";
+// import { SkippablePromise } from "base/skippable_promise";
 import { LiteralTypeDescriptor, booleanDescriptor } from "model/descriptor/literals";
 import { optionalDescriptor } from "model/descriptor/option";
 import { activeRecordDescriptor } from "model/descriptor/record";
