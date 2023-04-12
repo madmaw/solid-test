@@ -16,7 +16,12 @@ function TestCutout() {
 
 export function TestPage() {
   return (
-    <div style={{ background: Math.floor(Math.random() * 16777215).toString(16) }}>
+    <div style={{
+      position: 'relative',
+      width: '100%',
+      height: '100%',
+      background: `#${Math.floor(Math.random() * 16777215).toString(16)}`
+    }}>
       <TestCutout />
       <TestCutout />
       <TestCutout />

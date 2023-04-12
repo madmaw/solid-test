@@ -21,16 +21,27 @@ window.onload = function () {
   } = createBook();
 
   const {
-    Component: MainMenu,
+    Component: MainMenuImpl,
   } = createMainMenu();
 
-  // TODO: this should probably live inside a game controller or something
+  // TODO: a lot of the following code should probably live inside a game controller or something
+  const testPages: PagePair = {
+    Left: TestPage,
+    Right: TestPage,
+  }
+  const startGame = () => {
+    console.log('start game');
+    bookController.showPages(testPages)
+  }
+  const MainMenu = () => <MainMenuImpl startGame={startGame} />
+
+
   const mainMenuPages: PagePair = {
     Left: MainMenu,
     Right: TestPage,
   }
   const onClickCover = () => {
-    console.log('on click cover');
+    console.log('show main menu');
     bookController.showPages(mainMenuPages);
   }
 
