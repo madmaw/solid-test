@@ -1,11 +1,14 @@
-@value tableWidth: min(120vw, 100vh);
-@value tableHeight: min(100vw, 120vh);
+@value tableWidth: min(100vw, 100vh);
+@value tableHeight: min(100vw, 100vh);
 
 @value pageWidth: 35%;
 @value pageHeight: 45%;
 
 @value bookWidth: pageWidth;
 @value bookHeight: pageHeight;
+
+@value cardSlotWidth: 80%;
+@value cardSlotHeight: 20%;
 
 .room {
   position: absolute;
@@ -56,4 +59,14 @@
   width: bookWidth;
   height: bookHeight;
   background-color: brown;
+}
+
+.card-slot {
+  position: absolute;
+  top: 70%;
+  left: 10%;
+  width: cardSlotWidth;
+  height: cardSlotHeight;
+  background-color: brown;
+
 }

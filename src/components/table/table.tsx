@@ -24,6 +24,9 @@ export function TableComponent(props: {
           <div class={styles['book-slot']}>
             <props.Book/>
           </div>
+          <div class={styles['card-slot']}>
+            
+          </div>
         </div>
       </div>
     </div>
