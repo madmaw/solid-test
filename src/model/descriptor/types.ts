@@ -1,13 +1,13 @@
 export interface TypeDescriptor<StateType = any, MutableType = any> {
-    aState: StateType;
+  aState: StateType;
 
-    aMutable: MutableType;
+  aMutable: MutableType;
 
-    create(s: StateType): MutableType;
-    
-    snapshot(m: MutableType): StateType;
+  create(s: StateType): MutableType;
+
+  snapshot(m: MutableType): StateType;
 };
 
 export type TypeDescriptors = {
-    [_: string]: TypeDescriptor,
+  [_: string]: TypeDescriptor,
 };

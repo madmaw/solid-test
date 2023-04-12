@@ -3,19 +3,19 @@ import { TypeDescriptor } from "./types";
 
 export class LiteralTypeDescriptor<LiteralType> implements TypeDescriptor<LiteralType, LiteralType> {
 
-    constructor() {}
+  constructor() { }
 
-    aState!: LiteralType;
+  aState!: LiteralType;
 
-    aMutable!: LiteralType;
+  aMutable!: LiteralType;
 
-    create(s: LiteralType):  LiteralType {
-        return s;
-    }
+  create(s: LiteralType): LiteralType {
+    return s;
+  }
 
-    snapshot(m: LiteralType): LiteralType {
-        return m;
-    }
+  snapshot(m: LiteralType): LiteralType {
+    return m;
+  }
 }
 
 

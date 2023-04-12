@@ -2,105 +2,105 @@ import { createSignal, Signal } from "solid-js";
 import { TypeDescriptor, TypeDescriptors } from "./types";
 
 type RecordState<
-    Attributes extends TypeDescriptors,
+  Attributes extends TypeDescriptors,
 > = { [K in keyof Attributes]: Attributes[K]['aState'] };
 
 type RecordMutable<
-    Attributes extends TypeDescriptors,
+  Attributes extends TypeDescriptors,
 > = { [K in keyof Attributes]: Attributes[K]['aMutable'] };
 
 class ValueRecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescriptors>
-        implements TypeDescriptor<RecordState<AttributeTypeDescriptors>, RecordMutable<AttributeTypeDescriptors>> {
-    constructor(private readonly attributeTypes: AttributeTypeDescriptors) {}
+  implements TypeDescriptor<RecordState<AttributeTypeDescriptors>, RecordMutable<AttributeTypeDescriptors>> {
+  constructor(private readonly attributeTypes: AttributeTypeDescriptors) { }
 
-    aState!: Readonly<RecordState<AttributeTypeDescriptors>>;
+  aState!: Readonly<RecordState<AttributeTypeDescriptors>>;
 
-    aMutable!: Readonly<RecordMutable<AttributeTypeDescriptors>>;
+  aMutable!: Readonly<RecordMutable<AttributeTypeDescriptors>>;
 
-    create(s: RecordState<AttributeTypeDescriptors>): RecordMutable<AttributeTypeDescriptors> {
-        const mutable: RecordMutable<AttributeTypeDescriptors> = {} as any;
-        for (let key in this.attributeTypes) {
-            const attributeType = this.attributeTypes[key];
-            const value = s[key];
-            const valueMutable = attributeType.create(value);
-            mutable[key] = valueMutable;
-        }
-        return mutable;
+  create(s: RecordState<AttributeTypeDescriptors>): RecordMutable<AttributeTypeDescriptors> {
+    const mutable: RecordMutable<AttributeTypeDescriptors> = {} as any;
+    for (let key in this.attributeTypes) {
+      const attributeType = this.attributeTypes[key];
+      const value = s[key];
+      const valueMutable = attributeType.create(value);
+      mutable[key] = valueMutable;
     }
+    return mutable;
+  }
 
-    snapshot(m: RecordMutable<AttributeTypeDescriptors>): RecordState<AttributeTypeDescriptors> {
-        const snapshot: RecordState<AttributeTypeDescriptors> = {} as any;
-        for (let key in this.attributeTypes) {
-            const attributeType = this.attributeTypes[key];
-            const value = m[key];
-            const valueMutable = attributeType.snapshot(value);
-            snapshot[key] = valueMutable;
-        }
-        return snapshot;
+  snapshot(m: RecordMutable<AttributeTypeDescriptors>): RecordState<AttributeTypeDescriptors> {
+    const snapshot: RecordState<AttributeTypeDescriptors> = {} as any;
+    for (let key in this.attributeTypes) {
+      const attributeType = this.attributeTypes[key];
+      const value = m[key];
+      const valueMutable = attributeType.snapshot(value);
+      snapshot[key] = valueMutable;
     }
+    return snapshot;
+  }
 }
 
 export function valueRecordDescriptor<AttributeTypeDescriptors extends TypeDescriptors>(
-        attributeTypes: AttributeTypeDescriptors,
+  attributeTypes: AttributeTypeDescriptors,
 ) {
-    return new ValueRecordTypeDescriptor(attributeTypes);
+  return new ValueRecordTypeDescriptor(attributeTypes);
 }
 
 type ActiveRecordTarget<
-    AttributeTypeDescriptors extends TypeDescriptors
+  AttributeTypeDescriptors extends TypeDescriptors
 > = { [K in keyof AttributeTypeDescriptors]: Signal<AttributeTypeDescriptors[K]['aMutable']> };
 
 class ActiveRecordProxyHandler<AttributeTypeDescriptors extends TypeDescriptors>
-        implements ProxyHandler<ActiveRecordTarget<AttributeTypeDescriptors>> {
-    constructor() {
+  implements ProxyHandler<ActiveRecordTarget<AttributeTypeDescriptors>> {
+  constructor() {
 
-    }
+  }
 
-    get(target: ActiveRecordTarget<AttributeTypeDescriptors>, p: string) {
-        return target[p]?.[0]?.();
-    }
+  get(target: ActiveRecordTarget<AttributeTypeDescriptors>, p: string) {
+    return target[p]?.[0]?.();
+  }
 
-    set(target: ActiveRecordTarget<AttributeTypeDescriptors>, p: string, newValue: any): boolean {
-        const signal = target[p]?.[1];
-        signal?.(newValue);
-        return signal != null;
-    }
+  set(target: ActiveRecordTarget<AttributeTypeDescriptors>, p: string, newValue: any): boolean {
+    const signal = target[p]?.[1];
+    signal?.(newValue);
+    return signal != null;
+  }
 }
 
 class ActiveRecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescriptors>
-        implements TypeDescriptor<RecordState<AttributeTypeDescriptors>, RecordMutable<AttributeTypeDescriptors>> {
-    constructor(private readonly attributeTypes: AttributeTypeDescriptors) {}
+  implements TypeDescriptor<RecordState<AttributeTypeDescriptors>, RecordMutable<AttributeTypeDescriptors>> {
+  constructor(private readonly attributeTypes: AttributeTypeDescriptors) { }
 
-    aState!: Readonly<RecordState<AttributeTypeDescriptors>>;
+  aState!: Readonly<RecordState<AttributeTypeDescriptors>>;
 
-    aMutable!: RecordMutable<AttributeTypeDescriptors>;
+  aMutable!: RecordMutable<AttributeTypeDescriptors>;
 
-    create(s: RecordState<AttributeTypeDescriptors>): RecordMutable<AttributeTypeDescriptors> {
+  create(s: RecordState<AttributeTypeDescriptors>): RecordMutable<AttributeTypeDescriptors> {
 
-        const target: ActiveRecordTarget<AttributeTypeDescriptors> = {} as any;
-        for (let key in this.attributeTypes) {
-            const attributeType = this.attributeTypes[key];
-            const value = s[key];
-            const valueMutable = attributeType.create(value);
-            target[key] = createSignal(valueMutable);
-        }
-        return new Proxy(target, new ActiveRecordProxyHandler());
+    const target: ActiveRecordTarget<AttributeTypeDescriptors> = {} as any;
+    for (let key in this.attributeTypes) {
+      const attributeType = this.attributeTypes[key];
+      const value = s[key];
+      const valueMutable = attributeType.create(value);
+      target[key] = createSignal(valueMutable);
     }
+    return new Proxy(target, new ActiveRecordProxyHandler());
+  }
 
-    snapshot(m: RecordMutable<AttributeTypeDescriptors>): RecordState<AttributeTypeDescriptors> {
-        const snapshot: RecordState<AttributeTypeDescriptors> = {} as any;
-        for (let key in this.attributeTypes) {
-            const attributeType = this.attributeTypes[key];
-            const value = m[key];
-            const valueMutable = attributeType.snapshot(value);
-            snapshot[key] = valueMutable;
-        }
-        return snapshot;
+  snapshot(m: RecordMutable<AttributeTypeDescriptors>): RecordState<AttributeTypeDescriptors> {
+    const snapshot: RecordState<AttributeTypeDescriptors> = {} as any;
+    for (let key in this.attributeTypes) {
+      const attributeType = this.attributeTypes[key];
+      const value = m[key];
+      const valueMutable = attributeType.snapshot(value);
+      snapshot[key] = valueMutable;
     }
+    return snapshot;
+  }
 }
 
 export function activeRecordDescriptor<AttributeTypeDescriptors extends TypeDescriptors>(
-        attributeTypes: AttributeTypeDescriptors,
+  attributeTypes: AttributeTypeDescriptors,
 ) {
-    return new ActiveRecordTypeDescriptor(attributeTypes);
+  return new ActiveRecordTypeDescriptor(attributeTypes);
 }

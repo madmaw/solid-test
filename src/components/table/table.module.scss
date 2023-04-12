@@ -8,54 +8,53 @@
 @value bookHeight: pageHeight;
 
 .container {
-    position: absolute;
-    perspective: calc(tableWidth * 3);
-    perspective-origin: 50% 50%;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  perspective: calc(tableWidth * 3);
+  perspective-origin: 50% 50%;
+  width: 100%;
+  height: 100%;
 }
 
 .board {
-    position: absolute;
-    left: calc((100vw - tableWidth)/2);
-    top: calc((100vh - tableHeight)/2);
-    width: tableWidth;
-    height: tableHeight;
+  position: absolute;
+  left: calc((100vw - tableWidth)/2);
+  top: calc((100vh - tableHeight)/2);
+  width: tableWidth;
+  height: tableHeight;
 }
 
 .table {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transform-origin: calc(tableWidth/2) tableHeight;
-    transition: transform 1s ease-in-out;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: calc(tableWidth/2) tableHeight;
+  transition: transform 1s ease-in-out;
 }
 
 .table.topDown {
-    transform: rotateX(0deg) translateZ(calc(-1 * tableWidth));
+  transform: rotateX(0deg) translateZ(calc(-1 * tableWidth));
 }
 
 .table.topDownBookCentered {
-    transform: rotateX(0deg) translateX(calc(-1 *pageWidth));
+  transform: rotateX(0deg) translateX(calc(-1 *pageWidth));
 }
 
 .table.tilted {
-    transform: rotateX(60deg);
+  transform: rotateX(60deg);
 }
 
 .table-top {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: pink;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: pink;
 }
 
 .book {
-    position: absolute;
-    top: 5%;
-    left: calc((tableWidth - bookWidth)/2);
-    width: bookWidth;
-    height: bookHeight;
-    background-color: brown;
+  position: absolute;
+  top: 5%;
+  left: calc((tableWidth - bookWidth)/2);
+  width: bookWidth;
+  height: bookHeight;
+  background-color: brown;
 }
-

@@ -4,8 +4,8 @@ import { activeRecordDescriptor, valueRecordDescriptor } from "./descriptor/reco
 import { signalDescriptor } from "./descriptor/signal";
 
 export const gameDescriptor = valueRecordDescriptor({
-    creationTimestamp: numberDescriptor,
-    lastUpdatedTimestamp: signalDescriptor(numberDescriptor),
+  creationTimestamp: numberDescriptor,
+  lastUpdatedTimestamp: signalDescriptor(numberDescriptor),
 });
 export type Game = typeof gameDescriptor.aMutable;
 export type GameState = typeof gameDescriptor.aState;
