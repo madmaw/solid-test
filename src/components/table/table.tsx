@@ -1,13 +1,14 @@
 import { Component, Ref } from "solid-js";
 import styles from './table.module.scss';
-import { View } from "./table_controller";
+import { Animations, View } from "./table_controller";
+import { AnimationManager } from "base/animation_manager";
 
 export function TableComponent(props: {
   Book: Component,
   view: View,
-  viewAnimationRef: Ref<HTMLDivElement>,
+  animations: AnimationManager<Animations>,
 }) {
-
+  let tableElement: HTMLDivElement | undefined;
   return (
     <div class={styles.container}>
       <div classList={{
@@ -20,7 +21,8 @@ export function TableComponent(props: {
               [styles.topDown]: props.view === View.TopDown,
               [styles.topDownBookCentered]: props.view === View.TopDownBookCentered,
             }}
-            ref={props.viewAnimationRef}>
+            onTransitionEnd={props.animations.createTransitionEndCallback('view', tableElement)}
+            ref={tableElement}>
           <div class={styles['book-slot']}>
             <props.Book/>
           </div>

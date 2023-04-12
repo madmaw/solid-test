@@ -1,20 +1,21 @@
 import { Component } from "solid-js";
 import { TableComponent } from "./table";
-import { TableController, View, tableDescriptor } from "./table_controller";
+import { Animations, TableController, View, tableDescriptor } from "./table_controller";
+import { AnimationManager } from "base/animation_manager";
 
 export function createTable() {
   const table = tableDescriptor.create({
     view: View.TopDownBookCentered,
   })
-  const controller = new TableController(table);
-  
+  const animations = new AnimationManager<Animations>(); 
+  const controller = new TableController(table, animations);
 
   function Component(props: { Book: Component }) {
     return (
       <TableComponent
           Book={props.Book}
-          view={table.view[0]()} 
-          viewAnimationRef={controller.viewAnimationHandler.elementReference}
+          view={table.view} 
+          animations={animations}
       />
     );
   }

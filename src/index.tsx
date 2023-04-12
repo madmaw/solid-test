@@ -35,18 +35,16 @@ window.onload = function () {
   }
   const MainMenu = () => <MainMenuImpl startGame={startGame} />
 
-
   const mainMenuPages: PagePair = {
     Left: MainMenu,
     Right: TestPage,
   }
-  const onClickCover = () => {
-    tableController.viewAnimationHandler.setValue(View.TopDown).then(() => {
-      batch(() => {
-        bookController.showPages(mainMenuPages);
-        tableController.viewAnimationHandler.setValue(View.Tilted);  
-      });
-    });  
+  const onClickCover = async () => {
+    await tableController.setView(View.TopDown);
+    batch(() => {
+      bookController.showPages(mainMenuPages);
+      tableController.setView(View.Tilted);
+    });
 
     console.log('show main menu');
   }
