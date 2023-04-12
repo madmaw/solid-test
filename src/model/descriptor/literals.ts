@@ -1,7 +1,7 @@
 import { Component } from "solid-js";
 import { TypeDescriptor } from "./types";
 
-class LiteralTypeDescriptor<LiteralType> implements TypeDescriptor<LiteralType, LiteralType> {
+export class LiteralTypeDescriptor<LiteralType> implements TypeDescriptor<LiteralType, LiteralType> {
 
     constructor() {}
 

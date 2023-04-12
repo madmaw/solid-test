@@ -28,13 +28,19 @@
     width: 100%;
     height: 100%;
     transform-origin: calc(tableWidth/2) tableHeight;
+    transition: transform 1s ease-in-out;
 }
 
-.table.flat {
-    animation-duration: 1s;
-    animation-name: animate-upright;
+.table.topDown {
+    transform: rotateX(0deg) translateZ(calc(-1 * tableWidth));
+}
+
+.table.topDownBookCentered {
+    transform: rotateX(0deg) translateX(calc(-1 *pageWidth));
+}
+
+.table.tilted {
     transform: rotateX(60deg);
-    transition: transform 3s ease-in-out;
 }
 
 .table-top {
