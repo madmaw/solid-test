@@ -1,13 +1,12 @@
+import { Cutout } from 'components/book/cutout';
 import styles from './main_menu.module.scss';
 
-export function MainMenu(props: {
-  newGame: () => void,
-}) {
+export function MainMenu() {
   return (
     <div classList={{
       [styles.menu]: true,
     }}>
-      Main Menu
+      <Cutout><h1>GRAND TERMINUS</h1></Cutout>
     </div>
   );
 }
