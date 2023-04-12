@@ -29,7 +29,7 @@ export function Book(props: {
   /* TODO: use an animation to center book */
   return (
     <div class={styles.container}>
-      <div class={styles.book} style={{ transform: `translateX(${props.opened ? 50 : 0}%)` }}>
+      <div class={styles.book}>
         {/* Back half */}
         <Page z={-0.5 - FAKE_PAGE_COUNT / 2} style={{
           background: 'black'

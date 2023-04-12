@@ -1,5 +1,8 @@
+import { AnimatedSignal, createAnimationDeferred } from "base/animated_signal";
+import { AnimationHandler } from "base/animation_handler";
 import { LiteralTypeDescriptor } from "model/descriptor/literals";
-import { activeRecordDescriptor } from "model/descriptor/record";
+import { activeRecordDescriptor, valueRecordDescriptor } from "model/descriptor/record";
+import { signalDescriptor } from "model/descriptor/signal";
 
 export const enum View {
   TopDown = 0,
@@ -7,20 +10,21 @@ export const enum View {
   Tilted = 2,
 };
 
-export const tableDescriptor = activeRecordDescriptor({
-  view: new LiteralTypeDescriptor<View>(),
+const viewDescriptor = new LiteralTypeDescriptor<View>();
+
+export const tableDescriptor = valueRecordDescriptor({
+  view: signalDescriptor(viewDescriptor),
 });
 
 export type Table = typeof tableDescriptor.aMutable;
 export type TableState = typeof tableDescriptor.aState;
 
 export class TableController {
-
-  constructor(private readonly table: Table) {
-
-  }
-
-  setView(view: View) {
-    this.table.view = view;
+  readonly viewAnimationHandler = new AnimationHandler<View, HTMLDivElement>(
+      ...this.table.view,
+  );
+  constructor(
+    private readonly table: Table,
+  ) {
   }
 }

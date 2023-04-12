@@ -2,6 +2,7 @@ import { render } from "solid-js/web";
 import { createTable } from "components/table/create";
 import { View } from "components/table/table_controller";
 import { createBook } from "components/book/create";
+import { batch } from "solid-js";
 import { createMainMenu } from "components/main_menu/create";
 import { PagePair } from "components/book/book_controller";
 import { TestPage } from "components/test_page/test_page";
@@ -40,8 +41,14 @@ window.onload = function () {
     Right: TestPage,
   }
   const onClickCover = () => {
+    tableController.viewAnimationHandler.setValue(View.TopDown).then(() => {
+      batch(() => {
+        bookController.showPages(mainMenuPages);
+        tableController.viewAnimationHandler.setValue(View.Tilted);  
+      });
+    });  
+
     console.log('show main menu');
-    bookController.showPages(mainMenuPages);
   }
 
   const Book = () =>
@@ -49,10 +56,4 @@ window.onload = function () {
 
   render(() => <TableComponent Book={Book} />, app);
 
-  setTimeout(() => {
-    tableController.setView(View.TopDown);
-  }, 1000);
-  setTimeout(() => {
-    tableController.setView(View.Tilted);
-  }, 2000);
 };

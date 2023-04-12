@@ -1,4 +1,3 @@
-
 import { Book } from "./book";
 import { BookController, bookDescriptor } from "./book_controller";
 
