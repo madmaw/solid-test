@@ -1,9 +1,6 @@
-import { AnimatedSignal, createAnimationDeferred } from "base/animated_signal";
-import { AnimationHandler } from "base/animation_handler";
 import { AnimationManager } from "base/animation_manager";
 import { LiteralTypeDescriptor } from "model/descriptor/literals";
 import { activeRecordDescriptor, valueRecordDescriptor } from "model/descriptor/record";
-import { signalDescriptor } from "model/descriptor/signal";
 
 export const enum View {
   TopDown = 0,
