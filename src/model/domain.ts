@@ -8,8 +8,6 @@ export const gameDescriptor = valueRecordDescriptor({
   creationTimestamp: numberDescriptor,
   lastUpdatedTimestamp: signalDescriptor(numberDescriptor),
 });
-export type Game = typeof gameDescriptor.aMutable;
-export type GameState = typeof gameDescriptor.aState;
 
 
 export const enum SymbolType {
@@ -58,7 +56,7 @@ export const cardFaceChoiceDescriptor = valueRecordDescriptor({
 });
 
 export const cardFaceChoiceBackDescriptor = valueRecordDescriptor({
-  type: new LiteralTypeDescriptor<CardFaceType.ResourceBack>(),
+  type: new LiteralTypeDescriptor<CardFaceType.ChoiceBack>(),
   ...cardFaceCommon,
 });
 
@@ -82,5 +80,19 @@ export const cardDescriptor = activeRecordDescriptor({
   visibleFaceIndex: numberDescriptor,
 });
 
-export type Card = typeof cardTypeDescriptor.aMutable;
-export type CardState = typeof cardTypeDescriptor.aState;
+export type Game = typeof gameDescriptor.aMutable;
+export type GameState = typeof gameDescriptor.aState;
+export type CardFaceResource = typeof cardFaceResourceDescriptor.aMutable;
+export type CardFaceResourceState = typeof cardFaceResourceDescriptor.aState;
+export type CardFaceResourceBack = typeof cardFaceResourceBackDescriptor.aMutable;
+export type CardFaceResourceBackState = typeof cardFaceResourceBackDescriptor.aState;
+export type CardFaceChoice = typeof cardFaceChoiceDescriptor.aMutable;
+export type CardFaceChoiceState = typeof cardFaceChoiceDescriptor.aState;
+export type CardFaceChoiceBack = typeof cardFaceChoiceBackDescriptor.aMutable;
+export type CardFaceChoiceBackState = typeof cardFaceChoiceBackDescriptor.aState;
+export type CardFace = typeof cardFaceDescriptor.aMutable;
+export type CardFaceState = typeof cardFaceDescriptor.aState;
+export type CardType = typeof cardTypeDescriptor.aMutable;
+export type CardTypeState = typeof cardTypeDescriptor.aState;
+export type Card = typeof cardDescriptor.aMutable;
+export type CardState = typeof cardDescriptor.aState;

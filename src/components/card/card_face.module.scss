@@ -1,0 +1,25 @@
+.container {
+  width: 100%;
+  height: 100%;
+}
+
+.card-face {
+  width: 100%;
+  height: 100%;
+}
+
+.card-face.resource {
+  background-color: blue;
+}
+
+.card-face.resource-back {
+  background-color: darkblue;
+}
+
+.card-face.choice {
+  background-color: green;
+}
+
+.card-face.choice-back {
+  background-color: darkgreen;
+}

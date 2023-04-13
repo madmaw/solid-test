@@ -2,7 +2,6 @@ import { render } from "solid-js/web";
 import { createTable } from "components/table/create";
 import { View } from "components/table/table_controller";
 import { createBook } from "components/book/create";
-import { batch } from "solid-js";
 import { createMainMenu } from "components/main_menu/create";
 import { PagePair } from "components/book/book_controller";
 import { TestPage } from "components/test_page/test_page";
@@ -40,12 +39,8 @@ window.onload = function () {
     Right: TestPage,
   }
   const onClickCover = async () => {
-    await tableController.setView(View.TopDown);
-    batch(() => {
-      bookController.showPages(mainMenuPages);
-      tableController.setView(View.Tilted);
-    });
-
+    await tableController.setView(View.Tilted);
+    bookController.showPages(mainMenuPages);
     console.log('show main menu');
   }
 

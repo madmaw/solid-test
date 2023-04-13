@@ -1,4 +1,4 @@
-@value tableWidth: min(150vw, 150vh);
+@value tableWidth: min(170vw, 170vh);
 @value tableHeight: tableWidth;
 
 @value pageWidth: 35%;
@@ -42,15 +42,17 @@
 .table.topDown {
   background: tableColorDark;
   transform:
-      rotateX(0deg)
+      rotateX(20deg)
       translate(0, calc(bookHeight + bookTop))
       translateZ(calc(-1 * tableWidth));
 }
 
 .table.topDownBookCentered {
+  // TODO gradients aren't transitionable, but an overlay with opacity is...
+  background: linear-gradient(tableColorDark, tableColor);
   // TODO this math is wrong to centre the book
   transform:
-      rotateX(0deg)
+      rotateX(30deg)
       translate(calc(-1 * (bookWidth / 2)), calc(bookHeight + bookTop))
       translateZ(0);
 }
@@ -58,7 +60,7 @@
 .table.tilted {
   // TODO gradients aren't transitionable, but an overlay with opacity is...
   background: linear-gradient(tableColorDark, tableColor);
-  transform: rotateX(65deg) translate(0, 0) translateZ(0);
+  transform: rotateX(70deg) translate(0, 0) translateZ(0);
 }
 
 .book-slot {

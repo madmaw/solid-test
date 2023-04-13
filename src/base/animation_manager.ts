@@ -5,20 +5,18 @@ export class AnimationCanceledError extends Error {
 
 }
 
-export class AnimationManager<T extends string> {
+export class AnimationManager<T> {
   private animations: Map<T, FlattenedPromise<void>> = new Map();
 
   constructor() {
 
   }
 
-  startAndWaitForAnimation(t: T, timeoutMillis?: number): Promise<void> {
+  startAndWaitForAnimation(t: T, timeoutMillis: number = 5000): Promise<void> {
     this.maybeCancelAnimation(t);
     const animation = createFlattenedPromise<void>();
     this.animations.set(t, animation);
-    return timeoutMillis != null
-        ? Promise.race([animation.promise, delay(timeoutMillis)])
-        : animation.promise;
+    return Promise.race([animation.promise, delay(timeoutMillis)]);
   }
 
   maybeCancelAnimation(t: T) {

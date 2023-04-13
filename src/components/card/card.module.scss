@@ -1,0 +1,20 @@
+@value cardWidth: calc(min(100vw, 100vh) * .1);
+@value cardHeight: calc(cardWidth * 1.5);
+
+.card {
+  width: cardWidth;
+  height: cardHeight;
+  transform-origin: center;
+}
+
+.card.flat {
+  transform: rotateY(0deg);
+}
+
+.card.flippingUpToVertical {
+  transform: rotateY(90deg);
+}
+
+.card.flippingDownFromVertical {
+  transform: rotateY(0deg);
+}

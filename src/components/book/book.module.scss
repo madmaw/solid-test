@@ -44,6 +44,11 @@
   animation-name: open;
   animation-duration: .5s;
   animation-timing-function: ease-in;
+  // NOTE
+  // rather than rely on filling forward, I saw a talk 
+  // internally at Canva where the speaker recommended having the final
+  // state in your class, and animating from the old state to the final state.
+  // I think it's more robust or something
   animation-fill-mode: forwards;
 }
 
