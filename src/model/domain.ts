@@ -12,21 +12,75 @@ export type Game = typeof gameDescriptor.aMutable;
 export type GameState = typeof gameDescriptor.aState;
 
 
-// test discriminating union
-const aDescriptor = valueRecordDescriptor({
-  type: new LiteralTypeDescriptor<'a'>(),
-  num: numberDescriptor,
+export const enum SymbolType {
+  Force = 1,
+  Finesse,
+  Magic,
+  Fire,
+}
+
+export const symbolTypeDescriptor = new LiteralTypeDescriptor<SymbolType>();
+
+export const enum CardBackgroundType {
+  Crosshatched = 1,
+  Clear,
+  Door,
+  Passageway,
+}
+
+export const enum CardFaceType {
+  Resource = 1,
+  ResourceBack,
+  Choice,
+  ChoiceBack,
+}
+
+const cardFaceCommon = {
+  cost: listDescriptor(symbolTypeDescriptor),
+  background: new LiteralTypeDescriptor<CardBackgroundType>,
+};
+
+export const cardFaceResourceDescriptor = valueRecordDescriptor({
+  type: new LiteralTypeDescriptor<CardFaceType.Resource>(),
+  benefit: listDescriptor(symbolTypeDescriptor),
+  ...cardFaceCommon,
 });
-const bDescriptor = valueRecordDescriptor({
-  type: new LiteralTypeDescriptor<'b'>(),
-  bool: booleanDescriptor,
+
+export const cardFaceResourceBackDescriptor = valueRecordDescriptor({
+  type: new LiteralTypeDescriptor<CardFaceType.ResourceBack>(),
+  ...cardFaceCommon,
 });
-const aOrBDescriptor = discriminatingUnionDescriptor(
-  {'a': aDescriptor, 'b': bDescriptor }, 
-  aOrB => aOrB.type,
-  aOrB => aOrB.type,
+
+export const cardFaceChoiceDescriptor = valueRecordDescriptor({
+  type: new LiteralTypeDescriptor<CardFaceType.Choice>(),
+  effect: listDescriptor(symbolTypeDescriptor),
+  ...cardFaceCommon,
+});
+
+export const cardFaceChoiceBackDescriptor = valueRecordDescriptor({
+  type: new LiteralTypeDescriptor<CardFaceType.ResourceBack>(),
+  ...cardFaceCommon,
+});
+
+export const cardFaceDescriptor = discriminatingUnionDescriptor(
+  {
+    [CardFaceType.Resource]: cardFaceResourceDescriptor,
+    [CardFaceType.ResourceBack]: cardFaceResourceBackDescriptor,
+    [CardFaceType.Choice]: cardFaceChoiceDescriptor,
+    [CardFaceType.ChoiceBack]: cardFaceChoiceBackDescriptor,
+  },
+  s => s.type,
+  m => m.type,
 );
-const aOrB = aOrBDescriptor.create({
-  type: 'a',
-  num: 1,
+
+export const cardTypeDescriptor = valueRecordDescriptor({
+  faces: listDescriptor(cardFaceDescriptor),
 });
+
+export const cardDescriptor = activeRecordDescriptor({
+  type: cardTypeDescriptor,
+  visibleFaceIndex: numberDescriptor,
+});
+
+export type Card = typeof cardTypeDescriptor.aMutable;
+export type CardState = typeof cardTypeDescriptor.aState;
