@@ -7,6 +7,8 @@ export class AnimationCanceledError extends Error {
 
 export class AnimationManager<T> {
   private animations: Map<T, FlattenedPromise<void>> = new Map();
+  private animationEndCallbackCache = new WeakMap<HTMLElement, Map<T, Map<string, (e: AnimationEvent) => void>>>();
+  private transitionEndCallbackCache = new WeakMap<HTMLElement, Map<T, (e: TransitionEvent) => void>>();
 
   constructor() {
 
@@ -38,24 +40,50 @@ export class AnimationManager<T> {
   createAnimationEndCallback<E extends HTMLElement>(
       t: T,
       ref: E | undefined,
-      animationName?: string,
+      animationName: string,
   ) {
-    return (e: AnimationEvent) => {
-      if (ref != null && e.target === ref && (animationName == null || e.animationName === animationName)) {
+    if (ref == null) {
+      return;
+    }
+    const elementMap: Map<T, Map<string, (e: AnimationEvent) => void>> =
+        this.animationEndCallbackCache.get(ref) || new Map();
+    const tMap: Map<string, (e: AnimationEvent) => void> = 
+        elementMap.get(t) || new Map();
+    const cachedCallback = tMap.get(animationName);
+    if (cachedCallback != null) {
+      return cachedCallback;
+    }
+    const callback = (e: AnimationEvent) => {
+      if (e.target === ref && (animationName == null || e.animationName === animationName)) {
         this.maybeCompleteAnimation(t);
       }
     };
+    this.animationEndCallbackCache.set(ref, elementMap);
+    elementMap.set(t, tMap);
+    tMap.set(animationName, callback);
+    return callback;
   }
 
   createTransitionEndCallback<E extends HTMLElement>(
       t: T,
       ref: E | undefined,
   ) {
-    return (e: TransitionEvent) => {
-      if (ref != null && e.target === ref) {
+    if (ref == null) {
+      return;
+    }
+    const elementMap: Map<T, (e: TransitionEvent) => void> =
+        this.animationEndCallbackCache.get(ref) || new Map();
+    const cachedCallback = elementMap.get(t);
+    if (cachedCallback != null) {
+      return cachedCallback;
+    }
+    const callback = (e: TransitionEvent) => {
+      if (e.target === ref) {
         this.maybeCompleteAnimation(t);
       }
     };
+    this.transitionEndCallbackCache.set(ref, elementMap);
+    elementMap.set(t, callback);
+    return callback;
   }
-
 }
