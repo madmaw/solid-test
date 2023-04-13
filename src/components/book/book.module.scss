@@ -34,6 +34,12 @@
   background: linear-gradient(90deg, gainsboro 0%, ghostwhite 5%);
 }
 
+.page:last-child {
+  background: darkslategray;
+  color: white;
+  text-align: center;
+}
+
 .open {
   animation-name: open;
   animation-duration: .5s;

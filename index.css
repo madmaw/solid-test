@@ -5,6 +5,10 @@ body, #app {
     height: 100%;
 }
 
+body {
+    background-color: black;
+}
+
 * {
     transform-style: preserve-3d;
     perspective: inherit;

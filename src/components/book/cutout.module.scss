@@ -1,6 +1,6 @@
 .cutout {
   animation-name: popup;
-  animation-duration: 2s;
+  animation-duration: 1s;
   animation-fill-mode: forwards;
   transform-style: preserve-3d;
   transform-origin: bottom;
@@ -8,10 +8,18 @@
 
 @keyframes popup {
   from {
-    transform: rotateX(0deg);
+    transform: rotateX(0deg) scaleY(.8);
+  }
+
+  80% {
+    transform: rotateX(-90deg) scaleY(1.1);
+  }
+
+  90% {
+    transform: rotateX(-70deg) scaleY(1);
   }
 
   to {
-    transform: rotateX(-90deg);
+    transform: rotateX(-80deg) scaleY(1);    
   }
 }
