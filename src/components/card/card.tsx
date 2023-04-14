@@ -1,7 +1,7 @@
 import { Animations, FlipState } from "./card_controller";
 import styles from './card.module.scss';
-import { ParentProps } from "solid-js";
-import { AnimationManager } from "base/animation_manager";
+import { ParentProps, createSignal } from "solid-js";
+import { AnimationManager } from "ui/animation/animation_manager";
 
 export type CardProps = ParentProps<{
   flipState: FlipState,
@@ -9,7 +9,7 @@ export type CardProps = ParentProps<{
 }>;
 
 export function CardComponent(props: CardProps) {
-  let cardRef: HTMLDivElement | undefined;
+  const [cardRef, setCardRef] = createSignal<HTMLDivElement>();
   return (
     <div
         classList={{
@@ -18,10 +18,10 @@ export function CardComponent(props: CardProps) {
           [styles.flippingUpToVertical]: props.flipState === FlipState.FlippingUpToVertical,
           [styles.flippingDownFromVertical]: props.flipState === FlipState.FlippingDownFromVertical,
         }}
-        ref={cardRef}
-        onTransitionEnd={props.animations.createTransitionEndCallback(
-          props.flipState, cardRef
-        )}>
+        onTransitionEnd={props.animations.createTransitionEndEventListener(
+          cardRef, 'flipState', props
+        )}
+        ref={setCardRef}>
       <div classList={{
           [styles.internal]: true,
           [styles.flat]: props.flipState === FlipState.Flat,

@@ -1,6 +1,6 @@
-import { AnimationManager } from "base/animation_manager";
+import { AnimationManager } from "ui/animation/animation_manager";
 import { LiteralTypeDescriptor } from "model/descriptor/literals";
-import { activeRecordDescriptor, valueRecordDescriptor } from "model/descriptor/record";
+import { activeRecordDescriptor } from "model/descriptor/record";
 
 export const enum View {
   TopDown = 0,
@@ -8,7 +8,7 @@ export const enum View {
   Tilted = 2,
 };
 
-export type Animations = 'view';
+export type Animations = View;
 
 const viewDescriptor = new LiteralTypeDescriptor<View>();
 
@@ -30,7 +30,7 @@ export class TableController {
   async setView(view: View) {
     if (this.table.view !== view) {
       this.table.view = view;
-      return this.animations.startAndWaitForAnimation('view');
+      return this.animations.startAndWaitForAnimation(view);
     }
   }
 }

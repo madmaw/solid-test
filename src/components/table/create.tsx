@@ -1,7 +1,7 @@
 import { Component } from "solid-js";
 import { TableComponent } from "./table";
 import { Animations, TableController, View, tableDescriptor } from "./table_controller";
-import { AnimationManager } from "base/animation_manager";
+import { AnimationManager } from "ui/animation/animation_manager";
 
 export function createTable() {
   const table = tableDescriptor.create({

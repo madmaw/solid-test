@@ -104,6 +104,6 @@ window.onload = function () {
 
   setInterval(() => {
     cardManager.lookupController(cardKick)?.flip();
-  }, 10100);
+  }, 5000);
 
 };

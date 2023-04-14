@@ -1,7 +1,7 @@
-import { Component, Ref } from "solid-js";
+import { Component, createSignal } from "solid-js";
 import styles from './table.module.scss';
 import { Animations, View } from "./table_controller";
-import { AnimationManager } from "base/animation_manager";
+import { AnimationManager } from "ui/animation/animation_manager";
 
 export function TableComponent(props: {
   Book: Component,
@@ -10,8 +10,9 @@ export function TableComponent(props: {
   view: View,
   animations: AnimationManager<Animations>,
 }) {
-  let tableElement: HTMLDivElement | undefined;
+  const [tableRef, setTableRef] = createSignal<HTMLDivElement>();
   return (
+    
     <div class={styles.room}>
       <div class={styles.container}>
         <div
@@ -21,8 +22,10 @@ export function TableComponent(props: {
               [styles.topDown]: props.view === View.TopDown,
               [styles.topDownBookCentered]: props.view === View.TopDownBookCentered,
             }}
-            onTransitionEnd={props.animations.createTransitionEndCallback('view', tableElement)}
-            ref={tableElement}>
+            onTransitionEnd={props.animations.createTransitionEndEventListener(
+              tableRef, 'view', props
+            )}
+            ref={setTableRef}>
           <div class={styles['book-slot']}>
             <props.Book/>
           </div>

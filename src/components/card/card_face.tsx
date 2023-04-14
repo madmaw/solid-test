@@ -1,7 +1,24 @@
 import { CardFace, CardFaceChoice, CardFaceChoiceBack, CardFaceResource, CardFaceResourceBack, CardFaceType } from "model/domain";
 import styles from './card_face.module.scss';
 import { UnreachableError } from "base/unreachable_error";
-import { Match, Switch } from "solid-js";
+import { Component, Match, Switch } from "solid-js";
+import { Dynamic } from "solid-js/web";
+
+
+const cardFaceComponents: { [K in CardFaceType]: Component<CardFaceProps>} = {
+  [CardFaceType.Resource]: function (props: CardFaceProps) {
+    return <InternalCardFaceResourceComponent face={props.face as CardFaceResource}/>;
+  },
+  [CardFaceType.ResourceBack]: function (props: CardFaceProps) {
+    return <InternalCardFaceResourceBackComponent face={props.face as CardFaceResourceBack}/>;
+  },
+  [CardFaceType.Choice]: function (props: CardFaceProps) {
+    return <InternalCardFaceChoiceComponent face={props.face as CardFaceChoice}/>;
+  },
+  [CardFaceType.ChoiceBack]: function (props: CardFaceProps) {
+    return <InternalCardFaceChoiceBackComponent face={props.face as CardFaceChoiceBack}/>;
+  },
+}
 
 export type CardFaceProps = {
   face: CardFace
@@ -10,13 +27,17 @@ export type CardFaceProps = {
 export function CardFaceComponent(props: CardFaceProps) {
   return (
     <div class={styles.container}>
-      <InternalCardFaceComponent face={props.face}/>
-      {props.face.type}
+      <InternalCardFaceComponent2 face={props.face}/>
     </div>
   );
 }
 
+function InternalCardFaceComponent2(props: CardFaceProps) {
+  return <Dynamic component={cardFaceComponents[props.face.type]} face={props.face}/>;
+}
+
 function InternalCardFaceComponent(props: CardFaceProps) {
+  // TODO (chris.g) re-attempt this with a straight switch statement
   return (
     <Switch>
       <Match when={props.face?.type === CardFaceType.Resource}>

@@ -1,6 +1,6 @@
 import { Card } from "model/domain";
 import { Animations, CardController, FlipState, cardUIDescriptor } from "./card_controller";
-import { AnimationManager } from "base/animation_manager";
+import { AnimationManager } from "ui/animation/animation_manager";
 import { CardComponent } from "./card";
 import { CardFaceComponent } from "./card_face";
 import { ComponentManager } from "components/component_manager";

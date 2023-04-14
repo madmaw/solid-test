@@ -1,4 +1,4 @@
-import { AnimationManager } from "base/animation_manager";
+import { AnimationManager } from "ui/animation/animation_manager";
 import { LiteralTypeDescriptor, booleanDescriptor } from "model/descriptor/literals";
 import { activeRecordDescriptor } from "model/descriptor/record";
 import { Card, cardDescriptor, cardFaceDescriptor } from "model/domain";
