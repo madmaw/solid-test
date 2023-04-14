@@ -46,6 +46,7 @@
     "base": "./src/base",
     "components": "./src/components",
     "data": "./src/data",
-    "model": "./src/model"
+    "model": "./src/model",
+    "ui": "./src/ui"
   }
 }

@@ -36,11 +36,19 @@ export class AnimationManager<T> {
     }
   }
 
-  createAnimationEndCallback<E extends HTMLElement>(
-      t: T,
-      ref: E | undefined,
-      animationName: string,
+  createAnimationEndCallback<K extends string, P extends Record<K, T>>(
+      ref: Accessor<EventTarget | undefined>,
+      key: K,
+      props: P,
+      valueToAnimationName: (value: T) => string,
   ) {
+    return (e: AnimationEvent) => {
+      const value = props[key];
+      const animationName = valueToAnimationName(value);
+      if (e.target != null && ref() === e.target && e.animationName === animationName) {
+        this.maybeCompleteAnimation(value);
+      }
+    };
   }
 
   createTransitionEndEventListener<K extends string, P extends Record<K, T>>(
@@ -49,9 +57,7 @@ export class AnimationManager<T> {
     props: P,
   ) {
     return (e: TransitionEvent) => {
-      if (e.target != null
-          && ref() === e.target
-      ) {
+      if (e.target != null && ref() === e.target) {
         this.maybeCompleteAnimation(props[key]);
       }
     };
