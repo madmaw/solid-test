@@ -5,10 +5,11 @@ import { createBook } from "components/book/create";
 import { createMainMenu } from "components/main_menu/create";
 import { PagePair } from "components/book/book_controller";
 import { TestPage } from "components/test_page/test_page";
-import { createCardSlots } from "components/card_slot/create";
+import { createCardSlotManager, createCardSlots } from "components/card_slot/create";
 import { cardDescriptor, cardSlotDescriptor, gameDescriptor } from "model/domain";
 import { cardTypeKick } from "data/cards/kick";
 import { cardTypeMight } from "data/cards/might";
+import { createCardManager } from "components/card/create";
 
 window.onload = function () {
   const app = document.getElementById('app')!;
@@ -25,11 +26,11 @@ window.onload = function () {
   const game = gameDescriptor.create({
     cardSlots: [
       cardSlotDescriptor.create({
-        targetCard: cardKick,
+        targetCard: undefined,
         playedCards: [],
       }),
       cardSlotDescriptor.create({
-        targetCard: cardMight,
+        targetCard: undefined,
         playedCards: [],
       }),
       cardSlotDescriptor.create({
@@ -46,6 +47,8 @@ window.onload = function () {
       }),
     ],
   });
+  game.cardSlots[0].targetCard = cardKick;
+  game.cardSlots[1].targetCard = cardMight;
 
   const {
     Component: TableComponent,
@@ -57,12 +60,15 @@ window.onload = function () {
     controller: bookController,
   } = createBook();
 
+  const cardManager = createCardManager();
+  const cardSlotManager = createCardSlotManager(cardManager.FactoryComponent);
+
   const {
     Component: MainMenuImpl,
   } = createMainMenu();
   const {
     Component: CardSlots,
-  } = createCardSlots();
+  } = createCardSlots(cardSlotManager.FactoryComponent);
 
   // TODO: a lot of the following code should probably live inside a game controller or something
   const testPages: PagePair = {
@@ -95,5 +101,9 @@ window.onload = function () {
   }
 
   render(() => <TableComponent Book={Book} Hand={Hand} Deck={Deck}/>, app);
+
+  setTimeout(() => {
+    cardManager.lookupController(cardKick)?.flip();
+  }, 2000);
 
 };

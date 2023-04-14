@@ -1,13 +1,13 @@
 import styles from './card_slot.module.scss';
-import { Component, For, ParentProps, children } from "solid-js";
+import { For, JSX, ParentProps, children } from "solid-js";
 
 export function CardSlotComponent(props: ParentProps<{
-  TargetCard: Component | undefined,
+  targetCard: JSX.Element,
 }>) {
   return (
     <div class={styles.container}>
       <div class={styles['target-card']}>
-        {props.TargetCard && <props.TargetCard/>}
+        {props.targetCard}
       </div>
       <div class={styles['played-cards']}>
         <For each={children(() => props.children).toArray()}>

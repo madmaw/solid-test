@@ -8,13 +8,28 @@
 }
 
 .card.flat {
-  transform: rotateY(0deg);
+  transform: translateZ(0) rotateY(0deg);
+  transition: none;
 }
 
 .card.flippingUpToVertical {
-  transform: rotateY(90deg);
+  transform: translateZ(cardWidth) rotateY(90deg);
+  transition: transform 500ms ease-in;
 }
 
 .card.flippingDownFromVertical {
-  transform: rotateY(0deg);
+  transform: translateZ(0) rotateY(180deg);
+  transition: transform 500ms ease-out;
+}
+
+.internal {
+  transition: none;
+}
+
+.internal.flat, .internal.flippingUpToVertical {
+  transform: scaleX(1);
+}
+
+.internal.flippingDownFromVertical {
+  transform: scaleX(-1);
 }
