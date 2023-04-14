@@ -1,7 +1,7 @@
 import { AnimationManager } from "base/animation_manager";
 import { LiteralTypeDescriptor, booleanDescriptor } from "model/descriptor/literals";
 import { activeRecordDescriptor } from "model/descriptor/record";
-import { cardDescriptor } from "model/domain";
+import { Card, cardDescriptor, cardFaceDescriptor } from "model/domain";
 import { batch } from "solid-js";
 
 export const enum FlipState {
@@ -13,7 +13,6 @@ export const enum FlipState {
 export type Animations = FlipState;
 
 export const cardUIDescriptor = activeRecordDescriptor({
-  card: cardDescriptor,
   flipState: new LiteralTypeDescriptor<FlipState>(),
 });
 
@@ -22,6 +21,7 @@ export type CardUIState = typeof cardUIDescriptor.aState;
 
 export class CardController {
   constructor(
+    private readonly card: Card,
     private readonly cardUI: CardUI,
     private readonly animations: AnimationManager<Animations>,
   ) {}
@@ -30,8 +30,8 @@ export class CardController {
     this.cardUI.flipState = FlipState.FlippingUpToVertical;
     await this.animations.startAndWaitForAnimation(FlipState.FlippingUpToVertical);
     batch(() => {
-      this.cardUI.card.visibleFaceIndex = (this.cardUI.card.visibleFaceIndex + 1)
-          % this.cardUI.card.type.faces.length;
+      this.card.visibleFaceIndex = (this.card.visibleFaceIndex + 1)
+          % this.card.type.faces.length;
       this.cardUI.flipState = FlipState.FlippingDownFromVertical;
     });
     await this.animations.startAndWaitForAnimation(FlipState.FlippingDownFromVertical);

@@ -102,8 +102,8 @@ window.onload = function () {
 
   render(() => <TableComponent Book={Book} Hand={Hand} Deck={Deck}/>, app);
 
-  setTimeout(() => {
+  setInterval(() => {
     cardManager.lookupController(cardKick)?.flip();
-  }, 2000);
+  }, 10100);
 
 };

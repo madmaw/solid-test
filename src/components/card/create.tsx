@@ -8,23 +8,24 @@ import { ComponentManager } from "components/component_manager";
 export function createCardManager() {
   function createCard(card: Card) {
     const animations = new AnimationManager<Animations>();
+    function face() {
+      return card.type.faces[card.visibleFaceIndex];
+    }
     const cardUI = cardUIDescriptor.create({
-      card,
       flipState: FlipState.Flat,
     });
-  
+
     function Component() {
       return (
         <CardComponent
             flipState={cardUI.flipState}
             animations={animations}>
-          <CardFaceComponent
-              face={card.type.faces[card.visibleFaceIndex]}/>
+          <CardFaceComponent face={face()}/>
         </CardComponent>
       );
     }
   
-    const controller = new CardController(cardUI, animations);
+    const controller = new CardController(card, cardUI, animations);
   
     return {
       Component,

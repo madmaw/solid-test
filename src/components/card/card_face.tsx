@@ -1,6 +1,7 @@
 import { CardFace, CardFaceChoice, CardFaceChoiceBack, CardFaceResource, CardFaceResourceBack, CardFaceType } from "model/domain";
 import styles from './card_face.module.scss';
 import { UnreachableError } from "base/unreachable_error";
+import { Match, Switch } from "solid-js";
 
 export type CardFaceProps = {
   face: CardFace
@@ -9,24 +10,29 @@ export type CardFaceProps = {
 export function CardFaceComponent(props: CardFaceProps) {
   return (
     <div class={styles.container}>
-      <InternalCardFaceComponent {...props}/>
+      <InternalCardFaceComponent face={props.face}/>
+      {props.face.type}
     </div>
   );
 }
 
 function InternalCardFaceComponent(props: CardFaceProps) {
-  switch (props.face.type) {
-    case CardFaceType.Resource:
-      return <InternalCardFaceResourceComponent face={props.face}/>;
-    case CardFaceType.ResourceBack:
-      return <InternalCardFaceResourceBackComponent face={props.face}/>;
-    case CardFaceType.Choice:
-      return <InternalCardFaceChoiceComponent face={props.face}/>;
-    case CardFaceType.ChoiceBack:
-      return <InternalCardFaceChoiceBackComponent face={props.face}/>;
-    default:
-      throw new UnreachableError(props.face);
-  }
+  return (
+    <Switch>
+      <Match when={props.face?.type === CardFaceType.Resource}>
+        <InternalCardFaceResourceComponent face={props.face as CardFaceResource}/>
+      </Match>
+      <Match when={props.face?.type === CardFaceType.ResourceBack}>
+        <InternalCardFaceResourceBackComponent face={props.face as CardFaceResourceBack}/>
+      </Match>
+      <Match when={props.face?.type === CardFaceType.Choice}>
+        <InternalCardFaceChoiceComponent face={props.face as CardFaceChoice}/>
+      </Match>
+      <Match when={props.face?.type === CardFaceType.ChoiceBack}>
+        <InternalCardFaceChoiceBackComponent face={props.face as CardFaceChoiceBack}/>
+      </Match>
+    </Switch>
+  );
 }
 
 function InternalCardFaceResourceComponent(props: {
