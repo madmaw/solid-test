@@ -5,6 +5,8 @@ import { AnimationManager } from "base/animation_manager";
 
 export function TableComponent(props: {
   Book: Component,
+  Hand: Component,
+  Deck: Component,
   view: View,
   animations: AnimationManager<Animations>,
 }) {
@@ -24,8 +26,11 @@ export function TableComponent(props: {
           <div class={styles['book-slot']}>
             <props.Book/>
           </div>
-          <div class={styles['card-slot']}>
-            
+          <div class={styles['hand-slot']}>
+            <props.Hand/>
+          </div>
+          <div class={styles['deck-slot']}>
+            <props.Deck/>
           </div>
         </div>
       </div>

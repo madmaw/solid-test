@@ -5,9 +5,47 @@ import { createBook } from "components/book/create";
 import { createMainMenu } from "components/main_menu/create";
 import { PagePair } from "components/book/book_controller";
 import { TestPage } from "components/test_page/test_page";
+import { createCardSlots } from "components/card_slot/create";
+import { cardDescriptor, cardSlotDescriptor, gameDescriptor } from "model/domain";
+import { cardTypeKick } from "data/cards/kick";
+import { cardTypeMight } from "data/cards/might";
 
 window.onload = function () {
   const app = document.getElementById('app')!;
+
+  const cardKick = cardDescriptor.create({
+    type: cardTypeKick,
+    visibleFaceIndex: 0,
+  });
+  const cardMight = cardDescriptor.create({
+    type: cardTypeMight,
+    visibleFaceIndex: 0,
+  });
+  
+  const game = gameDescriptor.create({
+    cardSlots: [
+      cardSlotDescriptor.create({
+        targetCard: cardKick,
+        playedCards: [],
+      }),
+      cardSlotDescriptor.create({
+        targetCard: cardMight,
+        playedCards: [],
+      }),
+      cardSlotDescriptor.create({
+        targetCard: undefined,
+        playedCards: [],
+      }),
+      cardSlotDescriptor.create({
+        targetCard: undefined,
+        playedCards: [],
+      }),
+      cardSlotDescriptor.create({
+        targetCard: undefined,
+        playedCards: [],
+      }),
+    ],
+  });
 
   const {
     Component: TableComponent,
@@ -22,6 +60,9 @@ window.onload = function () {
   const {
     Component: MainMenuImpl,
   } = createMainMenu();
+  const {
+    Component: CardSlots,
+  } = createCardSlots();
 
   // TODO: a lot of the following code should probably live inside a game controller or something
   const testPages: PagePair = {
@@ -44,9 +85,15 @@ window.onload = function () {
     console.log('show main menu');
   }
 
-  const Book = () =>
-    <BookImpl onClickCover={onClickCover} />
+  function Hand() {
+    return <CardSlots cardSlots={game.cardSlots}/>;
+  }
+  const Deck = () => <div/>;
 
-  render(() => <TableComponent Book={Book} />, app);
+  function Book() {
+    return <BookImpl onClickCover={onClickCover} />;
+  }
+
+  render(() => <TableComponent Book={Book} Hand={Hand} Deck={Deck}/>, app);
 
 };

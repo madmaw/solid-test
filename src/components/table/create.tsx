@@ -10,10 +10,16 @@ export function createTable() {
   const animations = new AnimationManager<Animations>(); 
   const controller = new TableController(table, animations);
 
-  function Component(props: { Book: Component }) {
+  function Component(props: {
+    Book: Component,
+    Hand: Component,
+    Deck: Component,
+  }) {
     return (
       <TableComponent
           Book={props.Book}
+          Hand={props.Hand}
+          Deck={props.Deck}
           view={table.view} 
           animations={animations}
       />

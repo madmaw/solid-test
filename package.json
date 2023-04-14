@@ -43,9 +43,9 @@
   },
   "TODO: (chris.g) how do I just set an alias for src?": "",
   "alias": {
+    "base": "./src/base",
     "components": "./src/components",
-    "model": "./src/model",
-    "ui": "./src/ui",
-    "base": "./src/base"
+    "data": "./src/data",
+    "model": "./src/model"
   }
 }
