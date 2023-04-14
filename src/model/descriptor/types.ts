@@ -6,6 +6,8 @@ export interface TypeDescriptor<StateType = any, MutableType = any> {
   create(s: StateType): MutableType;
 
   snapshot(m: MutableType): StateType;
+
+  freeze(s: StateType): StateType;
 };
 
 export type TypeDescriptors = {

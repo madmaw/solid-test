@@ -19,11 +19,15 @@ class SignalTypeDescriptor<ReferencedTypeDescriptor extends TypeDescriptor>
   aMutable!: SignalMutable<ReferencedTypeDescriptor>;
 
   create(s: SignalState<ReferencedTypeDescriptor>): SignalMutable<ReferencedTypeDescriptor> {
-    return createSignal(this.referencedTypeDescriptor.create(s));
+    return createSignal(this.referencedTypeDescriptor.create(s)) as SignalMutable<ReferencedTypeDescriptor>;
   }
 
   snapshot([getter]: SignalMutable<ReferencedTypeDescriptor>): SignalState<ReferencedTypeDescriptor> {
     return this.referencedTypeDescriptor.snapshot(getter());
+  }
+
+  freeze(s: SignalState<ReferencedTypeDescriptor>): SignalState<ReferencedTypeDescriptor> {
+    return this.referencedTypeDescriptor.freeze(s);
   }
 }
 

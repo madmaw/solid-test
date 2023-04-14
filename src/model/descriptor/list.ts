@@ -25,6 +25,10 @@ class ListTypeDescriptor<ElementTypeDescriptor extends TypeDescriptor>
   snapshot(m: ListMutable<ElementTypeDescriptor>): ListState<ElementTypeDescriptor> {
     return m.map(v => this.elementTypeDescriptor.snapshot(v));
   }
+
+  freeze(s: ListState<ElementTypeDescriptor>): ListState<ElementTypeDescriptor> {
+    return Object.freeze(s.map(v => this.elementTypeDescriptor.freeze(v)));
+  }
 }
 
 export function listDescriptor<ElementTypeDescriptor extends TypeDescriptor,>(elementTypeDescriptor: ElementTypeDescriptor) {

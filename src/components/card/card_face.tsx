@@ -1,6 +1,5 @@
 import { CardFace, CardFaceChoice, CardFaceChoiceBack, CardFaceResource, CardFaceResourceBack, CardFaceType } from "model/domain";
 import styles from './card_face.module.scss';
-import { UnreachableError } from "base/unreachable_error";
 import { Component, Match, Switch } from "solid-js";
 import { Dynamic } from "solid-js/web";
 

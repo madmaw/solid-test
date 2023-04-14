@@ -1,18 +1,18 @@
 import { ForceUp } from "data/effects";
-import { CardBackgroundType, CardFaceType, cardFaceResourceBackDescriptor, cardFaceResourceDescriptor, cardTypeDescriptor } from "model/domain";
+import { CardBackgroundType, CardFaceResourceBack, CardFaceResourceBackState, CardFaceResourceState, CardFaceState, CardFaceType, cardFaceDescriptor, cardFaceResourceBackDescriptor, cardFaceResourceDescriptor, cardTypeDescriptor } from "model/domain";
 
-const cardFaceMightBack = cardFaceResourceBackDescriptor.create({
+const cardFaceMightBack = cardFaceResourceBackDescriptor.freeze({
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   cost: [],
 });
-const cardFaceMightFront = cardFaceResourceDescriptor.create({
+const cardFaceMightFront = cardFaceResourceDescriptor.freeze({
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   cost: [],
   benefit: [ForceUp],
 });
-export const cardTypeMight = cardTypeDescriptor.create({
+export const cardTypeMight = cardTypeDescriptor.freeze({
   name: 'might',
   faces: [cardFaceMightBack, cardFaceMightFront],
 });

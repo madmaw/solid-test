@@ -6,7 +6,7 @@ import { createMainMenu } from "components/main_menu/create";
 import { PagePair } from "components/book/book_controller";
 import { TestPage } from "components/test_page/test_page";
 import { createCardSlotManager, createCardSlots } from "components/card_slot/create";
-import { cardDescriptor, cardSlotDescriptor, gameDescriptor } from "model/domain";
+import { cardDescriptor, gameDescriptor } from "model/domain";
 import { cardTypeKick } from "data/cards/kick";
 import { cardTypeMight } from "data/cards/might";
 import { createCardManager } from "components/card/create";
@@ -25,26 +25,26 @@ window.onload = function () {
   
   const game = gameDescriptor.create({
     cardSlots: [
-      cardSlotDescriptor.create({
+      {
+        targetCard: cardDescriptor.snapshot(cardMight),
+        playedCards: [],
+      },
+      {
         targetCard: undefined,
         playedCards: [],
-      }),
-      cardSlotDescriptor.create({
+      },
+      {
         targetCard: undefined,
         playedCards: [],
-      }),
-      cardSlotDescriptor.create({
+      },
+      {
         targetCard: undefined,
         playedCards: [],
-      }),
-      cardSlotDescriptor.create({
+      },
+      {
         targetCard: undefined,
         playedCards: [],
-      }),
-      cardSlotDescriptor.create({
-        targetCard: undefined,
-        playedCards: [],
-      }),
+      },
     ],
   });
   game.cardSlots[0].targetCard = cardKick;
@@ -103,7 +103,7 @@ window.onload = function () {
   render(() => <TableComponent Book={Book} Hand={Hand} Deck={Deck}/>, app);
 
   setInterval(() => {
-    cardManager.lookupController(cardKick)?.flip();
+    cardManager.lookupController(cardMight)?.flip();
   }, 5000);
 
 };

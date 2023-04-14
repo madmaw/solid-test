@@ -1,13 +1,28 @@
 import { createSignal, Signal } from "solid-js";
 import { TypeDescriptor, TypeDescriptors } from "./types";
 
+type Mutable = {
+  __aMutable: true,
+};
+
+type State = {
+  __aMutable?: never,
+};
+
+
 type RecordState<
   Attributes extends TypeDescriptors,
-> = { [K in keyof Attributes]: Attributes[K]['aState'] };
+> = { [K in keyof Attributes]: Attributes[K]['aState'] } & State;
 
 type RecordMutable<
   Attributes extends TypeDescriptors,
-> = { [K in keyof Attributes]: Attributes[K]['aMutable'] };
+> = { [K in keyof Attributes]: Attributes[K]['aMutable'] } & Mutable;
+
+
+type RecordStateWithNoMutables<
+  Attributes extends TypeDescriptors,
+> = { [K in keyof Attributes]: Attributes[K]['aState'] & State };
+
 
 class ValueRecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescriptors>
   implements TypeDescriptor<RecordState<AttributeTypeDescriptors>, RecordMutable<AttributeTypeDescriptors>> {
@@ -17,7 +32,7 @@ class ValueRecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescriptors
 
   aMutable!: Readonly<RecordMutable<AttributeTypeDescriptors>>;
 
-  create(s: RecordState<AttributeTypeDescriptors>): RecordMutable<AttributeTypeDescriptors> {
+  create(s: RecordStateWithNoMutables<AttributeTypeDescriptors>): RecordMutable<AttributeTypeDescriptors> {
     const mutable: RecordMutable<AttributeTypeDescriptors> = {} as any;
     for (let key in this.attributeTypes) {
       const attributeType = this.attributeTypes[key];
@@ -38,6 +53,18 @@ class ValueRecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescriptors
     }
     return snapshot;
   }
+
+  freeze(s: RecordState<AttributeTypeDescriptors>): RecordState<AttributeTypeDescriptors> {
+    const snapshot: RecordState<AttributeTypeDescriptors> = {} as any;
+    for (let key in this.attributeTypes) {
+      const attributeType = this.attributeTypes[key];
+      const value = s[key];
+      const valueMutable = attributeType.freeze(value);
+      snapshot[key] = valueMutable;
+    }
+    return Object.freeze(snapshot);    
+  }
+
 }
 
 export function valueRecordDescriptor<AttributeTypeDescriptors extends TypeDescriptors>(
@@ -84,7 +111,7 @@ class ActiveRecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescriptor
       const valueMutable = attributeType.create(value);
       target[key] = createSignal(valueMutable);
     }
-    return new Proxy(target, new ActiveRecordProxyHandler());
+    return new Proxy(target, new ActiveRecordProxyHandler()) as RecordMutable<AttributeTypeDescriptors>;
   }
 
   snapshot(m: RecordMutable<AttributeTypeDescriptors>): RecordState<AttributeTypeDescriptors> {
@@ -96,6 +123,17 @@ class ActiveRecordTypeDescriptor<AttributeTypeDescriptors extends TypeDescriptor
       snapshot[key] = valueMutable;
     }
     return snapshot;
+  }
+
+  freeze(s: RecordState<AttributeTypeDescriptors>): RecordState<AttributeTypeDescriptors> {
+    const snapshot: RecordState<AttributeTypeDescriptors> = {} as any;
+    for (let key in this.attributeTypes) {
+      const attributeType = this.attributeTypes[key];
+      const value = s[key];
+      const valueMutable = attributeType.snapshot(value);
+      snapshot[key] = valueMutable;
+    }
+    return Object.freeze(snapshot);    
   }
 }
 

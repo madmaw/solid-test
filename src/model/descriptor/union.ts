@@ -26,6 +26,11 @@ class DiscriminatingUnionTypeDescriptor<C extends Types> implements TypeDescript
     const type = this.discriminatorMutable(m);
     return this.cases[type].snapshot(m);
   }
+
+  freeze(s: OneStateOf<C>): OneMutableOf<C> {
+    const type = this.discriminatorState(s);
+    return this.cases[type].freeze(s);
+  }
 }
 
 export function discriminatingUnionDescriptor<C extends Types>(

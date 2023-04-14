@@ -16,6 +16,10 @@ export class LiteralTypeDescriptor<LiteralType> implements TypeDescriptor<Litera
   snapshot(m: LiteralType): LiteralType {
     return m;
   }
+
+  freeze(s: LiteralType): LiteralType {
+    return s;
+  }
 }
 
 

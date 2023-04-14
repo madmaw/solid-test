@@ -21,6 +21,10 @@ class OptionalTypeDescriptor<MandatoryTypeDescriptor extends TypeDescriptor>
   snapshot(m: OptionalMutable<MandatoryTypeDescriptor>): OptionalState<MandatoryTypeDescriptor> {
     return m != null ? this.mandatoryTypeDescriptor.snapshot(m) : undefined;
   }
+
+  freeze(s: OptionalState<MandatoryTypeDescriptor>): OptionalState<MandatoryTypeDescriptor> {
+    return s != null ? this.mandatoryTypeDescriptor.freeze(s) : undefined;
+  }
 }
 
 export function optionalDescriptor<MandatoryTypeDescriptor extends TypeDescriptor>(
