@@ -13,7 +13,7 @@ export class AnimationManager<T> {
 
   }
 
-  waitForAnimation(t: T, timeoutMillis: number = 5000): Promise<void> {
+  waitForAnimation(t: T, timeoutMillis: number = 1000): Promise<void> {
     this.maybeCancelAnimation(t);
     const animation = createFlattenedPromise<void>();
     this.animations.set(t, animation);
