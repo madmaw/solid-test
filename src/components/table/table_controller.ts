@@ -30,7 +30,7 @@ export class TableController {
   async setView(view: View) {
     if (this.table.view !== view) {
       this.table.view = view;
-      return this.animations.startAndWaitForAnimation(view);
+      return this.animations.waitForAnimation(view);
     }
   }
 }

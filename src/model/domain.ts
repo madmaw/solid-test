@@ -1,4 +1,3 @@
-import { effect } from "solid-js/web";
 import { listDescriptor } from "./descriptor/list";
 import { LiteralTypeDescriptor, numberDescriptor, stringDescriptor } from "./descriptor/literals";
 import { optionalDescriptor } from "./descriptor/option";
@@ -6,12 +5,20 @@ import { activeRecordDescriptor, valueRecordDescriptor } from "./descriptor/reco
 import { discriminatingUnionDescriptor } from "./descriptor/union";
 
 export const enum SymbolType {
+  // force resource
   Force = 1,
+  // finesse resource
   Finesse,
+  // magic resource (fey?)
   Magic,
+  // fire damage/light
   Fire,
+  // take pysical damage/heal
   Damage,
+  // get older/younger
   Age,
+  // draw a card/put a card back
+  Draw,
 }
 
 export const symbolTypeDescriptor = new LiteralTypeDescriptor<SymbolType>();
@@ -93,7 +100,37 @@ export const cardSlotDescriptor = activeRecordDescriptor({
   playedCards: listDescriptor(cardDescriptor),
 });
 
-export const gameDescriptor = valueRecordDescriptor({
+// a "spread" is two pages viewed together
+export const enum BookSpreadType {
+  TableOfContents = 1,
+  Room,
+}
+
+export const bookSpreadTableOfContentsDescriptor = activeRecordDescriptor({
+  type: new LiteralTypeDescriptor<BookSpreadType.TableOfContents>(),
+});
+
+export const bookSpreadRoomDescriptor = activeRecordDescriptor({
+  type: new LiteralTypeDescriptor<BookSpreadType.Room>(),
+  cardSlots: listDescriptor(cardSlotDescriptor),
+});
+
+export const bookSpreadDescriptor = discriminatingUnionDescriptor(
+  {
+    [BookSpreadType.TableOfContents]: bookSpreadTableOfContentsDescriptor,
+    [BookSpreadType.Room]: bookSpreadRoomDescriptor,
+  },
+  s => s.type,
+  m => m.type,
+);
+
+export const bookDescriptor = activeRecordDescriptor({
+  // undefined == closed
+  spread: optionalDescriptor(bookSpreadDescriptor),
+});
+
+export const gameDescriptor = activeRecordDescriptor({
+  book: bookDescriptor,
   cardSlots: listDescriptor(cardSlotDescriptor),
 });
 
@@ -115,5 +152,13 @@ export type Card = typeof cardDescriptor.aMutable;
 export type CardState = typeof cardDescriptor.aState;
 export type CardSlot = typeof cardSlotDescriptor.aMutable;
 export type CardSlotState = typeof cardSlotDescriptor.aState;
+export type BookSpreadTableOfContents = typeof bookSpreadTableOfContentsDescriptor.aMutable;
+export type BookSpreadTableOfContentsState = typeof bookSpreadTableOfContentsDescriptor.aState;
+export type BookSpreadRoom = typeof bookSpreadRoomDescriptor.aMutable;
+export type BookSpreadRoomState = typeof bookSpreadRoomDescriptor.aState;
+export type BookSpread = typeof bookSpreadDescriptor.aMutable;
+export type BookSpreadState = typeof bookSpreadDescriptor.aState;
+export type Book = typeof bookDescriptor.aMutable;
+export type BookState = typeof bookDescriptor.aState;
 export type Game = typeof gameDescriptor.aMutable;
 export type GameState = typeof gameDescriptor.aState;

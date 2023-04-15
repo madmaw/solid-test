@@ -1,0 +1,38 @@
+@value popupAngle: -85deg;
+
+.cutout {
+  transform-origin: bottom;
+  transform: rotateX(0deg);
+  transition-property: transform;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in;
+}
+
+.cutout.up {
+  transform: rotateX(popupAngle);
+  transition-duration: 400ms;
+  transition-timing-function: cubic-bezier(.47,1.64,.41,.8);
+}
+
+// .cutout.down {
+// }
+
+// @keyframes popupAnimation {
+//   from {
+//     transform: rotateX(0deg) scaleY(1);
+//   }
+
+//   to {
+//     transform: rotateX(popupAngle) scaleY(1);    
+//   }
+// }
+
+// @keyframes popdownAnimation {
+//   from {
+//     transform: rotateX(popupAngle) scaleY(1);    
+//   }
+
+//   to {
+//     transform: rotateX(0deg) scaleY(1);
+//   }
+// }

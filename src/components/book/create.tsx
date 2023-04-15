@@ -1,18 +1,54 @@
-import { Book } from "./book";
-import { BookController, bookDescriptor } from "./book_controller";
+import { Book, BookSpread } from "model/domain";
+import { BookComponent, PagePair } from "./book";
+import { Animations, BookController, PageComponentManager, bookUIDescriptor } from "./book_controller";
+import { AnimationManager } from "ui/animation/animation_manager";
 
-export function createBook() {
-  const book = bookDescriptor.create({
-    opened: false,
-    pages: undefined,
-  })
-  const controller = new BookController(book);
+export function createBook({
+  leftPageComponentManager,
+  rightPageComponentManager,
+  book,
+}: {
+  leftPageComponentManager: PageComponentManager,
+  rightPageComponentManager: PageComponentManager,
+  book: Book,
+}) {
 
-  const Component = (props: { onClickCover: () => void }) =>
-    <Book opened={book.opened} pages={book.pages} onClickCover={props.onClickCover} />;
+  function renderPagePair(spread: BookSpread | undefined): PagePair | undefined {
+    if (spread == null) {
+      return;
+    }
+    return [
+      <leftPageComponentManager.FactoryComponent model={spread}/>,
+      <rightPageComponentManager.FactoryComponent model={spread}/>
+    ];
+  }
+  
+  const animations = new AnimationManager<Animations>();
+  const bookUI = bookUIDescriptor.create({
+    previousSpread: undefined,
+    turnLeftToRight: true,
+  });
+  const controller = new BookController(
+    book,
+    bookUI,
+    animations,
+    [leftPageComponentManager, rightPageComponentManager],
+  );
+
+  const Component = (props: { onClickCover: () => void }) => {
+    return (
+      <BookComponent
+          animations={animations}
+          previousPages={renderPagePair(bookUI.previousSpread)}
+          currentPages={renderPagePair(book.spread)}
+          onClickCover={props.onClickCover}
+      />
+    );
+  };
 
   return {
     Component,
     controller,
   };
 }
+

@@ -26,32 +26,10 @@ export type CardFaceProps = {
 export function CardFaceComponent(props: CardFaceProps) {
   return (
     <div class={styles.container}>
-      <InternalCardFaceComponent2 face={props.face}/>
+      <Dynamic
+          component={cardFaceComponents[props.face.type]}
+          face={props.face}/>
     </div>
-  );
-}
-
-function InternalCardFaceComponent2(props: CardFaceProps) {
-  return <Dynamic component={cardFaceComponents[props.face.type]} face={props.face}/>;
-}
-
-function InternalCardFaceComponent(props: CardFaceProps) {
-  // TODO (chris.g) re-attempt this with a straight switch statement
-  return (
-    <Switch>
-      <Match when={props.face?.type === CardFaceType.Resource}>
-        <InternalCardFaceResourceComponent face={props.face as CardFaceResource}/>
-      </Match>
-      <Match when={props.face?.type === CardFaceType.ResourceBack}>
-        <InternalCardFaceResourceBackComponent face={props.face as CardFaceResourceBack}/>
-      </Match>
-      <Match when={props.face?.type === CardFaceType.Choice}>
-        <InternalCardFaceChoiceComponent face={props.face as CardFaceChoice}/>
-      </Match>
-      <Match when={props.face?.type === CardFaceType.ChoiceBack}>
-        <InternalCardFaceChoiceBackComponent face={props.face as CardFaceChoiceBack}/>
-      </Match>
-    </Switch>
   );
 }
 
@@ -61,7 +39,7 @@ function InternalCardFaceResourceComponent(props: {
   return <div classList={{
     [styles['card-face']]: true,
     [styles['resource']]: true,
-  }}/>;
+  }}>Resource</div>;
 }
 
 function InternalCardFaceResourceBackComponent(props: {
@@ -70,7 +48,7 @@ function InternalCardFaceResourceBackComponent(props: {
   return <div classList={{
     [styles['card-face']]: true,
     [styles['resource-back']]: true,
-  }}/>;
+  }}>Resource Back</div>;
 }
 
 function InternalCardFaceChoiceComponent(props: {

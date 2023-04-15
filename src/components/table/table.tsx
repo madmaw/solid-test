@@ -23,7 +23,8 @@ export function TableComponent(props: {
               [styles.topDownBookCentered]: props.view === View.TopDownBookCentered,
             }}
             onTransitionEnd={props.animations.createTransitionEndEventListener(
-              tableRef, 'view', props
+              tableRef,
+              () => props.view
             )}
             ref={setTableRef}>
           <div class={styles['book-slot']}>

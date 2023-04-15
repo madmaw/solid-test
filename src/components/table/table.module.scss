@@ -1,17 +1,17 @@
 @use '../card/card.module.scss';
 
-@value tableWidth: min(150vw, 150vh);
-@value tableHeight: tableWidth;
+@value tableWidth: min(100vw, 100vh);
+@value tableHeight: calc(tableWidth * 1.4);
 
-@value pageWidth: 35%;
-@value pageHeight: 45%;
+@value pageWidth: 30vh;
+@value pageHeight: calc(pageWidth * 1.4);
 
 @value bookWidth: pageWidth;
 @value bookHeight: pageHeight;
-@value bookTop: 15%;
+@value bookTop: 5%;
 
 @value handSlotTop: 5%;
-@value handSlotWidth: 65%;
+@value handSlotWidth: 45vh;
 @value handSlotHeight: cardHeight;
 
 @value tableColor: #763F13;
@@ -19,10 +19,11 @@
 
 .room {
   position: absolute;
-  perspective: calc(tableWidth * 3);
+  perspective: calc(tableWidth);
   perspective-origin: 50% 50%;
   width: 100%;
   height: 100%;
+  pointer-events: none;
 }
 
 .container {
@@ -39,7 +40,8 @@
   width: 100%;
   height: 100%;
   transform-origin: calc(tableWidth/2) tableHeight;
-  transition: transform 1s ease-in-out, background-color 1s ease-in-out;
+  transition: transform 1s ease-in-out;
+  pointer-events: all;
 }
 
 .table.topDown {
@@ -53,17 +55,21 @@
 .table.topDownBookCentered {
   // TODO gradients aren't transitionable, but an overlay with opacity is...
   background: linear-gradient(tableColorDark, tableColor);
-  // TODO this math is wrong to centre the book
   transform:
       rotateX(20deg)
-      translate(calc(-1 * (bookWidth / 2)), calc(bookHeight - bookTop))
-      translateZ(0);
+      translate(calc(-1 * (bookWidth / 2)), calc(tableHeight - bookHeight - bookTop - handSlotTop))
+      translateZ(calc(tableHeight/4))
+      ;
 }
 
 .table.tilted {
   // TODO gradients aren't transitionable, but an overlay with opacity is...
   background: linear-gradient(tableColorDark, tableColor);
-  transform: rotateX(60deg) translate(0, 0) translateZ(0);
+  transform:
+      translateZ(calc(tableHeight * .8))
+      translate(0, 0)
+      rotateX(60deg)
+      ;
 }
 
 .book-slot {

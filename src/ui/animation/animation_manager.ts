@@ -13,7 +13,7 @@ export class AnimationManager<T> {
 
   }
 
-  startAndWaitForAnimation(t: T, timeoutMillis: number = 5000): Promise<void> {
+  waitForAnimation(t: T, timeoutMillis: number = 5000): Promise<void> {
     this.maybeCancelAnimation(t);
     const animation = createFlattenedPromise<void>();
     this.animations.set(t, animation);
@@ -36,30 +36,35 @@ export class AnimationManager<T> {
     }
   }
 
-  createAnimationEndCallback<K extends string, P extends Record<K, T>>(
+  createAnimationEndEventListener(
       ref: Accessor<EventTarget | undefined>,
-      key: K,
-      props: P,
-      valueToAnimationName: (value: T) => string,
+      animationIdAndName: Accessor<[T, string]>,
   ) {
     return (e: AnimationEvent) => {
-      const value = props[key];
-      const animationName = valueToAnimationName(value);
-      if (e.target != null && ref() === e.target && e.animationName === animationName) {
-        this.maybeCompleteAnimation(value);
+      const [id, name] = animationIdAndName();
+      if (e.target != null && ref() === e.target && e.animationName === name) {
+        this.maybeCompleteAnimation(id);
       }
     };
   }
 
-  createTransitionEndEventListener<K extends string, P extends Record<K, T>>(
+  createTransitionEndEventListener(
     ref: Accessor<EventTarget | undefined>,
-    key: K,
-    props: P,
-  ) {
+    animationId: Accessor<T>,
+    ) {
     return (e: TransitionEvent) => {
       if (e.target != null && ref() === e.target) {
-        this.maybeCompleteAnimation(props[key]);
+        this.maybeCompleteAnimation(animationId());
       }
+    };
+  }
+
+  createCutoutPoppedUpOrDownCallback(
+    poppedUpValue: T,
+    poppedDownValue: T = poppedUpValue,
+  ) {
+    return (poppedUp: boolean) => {
+      this.maybeCompleteAnimation(poppedUp ? poppedUpValue : poppedDownValue);
     };
   }
 }

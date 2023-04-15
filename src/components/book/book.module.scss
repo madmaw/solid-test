@@ -41,7 +41,7 @@
 }
 
 .open {
-  animation-name: open;
+  animation-name: openAnimation;
   animation-duration: .5s;
   animation-timing-function: ease-in;
   // NOTE
@@ -52,7 +52,7 @@
   animation-fill-mode: forwards;
 }
 
-@keyframes open {
+@keyframes openAnimation {
   from {
     transform: rotateY(0deg);
   }
