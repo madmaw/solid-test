@@ -26,11 +26,15 @@ export const initialGame = gameDescriptor.create({
       playedCards: [],
     },
     {
-      targetCard: undefined,
+      targetCard: cardDescriptor.snapshot(cardMight),
       playedCards: [],
     },
     {
-      targetCard: undefined,
+      targetCard: cardDescriptor.snapshot(cardKick),
+      playedCards: [],
+    },
+    {
+      targetCard: cardDescriptor.snapshot(cardMight),
       playedCards: [],
     },
     {
@@ -43,6 +47,4 @@ export const initialGame = gameDescriptor.create({
     },
   ],
 });
-initialGame.cardSlots[0].targetCard = cardKick;
-initialGame.cardSlots[1].targetCard = cardMight;
 

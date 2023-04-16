@@ -53,10 +53,12 @@
 }
 
 .played-cards {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: start;
 }
 
 .played-card {
-  width: 100%;
   margin-bottom: calc(-.75 * cardHeight);
 }

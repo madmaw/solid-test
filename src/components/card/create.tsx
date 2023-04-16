@@ -4,6 +4,7 @@ import { AnimationManager } from "ui/animation/animation_manager";
 import { CardComponent } from "./card";
 import { CardFaceComponent } from "./face/card_face";
 import { ComponentManager } from "components/component_manager";
+import { cardFace } from "rules/card";
 
 export function createCardManager() {
   function createCard(card: Card) {
@@ -12,10 +13,6 @@ export function createCardManager() {
       flipState: FlipState.Flat,
       peeking: false,
     });
-    function face() {
-      const faces = card.type.faces; 
-      return faces[(card.visibleFaceIndex + (cardUI.peeking ? 1 : 0))%faces.length];
-    }
 
     function Component() {
       return (
@@ -23,7 +20,7 @@ export function createCardManager() {
             flipState={cardUI.flipState}
             elevated={cardUI.peeking || cardUI.flipState === FlipState.FlippingUpToVertical}
             animations={animations}>
-          <CardFaceComponent face={face()}/>
+          <CardFaceComponent face={cardFace(card, cardUI.peeking ? 1 : 0)}/>
         </CardComponent>
       );
     }

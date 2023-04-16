@@ -1,9 +1,9 @@
 import { UnreachableError } from "base/unreachable_error";
 import { CardController } from "components/card/card_controller";
 import { ComponentManager } from "components/component_manager";
-import { activeRecordDescriptor } from "model/descriptor/record";
 import { Card, CardFaceType, CardSlot } from "model/domain";
 import { Accessor, Setter, batch, createSignal } from "solid-js";
+import { cardFace } from "./card";
 
 export const enum Interaction {
   None = 1,
@@ -60,23 +60,24 @@ export class InteractionManager {
     targetCardSlot: CardSlot | undefined,
   ): Interaction {
     const dragged = this.dragged();
+    const targetCard = targetCardSlot?.targetCard;
     if (dragged != null) {
       const [_, draggedCardSlot] = dragged;
       if (targetCardSlot == draggedCardSlot) {
         return Interaction.Dragging;
       }
-      if (targetCardSlot != null && targetCardSlot.targetCard == null) {
+      if (targetCard != null) {
+        // can drop 
         return Interaction.Drop;
       }
       return Interaction.NoDrop;
     }
-    if (targetCardSlot?.targetCard == null) {
+    if (targetCard == null) {
       return Interaction.None;
     }
 
-    const card = targetCardSlot.targetCard;
-    const face = card.type.faces[card.visibleFaceIndex];
-    switch (face.type) {
+    const targetFace = cardFace(targetCard);
+    switch (targetFace.type) {
       case CardFaceType.Choice:
         return Interaction.Activate;
       case CardFaceType.ChoiceBack:
@@ -86,7 +87,7 @@ export class InteractionManager {
       case CardFaceType.ResourceBack:
         return Interaction.LongPress;
       default:
-        throw new UnreachableError(face);
+        throw new UnreachableError(targetFace);
     }
   }
 
@@ -137,7 +138,7 @@ export class InteractionManager {
       const interaction = this.allowedInteraction(targetCardSlot);
       if (draggedCardSlot != targetCardSlot && interaction == Interaction.Drop) {
         batch(() => {
-          targetCardSlot.targetCard = draggedCard;
+          targetCardSlot.playedCards = [...targetCardSlot.playedCards, draggedCard];
           draggedCardSlot.targetCard = undefined;
           this.setDragged();
         });  
