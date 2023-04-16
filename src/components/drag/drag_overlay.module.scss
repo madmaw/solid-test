@@ -1,0 +1,9 @@
+@use '../card/card.module.scss';
+
+.drag {
+  position: absolute;
+  width: cardWidth;
+  height: cardHeight;
+  margin-left: calc(cardWidth/-2);
+  margin-top: calc(cardHeight/-2);
+}

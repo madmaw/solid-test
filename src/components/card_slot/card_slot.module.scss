@@ -10,6 +10,34 @@
   background-color: white;
 }
 
+.target-card.none {
+  cursor: default;
+}
+
+.target-card.draggable {
+  cursor: grab;
+}
+
+.target-card.dragging {
+  cursor: grabbing;
+}
+
+.target-card.clickable {
+  cursor: pointer;
+}
+
+.target-card.immovable {
+  cursor: not-allowed;
+}
+
+.target-card.no-drop {
+  cursor: no-drop;
+}
+
+.target-card.drop {
+  cursor: pointer;
+}
+
 .played-cards {
   width: 100%;
 }

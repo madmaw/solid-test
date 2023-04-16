@@ -47,6 +47,8 @@
     "components": "./src/components",
     "data": "./src/data",
     "model": "./src/model",
+    "rules": "./src/rules",
     "ui": "./src/ui"
+
   }
 }

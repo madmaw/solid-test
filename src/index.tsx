@@ -9,15 +9,21 @@ import { PageSide } from "components/page/page_controller";
 import { BookSpreadType, bookSpreadRoomDescriptor, bookSpreadTableOfContentsDescriptor } from "model/domain";
 import { cardMight, cardNextRoom, initialGame } from "data/initial";
 import { createSpread } from "components/spread/create";
+import { InteractionManager } from "rules/interaction_manager";
+import { createDragOverlay } from "components/drag/create";
 
 window.onload = function () {
   const app = document.getElementById('app')!;
   const game = initialGame;
+  const interactionManger = new InteractionManager();
+  window.addEventListener('mousemove', e => {
+    interactionManger.lastMousePosition = [e.clientX, e.clientY];
+  });
 
   const {
     Component: TableComponent,
     controller: tableController,
-  } = createTable();
+  } = createTable(interactionManger);
 
   const onNavigate = (to: BookSpreadType) => {
     const spread = bookSpreadRoomDescriptor.create({
@@ -50,8 +56,12 @@ window.onload = function () {
     onNavigate,
   });
 
+
   const cardManager = createCardManager();
-  const cardSlotManager = createCardSlotManager(cardManager.FactoryComponent);
+  const cardSlotManager = createCardSlotManager(
+    cardManager.FactoryComponent,
+    interactionManger,
+  );
 
   const {
     Component: CardSlotsComponent,
@@ -80,22 +90,28 @@ window.onload = function () {
     // }));
     onNavigate(BookSpreadType.Room);
     console.log('show main menu');
-  }
+  };
 
   function Hand() {
     return <CardSlotsComponent model={game.cardSlots}/>;
   }
 
-  function Overlay() {
+  function SpreadOverlay() {
     // <>{}</> is needed to re-render on game.book.spread changing
     return (
       <>
-      {
-        game.book.spread && <SpreadComponent model={game.book.spread}/>
-      }
+        {
+          game.book.spread && <SpreadComponent model={game.book.spread}/>
+        }
       </>
     );
   }
+
+  const { Component: DragOverlay } = createDragOverlay(
+    interactionManger,
+    cardManager.FactoryComponent,
+  );
+
 
   const Deck = () => <div/>;
 
@@ -106,13 +122,15 @@ window.onload = function () {
   render(() => (
       <TableComponent
           Book={Book}
-          Overlay={Overlay}
           Hand={Hand}
-          Deck={Deck}/>
+          Deck={Deck}
+          SpreadOverlay={SpreadOverlay}
+          DragOverlay={DragOverlay}
+      />
   ), app);
 
-  setInterval(() => {
-    cardManager.lookupController(cardMight)?.flip();
-  }, 5000);
+  // setInterval(() => {
+  //   cardManager.lookupController(cardMight)?.flip();
+  // }, 5000);
 
 };

@@ -5,17 +5,25 @@ import { AnimationManager } from "ui/animation/animation_manager";
 
 export function TableComponent(props: {
   Book: Component,
-  Overlay: Component,
   Hand: Component,
   Deck: Component,
+  SpreadOverlay: Component,
+  DragOverlay: Component,
   view: View,
   animations: AnimationManager<Animations>,
+  onDragCancel: () => void,
+  dragging: boolean,
 }) {
   const [tableRef, setTableRef] = createSignal<HTMLDivElement>();
   return (
-    
-    <div class={styles.room}>
-      <div class={styles.container}>
+    <div class={styles.container}>
+      <div
+          classList={{
+            [styles.room]: true,
+            [styles.dragging]: props.dragging,
+          }}
+          onMouseUp={props.onDragCancel}
+      >
         <div
             classList={{
               [styles.table]: true,
@@ -28,19 +36,22 @@ export function TableComponent(props: {
               () => props.view
             )}
             ref={setTableRef}>
-          <div class={styles['book-slot']}>
+          <div class={styles.book}>
             <props.Book/>
           </div>
-          <div class={styles['overlay-slot']}>
-            <props.Overlay/>
+          <div class={styles['spread-overlay']}>
+            <props.SpreadOverlay/>
           </div>
-          <div class={styles['hand-slot']}>
+          <div class={styles.hand}>
             <props.Hand/>
           </div>
-          <div class={styles['deck-slot']}>
+          <div class={styles.deck}>
             <props.Deck/>
           </div>
         </div>
+      </div>
+      <div class={styles['drag-overlay']}>
+        <props.DragOverlay/>
       </div>
     </div>
   );

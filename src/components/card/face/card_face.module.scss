@@ -1,0 +1,25 @@
+.card-face {
+  width: 100%;
+  height: 100%;
+  border-radius: .5vw;
+  overflow: hidden;
+}
+
+.card-face.backgroundClear {
+  background-color: blue;
+}
+
+.card-face.backgroundDoor {
+  background-color: brown;
+
+}
+
+.card-face.backgroundCrosshatched {
+  background-color: grey;
+}
+
+.card-face.backgroundPassageway {
+  background-color: green;
+
+}
+

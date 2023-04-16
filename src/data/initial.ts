@@ -9,7 +9,7 @@ export const cardKick = cardDescriptor.create({
 });
 export const cardMight = cardDescriptor.create({
   type: cardTypeMight,
-  visibleFaceIndex: 0,
+  visibleFaceIndex: 1,
 });
 export const cardNextRoom = cardDescriptor.create({
   type: cardTypeNextRoom,
