@@ -9,12 +9,12 @@ export function createCardSlots(
   CardSlotComponent: Component<{ model: CardSlot }>,
 ) {
   const Component = (props : {
-    cardSlots: readonly CardSlot[],
+    model: readonly CardSlot[],
   }) => {
     return (
       <CardSlotsComponent
         CardSlotComponent={CardSlotComponent}
-        cardSlots={props.cardSlots}/>
+        cardSlots={props.model}/>
     );
   };
   return {

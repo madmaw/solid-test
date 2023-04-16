@@ -1,3 +1,3 @@
-export function PageBlank() {
+export function PageBlankComponent() {
   return null;
 }

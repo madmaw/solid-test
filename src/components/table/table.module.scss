@@ -3,6 +3,8 @@
 @value tableWidth: min(100vw, 100vh);
 @value tableHeight: calc(tableWidth * 1.3);
 
+// NOTE: this crashes parceljs 
+// @value pageWidth: min(30vh, 30vw);
 @value pageWidth: 30vh;
 @value pageHeight: calc(pageWidth * 1.4);
 
@@ -10,12 +12,14 @@
 @value bookHeight: pageHeight;
 @value bookTop: 5%;
 
-@value handSlotTop: 5%;
+@value handSlotTop: 8%;
 @value handSlotWidth: 45vh;
 @value handSlotHeight: cardHeight;
 
 @value tableColor: #763F13;
 @value tableColorDark: #221100;
+
+@value tiltAngle: 50deg;
 
 .room {
   position: absolute;
@@ -68,7 +72,7 @@
   transform:
       translateZ(calc(tableHeight * .8))
       translate(0, 0)
-      rotateX(60deg)
+      rotateX(tiltAngle)
       ;
 }
 
@@ -81,6 +85,16 @@
   background-color: brown;
 }
 
+.overlay-slot {
+  position: absolute;
+  top: calc(bookTop + bookHeight);
+  left: calc(tableWidth/2 - bookWidth/2);
+  width: calc(bookWidth);
+  height: cardHeight;
+  transform: translateZ(calc(cardHeight * 2.2)) rotateX(calc(-80deg));
+  transform-origin: top;
+}
+
 .hand-slot {
   position: absolute;
   display: flex;
@@ -88,7 +102,6 @@
   left: calc((100% - handSlotWidth) / 2);
   width: handSlotWidth;
   height: handSlotHeight;
-  background-color: brown;  
 }
 
 .deck-slot {

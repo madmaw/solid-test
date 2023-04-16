@@ -2,7 +2,7 @@ import { BookSpreadTableOfContents, BookSpreadType } from "model/domain";
 import { PageProps } from "../page";
 import { PageSide } from "../page_controller";
 import { Component } from "solid-js";
-import { PageBlank } from "../blank/page_blank";
+import { PageBlankComponent } from "../blank/page_blank";
 import { Dynamic } from "solid-js/web";
 import { Cutout } from "ui/cutout/cutout";
 import styles from './page_toc.module.scss';
@@ -10,9 +10,7 @@ import styles from './page_toc.module.scss';
 type PageToCProps = PageProps<BookSpreadTableOfContents>;
 
 const sideComponents: { [K in PageSide]: Component<PageToCProps>} = {
-  [PageSide.Left]: function (props: PageToCProps) {
-    return <PageBlank/>;
-  },
+  [PageSide.Left]:PageBlankComponent,
   [PageSide.Right]: function (props: PageToCProps) {
     return <PageTocRightComponent
         animations={props.animations}

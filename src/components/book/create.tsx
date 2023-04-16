@@ -12,7 +12,6 @@ export function createBook({
   rightPageComponentManager: PageComponentManager,
   book: Book,
 }) {
-
   function renderPagePair(spread: BookSpread | undefined): PagePair | undefined {
     if (spread == null) {
       return;

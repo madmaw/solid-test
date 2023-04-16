@@ -5,6 +5,7 @@ import { AnimationManager } from "ui/animation/animation_manager";
 
 export function TableComponent(props: {
   Book: Component,
+  Overlay: Component,
   Hand: Component,
   Deck: Component,
   view: View,
@@ -29,6 +30,9 @@ export function TableComponent(props: {
             ref={setTableRef}>
           <div class={styles['book-slot']}>
             <props.Book/>
+          </div>
+          <div class={styles['overlay-slot']}>
+            <props.Overlay/>
           </div>
           <div class={styles['hand-slot']}>
             <props.Hand/>

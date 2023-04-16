@@ -1,5 +1,5 @@
 import { ForceUp } from "data/effects";
-import { CardBackgroundType, CardFaceResourceBack, CardFaceResourceBackState, CardFaceResourceState, CardFaceState, CardFaceType, cardFaceDescriptor, cardFaceResourceBackDescriptor, cardFaceResourceDescriptor, cardTypeDescriptor } from "model/domain";
+import { CardBackgroundType, CardFaceType, cardFaceResourceBackDescriptor, cardFaceResourceDescriptor, cardTypeDescriptor } from "model/domain";
 
 const cardFaceMightBack = cardFaceResourceBackDescriptor.freeze({
   type: CardFaceType.ResourceBack,

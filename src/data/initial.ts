@@ -1,8 +1,9 @@
 import { cardDescriptor, gameDescriptor } from "model/domain";
 import { cardTypeKick } from "data/cards/kick";
 import { cardTypeMight } from "data/cards/might";
+import { cardTypeNextRoom } from "./cards/next_room";
 
-const cardKick = cardDescriptor.create({
+export const cardKick = cardDescriptor.create({
   type: cardTypeKick,
   visibleFaceIndex: 0,
 });
@@ -10,6 +11,10 @@ export const cardMight = cardDescriptor.create({
   type: cardTypeMight,
   visibleFaceIndex: 0,
 });
+export const cardNextRoom = cardDescriptor.create({
+  type: cardTypeNextRoom,
+  visibleFaceIndex: 0,
+})
 
 export const initialGame = gameDescriptor.create({
   book: {

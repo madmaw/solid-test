@@ -12,24 +12,24 @@ export type Animations = View;
 
 const viewDescriptor = new LiteralTypeDescriptor<View>();
 
-export const tableDescriptor = activeRecordDescriptor({
+export const tableUIDescriptor = activeRecordDescriptor({
   view: viewDescriptor,
 });
 
-export type Table = typeof tableDescriptor.aMutable;
-export type TableState = typeof tableDescriptor.aState;
+export type TableUI = typeof tableUIDescriptor.aMutable;
+export type TableUIState = typeof tableUIDescriptor.aState;
 
 export class TableController {
 
   constructor(
-    private readonly table: Table,
+    private readonly tableUI: TableUI,
     private readonly animations: AnimationManager<Animations>,
   ) {
   }
 
   async setView(view: View) {
-    if (this.table.view !== view) {
-      this.table.view = view;
+    if (this.tableUI.view !== view) {
+      this.tableUI.view = view;
       return this.animations.waitForAnimation(view);
     }
   }

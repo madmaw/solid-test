@@ -1,5 +1,4 @@
 import { BookSpread, BookSpreadRoom, BookSpreadTableOfContents, BookSpreadType } from "model/domain";
-import styles from './page.module.scss';
 import { Component } from "solid-js";
 import { Animations, PageSide, PageUI } from "./page_controller";
 import { Dynamic } from "solid-js/web";
@@ -36,15 +35,13 @@ const pageComponents: { [K in BookSpreadType]: Component<PageProps>} = {
 
 export function PageComponent(props: PageProps) {
   return (
-    <div class={styles.page}>
-      <Dynamic
-          component={pageComponents[props.spread.type]}
-          animations={props.animations}
-          spread={props.spread}
-          pageUI={props.pageUI}
-          side={props.side}
-          onNavigate={props.onNavigate}/>
-    </div>
+    <Dynamic
+        component={pageComponents[props.spread.type]}
+        animations={props.animations}
+        spread={props.spread}
+        pageUI={props.pageUI}
+        side={props.side}
+        onNavigate={props.onNavigate}/>
   )
 }
 
