@@ -15,7 +15,8 @@ import { createDragOverlay } from "components/drag/create";
 window.onload = function () {
   const app = document.getElementById('app')!;
   const game = initialGame;
-  const interactionManger = new InteractionManager();
+  const cardManager = createCardManager();
+  const interactionManger = new InteractionManager(cardManager);
   window.addEventListener('mousemove', e => {
     interactionManger.lastMousePosition = [e.clientX, e.clientY];
   });
@@ -57,7 +58,6 @@ window.onload = function () {
   });
 
 
-  const cardManager = createCardManager();
   const cardSlotManager = createCardSlotManager(
     cardManager.FactoryComponent,
     interactionManger,

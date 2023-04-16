@@ -10,7 +10,7 @@
 
 @value bookWidth: pageWidth;
 @value bookHeight: pageHeight;
-@value bookTop: 5%;
+@value bookTop: 10%;
 
 @value handSlotTop: 8%;
 @value handSlotWidth: 45vh;
@@ -120,7 +120,7 @@
   left: calc(tableWidth/2 - bookWidth/2);
   width: calc(bookWidth);
   height: cardHeight;
-  transform: translateZ(calc(cardHeight * 2.2)) rotateX(calc(-80deg));
+  transform: translateZ(calc(cardHeight * 2.5)) rotateX(calc(-80deg));
   transform-origin: top;
 }
 

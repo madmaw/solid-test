@@ -5,6 +5,7 @@ import { AnimationManager } from "ui/animation/animation_manager";
 
 export type CardProps = ParentProps<{
   flipState: FlipState,
+  elevated: boolean,
   animations: AnimationManager<Animations>,
 }>;
 
@@ -14,21 +15,28 @@ export function CardComponent(props: CardProps) {
     <div
         classList={{
           [styles.card]: true,
-          [styles.flat]: props.flipState === FlipState.Flat,
-          [styles.flippingUpToVertical]: props.flipState === FlipState.FlippingUpToVertical,
-          [styles.flippingDownFromVertical]: props.flipState === FlipState.FlippingDownFromVertical,
-        }}
-        onTransitionEnd={props.animations.createTransitionEndEventListener(
-          cardRef, () => props.flipState,
-        )}
-        ref={setCardRef}>
-      <div classList={{
-          [styles.internal]: true,
-          [styles.flat]: props.flipState === FlipState.Flat,
-          [styles.flippingUpToVertical]: props.flipState === FlipState.FlippingUpToVertical,
-          [styles.flippingDownFromVertical]: props.flipState === FlipState.FlippingDownFromVertical,
-      }}>
-        {props.children}
+          [styles.elevated]: props.elevated,
+        }}>
+      <div
+          classList={{
+              [styles.rotate]: true,
+              [styles.flat]: props.flipState === FlipState.Flat,
+              [styles.flippingUpToVertical]: props.flipState === FlipState.FlippingUpToVertical,
+              [styles.flippingDownFromVertical]: props.flipState === FlipState.FlippingDownFromVertical,
+          }}
+          onTransitionEnd={props.animations.createTransitionEndEventListener(
+            cardRef, () => props.flipState,
+          )}
+          ref={setCardRef}
+      >
+        <div classList={{
+            [styles.scale]: true,
+            [styles.flat]: props.flipState === FlipState.Flat,
+            [styles.flippingUpToVertical]: props.flipState === FlipState.FlippingUpToVertical,
+            [styles.flippingDownFromVertical]: props.flipState === FlipState.FlippingDownFromVertical,
+        }}>
+          {props.children}
+        </div>
       </div>
     </div>
   );

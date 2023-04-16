@@ -7,3 +7,7 @@
   margin-left: calc(cardWidth/-2);
   margin-top: calc(cardHeight/-2);
 }
+
+.scale-up { 
+  transform: scale(2.5);
+}

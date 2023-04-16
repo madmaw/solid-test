@@ -1,5 +1,5 @@
 import { AnimationManager } from "ui/animation/animation_manager";
-import { LiteralTypeDescriptor } from "model/descriptor/literals";
+import { LiteralTypeDescriptor, booleanDescriptor } from "model/descriptor/literals";
 import { activeRecordDescriptor } from "model/descriptor/record";
 import { Card} from "model/domain";
 import { batch } from "solid-js";
@@ -14,6 +14,7 @@ export type Animations = FlipState;
 
 export const cardUIDescriptor = activeRecordDescriptor({
   flipState: new LiteralTypeDescriptor<FlipState>(),
+  peeking: booleanDescriptor,  
 });
 
 export type CardUI = typeof cardUIDescriptor.aMutable;
@@ -27,14 +28,26 @@ export class CardController {
   ) {}
 
   async flip(): Promise<void> {
+    this.internalFlip(() => {
+      this.card.visibleFaceIndex = this.card.visibleFaceIndex + 1;
+    })
+  }
+
+  async flipTemporarily(): Promise<void> {
+    this.internalFlip(() => {
+      this.cardUI.peeking = !this.cardUI.peeking;
+    });
+  }
+
+  private async internalFlip(doFlip: () => void) {
     this.cardUI.flipState = FlipState.FlippingUpToVertical;
     await this.animations.waitForAnimation(FlipState.FlippingUpToVertical);
     batch(() => {
-      this.card.visibleFaceIndex = (this.card.visibleFaceIndex + 1)
-          % this.card.type.faces.length;
+      doFlip();
       this.cardUI.flipState = FlipState.FlippingDownFromVertical;
     });
     await this.animations.waitForAnimation(FlipState.FlippingDownFromVertical);
     this.cardUI.flipState = FlipState.Flat;
+
   }
 }

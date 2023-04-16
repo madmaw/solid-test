@@ -8,17 +8,20 @@ import { ComponentManager } from "components/component_manager";
 export function createCardManager() {
   function createCard(card: Card) {
     const animations = new AnimationManager<Animations>();
-    function face() {
-      return card.type.faces[card.visibleFaceIndex];
-    }
     const cardUI = cardUIDescriptor.create({
       flipState: FlipState.Flat,
+      peeking: false,
     });
+    function face() {
+      const faces = card.type.faces; 
+      return faces[(card.visibleFaceIndex + (cardUI.peeking ? 1 : 0))%faces.length];
+    }
 
     function Component() {
       return (
         <CardComponent
             flipState={cardUI.flipState}
+            elevated={cardUI.peeking || cardUI.flipState === FlipState.FlippingUpToVertical}
             animations={animations}>
           <CardFaceComponent face={face()}/>
         </CardComponent>

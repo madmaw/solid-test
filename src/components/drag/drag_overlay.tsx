@@ -7,12 +7,12 @@ export function DragOverlay(props: {
   Card: Component,
 }) {
   return (
-    <div
-        class={styles.drag}
-        style={{
-          transform: `translate(${props.cx}px, ${props.cy}px) scale(2)`
-        }}>
-      <props.Card/>
+    <div class={styles.drag} style={{
+      transform: `translate(${props.cx}px, ${props.cy}px)`
+    }}>
+      <div class={styles['scale-up']}>
+        <props.Card/> 
+      </div>
     </div>
   )
 }

@@ -14,8 +14,8 @@ export function createCardSlots(
   }) => {
     return (
       <CardSlotsComponent
-        CardSlotComponent={CardSlotComponent}
-        cardSlots={props.model}/>
+          CardSlotComponent={CardSlotComponent}
+          cardSlots={props.model}/>
     );
   };
   return {

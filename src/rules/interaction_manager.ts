@@ -1,4 +1,6 @@
 import { UnreachableError } from "base/unreachable_error";
+import { CardController } from "components/card/card_controller";
+import { ComponentManager } from "components/component_manager";
 import { Card, CardFaceType, CardSlot } from "model/domain";
 import { Accessor, Setter, batch, createSignal } from "solid-js";
 
@@ -9,6 +11,7 @@ export const enum Interaction {
   Dragging,
   Drop,
   NoDrop,
+  LongPress,
   Disabled,
 }
 
@@ -22,7 +25,7 @@ export class InteractionManager {
   private readonly setMousePosition: Setter<MousePosition>;
 
 
-  constructor() {
+  constructor(private cardManager: ComponentManager<Card, CardController>) {
     const [dragged, setDragged] = createSignal<DragState>()
     this.dragged = dragged;
     this.setDragged = setDragged;
@@ -75,7 +78,7 @@ export class InteractionManager {
       case CardFaceType.Resource:
         return Interaction.Drag;
       case CardFaceType.ResourceBack:
-        return Interaction.Disabled;
+        return Interaction.LongPress;
       default:
         throw new UnreachableError(face);
     }
@@ -84,11 +87,15 @@ export class InteractionManager {
   startDrag(cardSlot: CardSlot) {
     const interaction = this.allowedInteraction(cardSlot);
     const targetCard = cardSlot.targetCard;
-    if (targetCard != null && interaction === Interaction.Drag) {
-      batch(() => {
-        cardSlot.targetCard = undefined;
-        this.setDragged([targetCard, cardSlot]);
-      });
+    if (targetCard != null) {
+      if (interaction === Interaction.Drag) {
+        batch(() => {
+          cardSlot.targetCard = undefined;
+          this.setDragged([targetCard, cardSlot]);
+        });  
+      } else if (interaction === Interaction.LongPress) {
+        this.cardManager.lookupController(targetCard)?.flipTemporarily();
+      }
     }
   }
 
@@ -96,10 +103,15 @@ export class InteractionManager {
     const dragged = this.dragged();
     if (dragged) {
       const [draggedCard, draggedCardSlot] = dragged;
-      batch(() => {
-        draggedCardSlot.targetCard = draggedCard;
-        this.setDragged(undefined);
-      });
+      const interaction = this.allowedInteraction(draggedCardSlot);
+      if (interaction === Interaction.LongPress) {
+        this.cardManager.lookupController(draggedCard)?.flipTemporarily();
+      } else {
+        batch(() => {
+          draggedCardSlot.targetCard = draggedCard;
+          this.setDragged(undefined);
+        });  
+      }
     }
   }
 

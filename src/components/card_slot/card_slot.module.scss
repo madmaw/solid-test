@@ -1,11 +1,17 @@
 @use '../card/card.module.scss';
 
 .container {
-  width: cardWidth;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-items: start;
+  height: calc(cardHeight * 2.5);
+  gap: 2%;
 }
 
 .target-card {
-  width: 100%;
+  width: cardWidth;
   height: cardHeight;
   background-color: white;
 }
@@ -36,6 +42,14 @@
 
 .target-card.drop {
   cursor: pointer;
+}
+
+.target-card.long-press {
+  cursor: pointer;
+}
+
+.target-card.long-pressing {
+  cursor: grabbing;
 }
 
 .played-cards {
