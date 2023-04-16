@@ -33,9 +33,9 @@ export class CardController {
     })
   }
 
-  async flipTemporarily(): Promise<void> {
+  async flipTemporarily(peeking: boolean): Promise<void> {
     this.internalFlip(() => {
-      this.cardUI.peeking = !this.cardUI.peeking;
+      this.cardUI.peeking = peeking;
     });
   }
 
@@ -48,6 +48,5 @@ export class CardController {
     });
     await this.animations.waitForAnimation(FlipState.FlippingDownFromVertical);
     this.cardUI.flipState = FlipState.Flat;
-
   }
 }

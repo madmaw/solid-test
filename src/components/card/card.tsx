@@ -25,7 +25,8 @@ export function CardComponent(props: CardProps) {
               [styles.flippingDownFromVertical]: props.flipState === FlipState.FlippingDownFromVertical,
           }}
           onTransitionEnd={props.animations.createTransitionEndEventListener(
-            cardRef, () => props.flipState,
+            cardRef,
+            () => props.flipState,
           )}
           ref={setCardRef}
       >
