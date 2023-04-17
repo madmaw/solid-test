@@ -20,9 +20,9 @@ export function createCardManager(game: Game) {
       const usage = createMemo(() => {
         return calculateCardEffectUsages(game, card, cardManager);
       });
-      createEffect(() =>{
-        console.log(usage());
-      });
+      // createEffect(() =>{
+      //   console.log(usage());
+      // });
   
       return (
         <CardComponent

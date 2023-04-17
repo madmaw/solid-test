@@ -42,11 +42,11 @@ export function TableComponent(props: {
           <div class={styles['spread-overlay']}>
             <props.SpreadOverlay/>
           </div>
-          <div class={styles.hand}>
-            <props.Hand/>
-          </div>
           <div class={styles.deck}>
             <props.Deck/>
+          </div>
+          <div class={styles.hand}>
+            <props.Hand/>
           </div>
         </div>
       </div>

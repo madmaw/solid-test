@@ -5,7 +5,7 @@
   width: cardWidth;
   height: cardHeight;
   margin-left: calc(cardWidth/-2);
-  margin-top: calc(cardHeight/-2);
+  margin-top: calc(cardHeight * -1);
 }
 
 .scale-up { 

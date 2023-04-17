@@ -9,7 +9,7 @@ export const cardKick = cardDescriptor.create({
 });
 export const cardMight = cardDescriptor.create({
   type: cardTypeMight,
-  visibleFaceIndex: 1,
+  visibleFaceIndex: 0,
 });
 export const cardNextRoom = cardDescriptor.create({
   type: cardTypeNextRoom,
@@ -20,21 +20,29 @@ export const initialGame = gameDescriptor.create({
   book: {
     spread: undefined,
   },
+  playerDeck: [
+    cardDescriptor.snapshot(cardMight),
+    cardDescriptor.snapshot(cardKick),
+    cardDescriptor.snapshot(cardMight),
+    cardDescriptor.snapshot(cardMight),
+    cardDescriptor.snapshot(cardMight),
+    cardDescriptor.snapshot(cardKick),
+  ],
   cardSlots: [
     {
-      targetCard: cardDescriptor.snapshot(cardMight),
+      targetCard: undefined,
       playedCards: [],
     },
     {
-      targetCard: cardDescriptor.snapshot(cardMight),
+      targetCard: undefined,
       playedCards: [],
     },
     {
-      targetCard: cardDescriptor.snapshot(cardKick),
+      targetCard: undefined,
       playedCards: [],
     },
     {
-      targetCard: cardDescriptor.snapshot(cardMight),
+      targetCard: undefined,
       playedCards: [],
     },
     {
@@ -47,4 +55,3 @@ export const initialGame = gameDescriptor.create({
     },
   ],
 });
-

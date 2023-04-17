@@ -23,7 +23,8 @@ export function CardSlotComponent(props: ParentProps<{
   return (
     <div
         class={styles.container}
-        onMouseUp={props.onDrop}>
+        onMouseUp={props.onDrop}
+        ref={e => console.log(e)}>
       <div
           classList={{ 
             [styles['target-card']]: true,

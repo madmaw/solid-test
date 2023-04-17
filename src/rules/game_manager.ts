@@ -3,6 +3,8 @@ import { ControllerManger } from "components/component_manager";
 import { Card, CardFaceType, CardSlot, Game } from "model/domain";
 import { calculateTargetCardEffectUsages, cardFace } from "./cards";
 import { allCardSlots } from "./games";
+import { batch } from "solid-js";
+import { delay } from "base/delay";
 
 export class GameManager {
   constructor(
@@ -26,6 +28,26 @@ export class GameManager {
       }
       return controller.flip();
     }));
+  }
+
+  async startTurn(draw = 3) {
+    const availableSlots = this.game.cardSlots.reduce(
+      (acc, slot) => acc + (slot.targetCard == null ? 1 : 0),
+      0,
+    );
+    const availableDraw = Math.min(draw, availableSlots);
+    const drawnCards = this.game.playerDeck.slice(-availableDraw);
+    batch(() => {
+      this.game.playerDeck = this.game.playerDeck.slice(0, -availableDraw);
+      drawnCards.reverse().forEach(card => {
+        const cardSlot = this.game.cardSlots.find(slot => slot.targetCard == null);
+        if (cardSlot != null) {
+          cardSlot.targetCard = card;
+        }
+      });
+    });
+    await delay(0);
+    await this.normalizeBoard();
   }
 
   private isAutoFlippable(cardSlot: CardSlot): boolean {

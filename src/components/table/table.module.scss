@@ -13,7 +13,7 @@
 @value bookTop: 10%;
 
 @value handSlotTop: 8%;
-@value handSlotWidth: 45vh;
+@value handSlotWidth: calc(tableWidth / 2.5);
 @value handSlotHeight: cardHeight;
 
 @value tableColor: #763F13;
@@ -108,10 +108,9 @@
 .deck {
   position: absolute;
   top: calc(bookTop + bookHeight + handSlotTop);
-  left: calc((100% + handSlotWidth) / 2 + 2%);
+  left: calc(50% - bookWidth + 2vw);
   width: cardWidth;
   height: cardHeight;
-  background-color: blue;
 }
 
 .spread-overlay {

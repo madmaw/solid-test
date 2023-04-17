@@ -130,9 +130,12 @@ export const bookDescriptor = activeRecordDescriptor({
   spread: optionalDescriptor(bookSpreadDescriptor),
 });
 
+export const deckDescriptor = listDescriptor(cardDescriptor);
+
 export const gameDescriptor = activeRecordDescriptor({
   book: bookDescriptor,
   cardSlots: listDescriptor(cardSlotDescriptor),
+  playerDeck: deckDescriptor,
 });
 
 export type Effect = typeof effectDescriptor.aMutable;
@@ -161,5 +164,7 @@ export type BookSpread = typeof bookSpreadDescriptor.aMutable;
 export type BookSpreadState = typeof bookSpreadDescriptor.aState;
 export type Book = typeof bookDescriptor.aMutable;
 export type BookState = typeof bookDescriptor.aState;
+export type Deck = typeof deckDescriptor.aMutable;
+export type DeckState = typeof deckDescriptor.aState;
 export type Game = typeof gameDescriptor.aMutable;
 export type GameState = typeof gameDescriptor.aState;

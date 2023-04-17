@@ -12,6 +12,7 @@ import { createSpread } from "components/spread/create";
 import { InteractionManager } from "rules/interaction_manager";
 import { createDragOverlay } from "components/drag/create";
 import { GameManager } from "rules/game_manager";
+import { createDeck } from "components/deck/create";
 
 window.onload = function () {
   const app = document.getElementById('app')!;
@@ -29,7 +30,7 @@ window.onload = function () {
     controller: tableController,
   } = createTable(interactionManger);
 
-  const onNavigate = (to: BookSpreadType) => {
+  const onNavigate = async (to: BookSpreadType) => {
     const spread = bookSpreadRoomDescriptor.create({
       type: BookSpreadType.Room,
       cardSlots: [
@@ -48,7 +49,9 @@ window.onload = function () {
       ],
     });
     spread.cardSlots[1].targetCard = cardNextRoom;
-    bookController.showSpread(spread);
+    await bookController.showSpread(spread);
+    //await gameManager.normalizeBoard();    
+    await gameManager.startTurn();
   };
 
   const leftPageManager = createPageManager({
@@ -84,8 +87,11 @@ window.onload = function () {
     leftPageComponentManager: leftPageManager,
     rightPageComponentManager: rightPageManager,
     book: game.book,
-
   });
+
+  const {
+    Component: PlayerDeck,
+  } = createDeck(() => game.playerDeck, cardManager.FactoryComponent);
 
   const onClickCover = async () => {
     await tableController.setView(View.Tilted);
@@ -117,8 +123,6 @@ window.onload = function () {
   );
 
 
-  const Deck = () => <div/>;
-
   function Book() {
     return <BookImpl onClickCover={onClickCover} />;
   }
@@ -127,14 +131,9 @@ window.onload = function () {
       <TableComponent
           Book={Book}
           Hand={Hand}
-          Deck={Deck}
+          Deck={PlayerDeck}
           SpreadOverlay={SpreadOverlay}
           DragOverlay={DragOverlay}
       />
   ), app);
-
-  // setInterval(() => {
-  //   cardManager.lookupController(cardMight)?.flip();
-  // }, 5000);
-
 };
