@@ -16,6 +16,7 @@ const interactionStyles: Record<Interaction, string> = Object.freeze({
 export function CardSlotComponent(props: ParentProps<{
   targetCard: JSX.Element,
   targetInteraction: Interaction,
+  bordered: boolean,
   onDragStart: () => void,
   onDrop: () => void,
 }>) {
@@ -27,6 +28,7 @@ export function CardSlotComponent(props: ParentProps<{
           classList={{ 
             [styles['target-card']]: true,
             [interactionStyles[props.targetInteraction]]: true,
+            [styles.bordered]: props.bordered
           }}
           onMouseDown={props.onDragStart}>
         {props.targetCard}

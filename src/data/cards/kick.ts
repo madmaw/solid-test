@@ -14,5 +14,6 @@ const cardFaceKickFront = cardFaceResourceDescriptor.freeze({
 });
 export const cardTypeKick = cardTypeDescriptor.freeze({
   name: 'kick',
+  description: 'A swift kick.',
   faces: [cardFaceKickBack, cardFaceKickFront],
 });

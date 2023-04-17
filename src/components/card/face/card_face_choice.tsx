@@ -1,13 +1,17 @@
-import { CardFaceChoice } from "model/domain";
-import cardFaceStyles from './card_face.module.scss';
-import styles from './card_face_choice.module.scss';
+import { CardFaceChoice, CardType } from "model/domain";
+import { EffectStripComponent } from "components/effect/effect_strip";
+import { CardFaceNameComponent } from "./card_face_name";
 
 export function CardFaceChoiceComponent(props: {
   face: CardFaceChoice,
+  cardType: CardType,
 }) {
-  return <div classList={{
-    [cardFaceStyles['card-face']]: true,
-    [styles['choice']]: true,
-  }}/>;
+  return (
+    <>
+      <EffectStripComponent effects={props.face.effect}/>
+      <CardFaceNameComponent name={props.cardType.name}/>
+      <EffectStripComponent effects={props.face.cost}/>
+    </>
+  );
 }
 

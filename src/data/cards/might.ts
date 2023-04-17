@@ -14,5 +14,6 @@ const cardFaceMightFront = cardFaceResourceDescriptor.freeze({
 });
 export const cardTypeMight = cardTypeDescriptor.freeze({
   name: 'might',
+  description: 'You brace for the next feat of strength.',
   faces: [cardFaceMightBack, cardFaceMightFront],
 });

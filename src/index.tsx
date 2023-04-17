@@ -61,6 +61,7 @@ window.onload = function () {
   const cardSlotManager = createCardSlotManager(
     cardManager.FactoryComponent,
     interactionManger,
+    game,
   );
 
   const {

@@ -13,7 +13,11 @@
 .target-card {
   width: cardWidth;
   height: cardHeight;
-  background-color: white;
+}
+
+.target-card.bordered {
+  border: .1vw solid #422;
+  border-radius: cardBorderRadius;
 }
 
 .target-card.none {

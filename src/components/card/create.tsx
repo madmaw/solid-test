@@ -20,7 +20,10 @@ export function createCardManager() {
             flipState={cardUI.flipState}
             elevated={cardUI.peeking || cardUI.flipState === FlipState.FlippingUpToVertical}
             animations={animations}>
-          <CardFaceComponent face={cardFace(card, cardUI.peeking ? 1 : 0)}/>
+          <CardFaceComponent
+              face={cardFace(card, cardUI.peeking ? 1 : 0)}
+              cardType={card.type}
+          />
         </CardComponent>
       );
     }

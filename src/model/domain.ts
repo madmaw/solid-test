@@ -25,7 +25,7 @@ export const symbolTypeDescriptor = new LiteralTypeDescriptor<SymbolType>();
 
 export const enum EffectDirection {
   Up = 1,
-  Down = 2,
+  Down,
 }
 
 export const effectDescriptor = valueRecordDescriptor({
@@ -71,6 +71,7 @@ export const cardFaceChoiceDescriptor = valueRecordDescriptor({
 
 export const cardFaceChoiceBackDescriptor = valueRecordDescriptor({
   type: new LiteralTypeDescriptor<CardFaceType.ChoiceBack>(),
+  name: stringDescriptor,
   ...cardFaceCommon,
 });
 
@@ -87,6 +88,7 @@ export const cardFaceDescriptor = discriminatingUnionDescriptor(
 
 export const cardTypeDescriptor = valueRecordDescriptor({
   name: stringDescriptor,
+  description: stringDescriptor,
   faces: listDescriptor(cardFaceDescriptor),
 });
 

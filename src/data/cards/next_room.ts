@@ -4,6 +4,7 @@ import { CardBackgroundType, CardFaceType, cardFaceChoiceBackDescriptor, cardFac
 const cardFaceNextRoomBack = cardFaceChoiceBackDescriptor.freeze({
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
+  name: 'jammed door',
   cost: [ForceUp],
 });
 const cardFaceNextRoomFront = cardFaceChoiceDescriptor.freeze({
@@ -14,5 +15,6 @@ const cardFaceNextRoomFront = cardFaceChoiceDescriptor.freeze({
 });
 export const cardTypeNextRoom = cardTypeDescriptor.freeze({
   name: 'next room',
+  description: 'the adventure continues',
   faces: [cardFaceNextRoomBack, cardFaceNextRoomFront],
 });

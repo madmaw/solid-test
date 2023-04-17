@@ -1,4 +1,4 @@
-import { Card, CardSlot } from "model/domain";
+import { Card, CardSlot, Game } from "model/domain";
 import { CardSlotComponent as CardSlotComponentImpl } from "./card_slot";
 import { CardSlotsComponent } from "./card_slots";
 import { Component, For } from "solid-js";
@@ -25,7 +25,8 @@ export function createCardSlots(
 
 export function createCardSlotManager(
     CardComponent: Component<{ model: Card }>,
-    interactionManager: InteractionManager
+    interactionManager: InteractionManager,
+    game: Game,
 ) {
   function createCardSlot(cardSlot: CardSlot) {
     const controller = new CardSlotController();
@@ -41,6 +42,7 @@ export function createCardSlotManager(
               targetInteraction={interactionManager.allowedInteraction(cardSlot)}
               onDragStart={internalOnDragStart}
               onDrop={internalOnDrop}
+              bordered={game.cardSlots.indexOf(cardSlot) >= 0}
           >
             <For each={cardSlot.playedCards}>
               {card => {

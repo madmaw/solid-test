@@ -1,13 +1,20 @@
-import { CardFaceResourceBack } from "model/domain";
-import styles from './card_face_resource_back.module.scss';
-import cardFaceStyles from './card_face.module.scss';
+import { CardFaceResourceBack, CardType } from "model/domain";
+import { EffectStripComponent } from "components/effect/effect_strip";
+import { CardFaceDescriptionComponent } from "./card_face_description";
+import { CardFaceNameComponent } from "./card_face_name";
 
 export function CardFaceResourceBackComponent(props: {
   face: CardFaceResourceBack,
+  cardType: CardType,
 }) {
-  return <div classList={{
-    [cardFaceStyles['card-face']]: true,
-    [styles['resource-back']]: true,
-  }}>Resource Back</div>;
+  return (
+    <>
+      <EffectStripComponent/>
+      <CardFaceDescriptionComponent>
+        <CardFaceNameComponent name={props.cardType.name}/>
+      </CardFaceDescriptionComponent>
+      <EffectStripComponent effects={props.face.cost}/>
+    </>
+  );
 }
 
