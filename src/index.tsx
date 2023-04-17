@@ -16,7 +16,7 @@ import { GameManager } from "rules/game_manager";
 window.onload = function () {
   const app = document.getElementById('app')!;
   const game = initialGame;
-  const cardManager = createCardManager();
+  const cardManager = createCardManager(game);
   const gameManager = new GameManager(game, cardManager);
   const interactionManger = new InteractionManager(gameManager, cardManager);
   

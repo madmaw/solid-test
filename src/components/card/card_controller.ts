@@ -39,6 +39,10 @@ export class CardController {
     });
   }
 
+  isPeeking() {
+    return this.cardUI.peeking;
+  }
+
   private async internalFlip(doFlip: () => void) {
     this.cardUI.flipState = FlipState.FlippingUpToVertical;
     await this.animations.waitForAnimation(FlipState.FlippingUpToVertical);

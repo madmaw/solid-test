@@ -13,11 +13,13 @@ const ResourceSymbols: Record<SymbolType, string> = {
 
 export function EffectComponent(props: {
   effect: Effect,
+  used: boolean,
 }) {
   return (
     <div classList={{
       [styles.container]: true,
       [styles.down]: props.effect.direction === EffectDirection.Down,
+      [styles.used]: props.used,
     }}>
       {ResourceSymbols[props.effect.symbol]}
     </div>

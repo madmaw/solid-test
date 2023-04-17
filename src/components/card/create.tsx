@@ -1,12 +1,13 @@
-import { Card } from "model/domain";
+import { Card, Game } from "model/domain";
 import { Animations, CardController, FlipState, cardUIDescriptor } from "./card_controller";
 import { AnimationManager } from "ui/animation/animation_manager";
 import { CardComponent } from "./card";
 import { CardFaceComponent } from "./face/card_face";
 import { ComponentManager } from "components/component_manager";
-import { cardFace } from "rules/card";
+import { createEffect, createMemo } from "solid-js";
+import { calculateCardEffectUsages, cardFace } from "rules/cards";
 
-export function createCardManager() {
+export function createCardManager(game: Game) {
   function createCard(card: Card) {
     const animations = new AnimationManager<Animations>();
     const cardUI = cardUIDescriptor.create({
@@ -15,14 +16,24 @@ export function createCardManager() {
     });
 
     function Component() {
+
+      const usage = createMemo(() => {
+        return calculateCardEffectUsages(game, card, cardManager);
+      });
+      createEffect(() =>{
+        console.log(usage());
+      });
+  
       return (
         <CardComponent
             flipState={cardUI.flipState}
             elevated={cardUI.peeking || cardUI.flipState === FlipState.FlippingUpToVertical}
             animations={animations}>
           <CardFaceComponent
-              face={cardFace(card, cardUI.peeking ? 1 : 0)}
+              face={cardFace(card, cardUI.peeking)}
               cardType={card.type}
+              cost={usage().cost}
+              benefit={usage().benefit}
           />
         </CardComponent>
       );
@@ -35,5 +46,6 @@ export function createCardManager() {
       controller,
     };
   };
-  return new ComponentManager(createCard);
+  const cardManager = new ComponentManager(createCard);
+  return cardManager;
 }

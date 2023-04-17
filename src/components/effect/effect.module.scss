@@ -5,9 +5,16 @@
   overflow: hidden;
   width: 1vw;
   height: 1vw;
+  opacity: 1;
+  transition: filter 1000ms ease-in-out;
+  color: red;
 }
 
 .container.down {
   transform: scaleY(-1);
   transform-origin: center;
+}
+
+.container.used {
+  filter: grayscale(1);
 }

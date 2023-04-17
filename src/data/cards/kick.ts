@@ -4,7 +4,7 @@ import { CardBackgroundType, CardFaceType, cardFaceResourceBackDescriptor, cardF
 const cardFaceKickBack = cardFaceResourceBackDescriptor.freeze({
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
-  cost: [ForceUp],
+  cost: [ForceUp, ForceUp],
 });
 const cardFaceKickFront = cardFaceResourceDescriptor.freeze({
   type: CardFaceType.Resource,

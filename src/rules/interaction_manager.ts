@@ -1,9 +1,9 @@
 import { UnreachableError } from "base/unreachable_error";
 import { CardController } from "components/card/card_controller";
-import { ComponentManager } from "components/component_manager";
+import { ComponentManager, ControllerManger } from "components/component_manager";
 import { Card, CardFaceType, CardSlot } from "model/domain";
 import { Accessor, Setter, batch, createSignal } from "solid-js";
-import { cardFace } from "./card";
+import { cardFace } from "./cards";
 import { GameManager } from "./game_manager";
 
 export const enum Interaction {
@@ -31,7 +31,7 @@ export class InteractionManager {
 
   constructor(
       private gameManager: GameManager,
-      private cardManager: ComponentManager<Card, CardController>,
+      private cardManager: ControllerManger<Card, CardController>,
   ) {
     const [dragged, setDragged] = createSignal<DragState>()
     this.dragged = dragged;
@@ -80,7 +80,10 @@ export class InteractionManager {
       return Interaction.None;
     }
 
-    const targetFace = cardFace(targetCard);
+    const targetFace = cardFace(
+      targetCard,
+      !!this.cardManager.lookupController(targetCard)?.isPeeking()
+    );
     switch (targetFace.type) {
       case CardFaceType.Choice:
         return Interaction.Activate;

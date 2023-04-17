@@ -37,7 +37,9 @@ export function createCardSlotManager(
       return (
           <CardSlotComponentImpl
               targetCard={cardSlot.targetCard
-                  && <CardComponent model={cardSlot.targetCard}/>
+                  && <CardComponent
+                      model={cardSlot.targetCard}
+                  />
               }
               targetInteraction={interactionManager.allowedInteraction(cardSlot)}
               onDragStart={internalOnDragStart}

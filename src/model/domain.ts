@@ -63,7 +63,8 @@ export const cardFaceResourceBackDescriptor = valueRecordDescriptor({
 
 export const cardFaceChoiceDescriptor = valueRecordDescriptor({
   type: new LiteralTypeDescriptor<CardFaceType.Choice>(),
-  effect: listDescriptor(effectDescriptor),
+  effects: listDescriptor(effectDescriptor),
+  // TODO (next room descriptor)
   ...cardFaceCommon,
 });
 

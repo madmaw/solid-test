@@ -11,7 +11,7 @@ const cardFaceNextRoomFront = cardFaceChoiceDescriptor.freeze({
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   cost: [],
-  effect: [],
+  effects: [],
 });
 export const cardTypeNextRoom = cardTypeDescriptor.freeze({
   name: 'empty passage',

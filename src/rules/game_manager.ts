@@ -1,7 +1,8 @@
 import { CardController } from "components/card/card_controller";
 import { ControllerManger } from "components/component_manager";
-import { BookSpreadType, Card, CardFaceType, CardSlot, Effect, Game } from "model/domain";
-import { cardFace } from "./card";
+import { Card, CardFaceType, CardSlot, Game } from "model/domain";
+import { calculateTargetCardEffectUsages, cardFace } from "./cards";
+import { allCardSlots } from "./games";
 
 export class GameManager {
   constructor(
@@ -12,12 +13,8 @@ export class GameManager {
   }
 
   async normalizeBoard() {
-    const spread = this.game.book.spread;
-    const bookSlots = spread?.type === BookSpreadType.Room
-        ? spread.cardSlots
-        : [];
-    const flippableCardSlots = [...this.game.cardSlots, ...bookSlots]
-        .filter(isAutoFlippable);
+    const flippableCardSlots = allCardSlots(this.game)
+        .filter(cardSlot => this.isAutoFlippable(cardSlot));
     return Promise.all(flippableCardSlots.map(async cardSlot => {
       const targetCard = cardSlot.targetCard;
       if (targetCard == null) {
@@ -31,39 +28,21 @@ export class GameManager {
     }));
   }
 
+  private isAutoFlippable(cardSlot: CardSlot): boolean {
+    const targetCard = cardSlot.targetCard;
+    if (targetCard == null) {
+      return false;
+    }
+    const targetFace = cardFace(
+        targetCard,
+        !!this.cardControllerManger.lookupController(targetCard)?.isPeeking(),
+    );
+    if (targetFace.type !== CardFaceType.ChoiceBack && targetFace.type !== CardFaceType.ResourceBack) {
+      return false;
+    }
+    return calculateTargetCardEffectUsages(cardSlot, this.cardControllerManger).cost.every(c => c.used);
+  }
+  
 }
 
-function isAutoFlippable(cardSlot: CardSlot): boolean {
-  const targetCard = cardSlot.targetCard;
-  if (targetCard == null) {
-    return false;
-  }
-  const targetFace = cardFace(targetCard);
-  if (targetFace.type !== CardFaceType.ChoiceBack && targetFace.type !== CardFaceType.ResourceBack) {
-    return false;
-  }
-  const playedCardEffectTotals = calculatePlayedCardEffectTotals(cardSlot);
-  return targetFace.cost.every(effect => {
-    const total = playedCardEffectTotals.get(effect) || 0;
-    if (total > 0) {
-      playedCardEffectTotals.set(effect, total - 1);
-      return true;
-    }
-    return false;
-  })
-}
-
-function calculatePlayedCardEffectTotals(cardSlot: CardSlot): Map<Effect, number> {
-  return cardSlot.playedCards.reduce((acc, card) => {
-    const face = cardFace(card);
-    if (face.type === CardFaceType.Resource) {
-      return face.benefit.reduce((acc, effect) => {
-        const count = acc.get(effect) || 0;
-        acc.set(effect, count+1);
-        return acc;
-      }, acc);
-    }
-    return acc;
-  }, new Map<Effect, number>());
-}
 
