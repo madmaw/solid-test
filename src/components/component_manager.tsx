@@ -5,7 +5,12 @@ export type ComponentAndController<ComponentProps, Controller> = {
   Component: Component<ComponentProps>,
 };
 
-export class ComponentManager<Model extends object, Controller, ComponentProps = {}> {
+export interface ControllerManger<Model extends object, Controller> {
+  lookupController(model: Model): Controller | undefined;
+}
+
+export class ComponentManager<Model extends object, Controller, ComponentProps = {}>
+    implements ControllerManger<Model, Controller>{
   private cache = new WeakMap<Model, ComponentAndController<ComponentProps, Controller>>();
 
   readonly FactoryComponent = (props: { model: Model } & ComponentProps) => {

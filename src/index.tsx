@@ -11,12 +11,15 @@ import { cardMight, cardNextRoom, initialGame } from "data/initial";
 import { createSpread } from "components/spread/create";
 import { InteractionManager } from "rules/interaction_manager";
 import { createDragOverlay } from "components/drag/create";
+import { GameManager } from "rules/game_manager";
 
 window.onload = function () {
   const app = document.getElementById('app')!;
   const game = initialGame;
   const cardManager = createCardManager();
-  const interactionManger = new InteractionManager(cardManager);
+  const gameManager = new GameManager(game, cardManager);
+  const interactionManger = new InteractionManager(gameManager, cardManager);
+  
   window.addEventListener('mousemove', e => {
     interactionManger.lastMousePosition = [e.clientX, e.clientY];
   });
@@ -44,7 +47,7 @@ window.onload = function () {
         },
       ],
     });
-    spread.cardSlots[0].targetCard = cardNextRoom;
+    spread.cardSlots[1].targetCard = cardNextRoom;
     bookController.showSpread(spread);
   };
 

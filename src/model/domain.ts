@@ -21,17 +21,15 @@ export const enum SymbolType {
   Draw,
 }
 
-export const symbolTypeDescriptor = new LiteralTypeDescriptor<SymbolType>();
-
 export const enum EffectDirection {
   Up = 1,
   Down,
 }
 
-export const effectDescriptor = valueRecordDescriptor({
-  symbol: symbolTypeDescriptor,
-  direction: new LiteralTypeDescriptor<EffectDirection>(),
-});
+export const effectDescriptor = new LiteralTypeDescriptor<{
+  symbol: SymbolType,
+  direction: EffectDirection,
+}>;
 
 export const enum CardBackgroundType {
   Crosshatched = 1,

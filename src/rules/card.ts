@@ -1,4 +1,4 @@
-import { Card, CardFaceType } from "model/domain";
+import { Card } from "model/domain";
 
 export function cardFace(card: Card, offset = 0) {
   const faces = card.type.faces; 

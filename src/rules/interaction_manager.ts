@@ -4,6 +4,7 @@ import { ComponentManager } from "components/component_manager";
 import { Card, CardFaceType, CardSlot } from "model/domain";
 import { Accessor, Setter, batch, createSignal } from "solid-js";
 import { cardFace } from "./card";
+import { GameManager } from "./game_manager";
 
 export const enum Interaction {
   None = 1,
@@ -28,7 +29,10 @@ export class InteractionManager {
   private readonly longPress: Accessor<LongPress>;
   private readonly setLongPress: Setter<LongPress>;
 
-  constructor(private cardManager: ComponentManager<Card, CardController>) {
+  constructor(
+      private gameManager: GameManager,
+      private cardManager: ComponentManager<Card, CardController>,
+  ) {
     const [dragged, setDragged] = createSignal<DragState>()
     this.dragged = dragged;
     this.setDragged = setDragged;
@@ -142,6 +146,7 @@ export class InteractionManager {
           draggedCardSlot.targetCard = undefined;
           this.setDragged();
         });  
+        this.gameManager.normalizeBoard();
       } else {
         batch(() =>{
           draggedCardSlot.targetCard = draggedCard;
