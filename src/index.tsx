@@ -83,7 +83,6 @@ window.onload = function () {
   };
 
   function Hand() {
-    // <>{}</> is needed to re-render on game.playerCharacter changing
     return <CardSlotsComponent model={game.playerHand}/>;
   }
 

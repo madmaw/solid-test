@@ -1,12 +1,9 @@
 import { UnreachableError } from "base/unreachable_error";
+import { defaultRat } from "data/rat/initial";
 import { EncounterDefinition, EncounterState, EncounterType, EntityState, MonsterType } from "model/domain";
 
 function hydrateMonster(monster: MonsterType): EntityState {
-  return {
-    deck: [],
-    health: 3,
-    maxHealth: 3,
-  }
+  return defaultRat;
 }
 
 export function hydrateEncounter(encounter: EncounterDefinition): EncounterState {
