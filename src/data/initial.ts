@@ -4,15 +4,15 @@ import { cardTypeMight } from "data/cards/might";
 import { cardTypeNextRoom } from "./cards/next_room";
 
 export const cardKick = cardDescriptor.create({
-  type: cardTypeKick,
+  definition: cardTypeKick,
   visibleFaceIndex: 0,
 });
 export const cardMight = cardDescriptor.create({
-  type: cardTypeMight,
+  definition: cardTypeMight,
   visibleFaceIndex: 0,
 });
 export const cardNextRoom = cardDescriptor.create({
-  type: cardTypeNextRoom,
+  definition: cardTypeNextRoom,
   visibleFaceIndex: 0,
 })
 

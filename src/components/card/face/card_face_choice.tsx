@@ -1,15 +1,15 @@
-import { CardFaceChoice, CardType } from "model/domain";
+import { CardFaceChoice, CardDefinition } from "model/domain";
 import { CardFaceNameComponent } from "./card_face_name";
 import { CardFaceDescriptionComponent } from "./card_face_description";
 
 export function CardFaceChoiceComponent(props: {
   face: CardFaceChoice,
-  cardType: CardType,
+  definition: CardDefinition,
 }) {
   return (
     <CardFaceDescriptionComponent>
       <CardFaceNameComponent
-          name={props.cardType.name}/>
+          name={props.definition.name}/>
     </CardFaceDescriptionComponent>
   );
 }

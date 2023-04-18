@@ -45,6 +45,29 @@ export const enum CardFaceType {
   ChoiceBack,
 }
 
+export const enum ChoiceType {
+  NextTurn = 1,
+  NextPage,
+  NextChapter,
+}
+
+export type ChoiceNextTurn = {
+  type: ChoiceType.NextTurn,
+};
+
+export type ChoiceNextPage = {
+  type: ChoiceType.NextPage,
+  // TODO
+  eventDescription: undefined,
+};
+
+export type ChoiceNextChapter = {
+  type: ChoiceType.NextChapter,
+};
+
+export type Choice = ChoiceNextTurn | ChoiceNextPage | ChoiceNextChapter;
+
+
 const cardFaceCommon = {
   background: new LiteralTypeDescriptor<CardBackgroundType>,
   cost: listDescriptor(effectDescriptor),
@@ -63,8 +86,8 @@ export const cardFaceResourceBackDescriptor = valueRecordDescriptor({
 
 export const cardFaceChoiceDescriptor = valueRecordDescriptor({
   type: new LiteralTypeDescriptor<CardFaceType.Choice>(),
-  effects: listDescriptor(effectDescriptor),
-  // TODO (next room descriptor)
+  benefit: listDescriptor(effectDescriptor),
+  choice: new LiteralTypeDescriptor<Choice>(),
   ...cardFaceCommon,
 });
 
@@ -85,14 +108,25 @@ export const cardFaceDescriptor = discriminatingUnionDescriptor(
   m => m.type,
 );
 
-export const cardTypeDescriptor = valueRecordDescriptor({
+export const enum RecycleTarget {
+  DrawDeckTop = 1,
+  DrawDeckBottom,
+  DrawDeckRandom,
+  DiscardDeckTop,
+}
+
+// TODO given the definition will be immitable, this could probably just
+// be a literalDescriptor
+export const cardDefinitionDescriptor = valueRecordDescriptor({
   name: stringDescriptor,
   description: stringDescriptor,
+  // TODO: not required for room/event cards (maybe?)
+  recycleTarget: new LiteralTypeDescriptor<RecycleTarget>(),
   faces: listDescriptor(cardFaceDescriptor),
 });
 
 export const cardDescriptor = activeRecordDescriptor({
-  type: cardTypeDescriptor,
+  definition: cardDefinitionDescriptor,
   visibleFaceIndex: numberDescriptor,
 });
 
@@ -150,8 +184,8 @@ export type CardFaceChoiceBack = typeof cardFaceChoiceBackDescriptor.aMutable;
 export type CardFaceChoiceBackState = typeof cardFaceChoiceBackDescriptor.aState;
 export type CardFace = typeof cardFaceDescriptor.aMutable;
 export type CardFaceState = typeof cardFaceDescriptor.aState;
-export type CardType = typeof cardTypeDescriptor.aMutable;
-export type CardTypeState = typeof cardTypeDescriptor.aState;
+export type CardDefinition = typeof cardDefinitionDescriptor.aMutable;
+export type CardDefinitionState = typeof cardDefinitionDescriptor.aState;
 export type Card = typeof cardDescriptor.aMutable;
 export type CardState = typeof cardDescriptor.aState;
 export type CardSlot = typeof cardSlotDescriptor.aMutable;

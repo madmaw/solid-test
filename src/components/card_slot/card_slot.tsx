@@ -19,25 +19,35 @@ export function CardSlotComponent(props: ParentProps<{
   bordered: boolean,
   onDragStart: () => void,
   onDrop: () => void,
+  onClick: () => void,
+  used: boolean,
 }>) {
   return (
     <div
         class={styles.container}
-        onMouseUp={props.onDrop}
-        ref={e => console.log(e)}>
+        onMouseUp={props.onDrop}>
       <div
           classList={{ 
             [styles['target-card']]: true,
             [interactionStyles[props.targetInteraction]]: true,
             [styles.bordered]: props.bordered
           }}
-          onMouseDown={props.onDragStart}>
+          onMouseDown={props.onDragStart}
+          onClick={props.onClick}>
         {props.targetCard}
       </div>
-      <div class={styles['played-cards']}>
+      <div classList={{
+        [styles['played-cards']]: true,
+        [styles.used]: props.used,
+      }}>
         <For each={children(() => props.children).toArray()}>
           {child => (
-            <div class={styles['played-card']}>{child}</div>
+            <div
+                classList={{
+                  [styles['played-card']]: true,
+                  [styles.used]: props.used,
+                }}
+            >{child}</div>
           )}
         </For>
       </div>

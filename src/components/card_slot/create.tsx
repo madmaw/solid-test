@@ -1,9 +1,9 @@
 import { Card, CardSlot, Game } from "model/domain";
 import { CardSlotComponent as CardSlotComponentImpl } from "./card_slot";
 import { CardSlotsComponent } from "./card_slots";
-import { Component, For } from "solid-js";
+import { Accessor, Component, For } from "solid-js";
 import { ComponentManager } from "components/component_manager";
-import { CardSlotController } from "./card_slot_controller";
+import { CardSlotController, cardSlotUIDescriptor } from "./card_slot_controller";
 import { InteractionManager } from "rules/interaction_manager";
 
 export function createCardSlots(
@@ -25,26 +25,39 @@ export function createCardSlots(
 
 export function createCardSlotManager(
     CardComponent: Component<{ model: Card }>,
-    interactionManager: InteractionManager,
+    interactionManager: Accessor<InteractionManager>,
     game: Game,
 ) {
   function createCardSlot(cardSlot: CardSlot) {
-    const controller = new CardSlotController();
-    const internalOnDragStart = () => interactionManager.startDrag(cardSlot);
-    const internalOnDrop = () => interactionManager.drop(cardSlot);
+    const cardSlotUI = cardSlotUIDescriptor.create({
+      targetCardHidden: false,
+    });
+    const controller = new CardSlotController(cardSlotUI);
+    function internalOnDragStart() {
+      interactionManager().startDrag(cardSlot);
+    } 
+    function internalOnDrop() {
+      interactionManager().drop(cardSlot);
+    }
+    function internalOnClick() {
+      interactionManager().click(cardSlot);
+    }
     
     function Component() {
       return (
           <CardSlotComponentImpl
               targetCard={cardSlot.targetCard
+                  && !cardSlotUI.targetCardHidden
                   && <CardComponent
                       model={cardSlot.targetCard}
                   />
               }
-              targetInteraction={interactionManager.allowedInteraction(cardSlot)}
+              targetInteraction={interactionManager().allowedInteraction(cardSlot)}
               onDragStart={internalOnDragStart}
               onDrop={internalOnDrop}
+              onClick={internalOnClick}
               bordered={game.cardSlots.indexOf(cardSlot) >= 0}
+              used={cardSlot.targetCard == null && cardSlot.playedCards.length > 0}
           >
             <For each={cardSlot.playedCards}>
               {card => {

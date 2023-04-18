@@ -28,13 +28,13 @@ export class CardController {
   ) {}
 
   async flip(): Promise<void> {
-    this.internalFlip(() => {
+    await this.internalFlip(() => {
       this.card.visibleFaceIndex = this.card.visibleFaceIndex + 1;
     })
   }
 
   async flipTemporarily(peeking: boolean): Promise<void> {
-    this.internalFlip(() => {
+    await this.internalFlip(() => {
       this.cardUI.peeking = peeking;
     });
   }

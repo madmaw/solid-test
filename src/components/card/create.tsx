@@ -31,7 +31,7 @@ export function createCardManager(game: Game) {
             animations={animations}>
           <CardFaceComponent
               face={cardFace(card, cardUI.peeking)}
-              cardType={card.type}
+              definition={card.definition}
               cost={usage().cost}
               benefit={usage().benefit}
           />

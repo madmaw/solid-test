@@ -11,7 +11,6 @@ export type PageProps<T extends BookSpread = BookSpread> = {
   spread: T,
   pageUI: PageUI,
   side: PageSide,
-  onNavigate: (to: BookSpreadType) => void,
 };
 
 const pageComponents: { [K in BookSpreadType]: Component<PageProps>} = {
@@ -20,16 +19,14 @@ const pageComponents: { [K in BookSpreadType]: Component<PageProps>} = {
         animations={props.animations}
         spread={props.spread as BookSpreadRoom}
         pageUI={props.pageUI}
-        side={props.side}
-        onNavigate={props.onNavigate}/>;
+        side={props.side}/>;
   },
   [BookSpreadType.TableOfContents]: function (props: PageProps) {
     return <PageToCComponent
         animations={props.animations}
         spread={props.spread as BookSpreadTableOfContents}
         pageUI={props.pageUI}
-        side={props.side}
-        onNavigate={props.onNavigate}/>
+        side={props.side}/>
   },
 }
 
@@ -40,8 +37,7 @@ export function PageComponent(props: PageProps) {
         animations={props.animations}
         spread={props.spread}
         pageUI={props.pageUI}
-        side={props.side}
-        onNavigate={props.onNavigate}/>
+        side={props.side}/>
   )
 }
 

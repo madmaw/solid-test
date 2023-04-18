@@ -5,7 +5,7 @@ import { ControllerManger } from "components/component_manager";
 import { CardController } from "components/card/card_controller";
 
 export function cardFace(card: Card, peeking: boolean) {
-  const faces = card.type.faces; 
+  const faces = card.definition.faces; 
   return faces[(card.visibleFaceIndex + (peeking ? 1 : 0))%faces.length];
 }
 
@@ -33,7 +33,7 @@ export function calculateCardEffects(card: Card, cardControllerManger: Controlle
     case CardFaceType.Choice:
       return {
         cost: face.cost,
-        benefit: face.effects,
+        benefit: face.benefit,
       };
     case CardFaceType.ResourceBack:
       return {
@@ -70,11 +70,11 @@ export function calculateCardEffectUsages(game: Game, card: Card, cardController
     return {
       cost: cost.map(effect => ({
         effect,
-        used: false,
+        used: cardSlot != null,
       })),
       benefit: benefit.map(effect => ({
         effect,
-        used: false,
+        used: cardSlot != null,
       })),
     };
   }

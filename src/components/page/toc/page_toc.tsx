@@ -16,8 +16,7 @@ const sideComponents: { [K in PageSide]: Component<PageToCProps>} = {
         animations={props.animations}
         pageUI={props.pageUI}
         side={props.side}
-        spread={props.spread}
-        onNavigate={props.onNavigate}/>
+        spread={props.spread}/>
   },
 }
 
@@ -28,7 +27,6 @@ export function PageToCComponent(props: PageToCProps) {
       component={sideComponents[props.side]} animations={props.animations}
       pageUI={props.pageUI}
       side={props.side}
-      onNavigate={props.onNavigate}
       spread={props.spread}
     />
   );
@@ -47,7 +45,7 @@ function PageTocRightComponent(props: PageToCProps) {
           class={styles.row}
           up={props.pageUI.popped}
           onPoppedUpOrDown={props.animations.createCutoutPoppedUpOrDownCallback('pop-up', 'pop-down')}>
-        <button onClick={() => props.onNavigate(BookSpreadType.Room)}>
+        <button>
           <h2>Begin Origin</h2>
         </button>
       </Cutout>

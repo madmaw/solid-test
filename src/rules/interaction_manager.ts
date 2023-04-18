@@ -5,6 +5,8 @@ import { Card, CardFaceType, CardSlot } from "model/domain";
 import { Accessor, Setter, batch, createSignal } from "solid-js";
 import { cardFace } from "./cards";
 import { GameManager } from "./game_manager";
+import { CardSlotController } from "components/card_slot/card_slot_controller";
+import { delay } from "base/delay";
 
 export const enum Interaction {
   None = 1,
@@ -19,7 +21,7 @@ export const enum Interaction {
 
 type DragState = [Card, CardSlot] | undefined;
 type MousePosition = [number, number] | undefined;
-type LongPress = [CardSlot, Promise<void>] | undefined;
+type LongPress = CardSlot | undefined;
 
 export class InteractionManager {
   private readonly dragged: Accessor<DragState>;
@@ -28,10 +30,12 @@ export class InteractionManager {
   private readonly setMousePosition: Setter<MousePosition>;
   private readonly longPress: Accessor<LongPress>;
   private readonly setLongPress: Setter<LongPress>;
+  private lastAnimation: Promise<void> = Promise.resolve();
 
   constructor(
       private gameManager: GameManager,
       private cardManager: ControllerManger<Card, CardController>,
+      private cardSlotManager: ControllerManger<CardSlot, CardSlotController>,
   ) {
     const [dragged, setDragged] = createSignal<DragState>()
     this.dragged = dragged;
@@ -98,65 +102,88 @@ export class InteractionManager {
     }
   }
 
+  click(cardSlot: CardSlot) {
+    return this.politelyAnimate(async () => {
+      if (cardSlot.targetCard != null) {
+        return this.gameManager.chooseCard(cardSlot.targetCard);
+      }  
+    });
+  }
+
   startDrag(cardSlot: CardSlot) {
-    const interaction = this.allowedInteraction(cardSlot);
-    const targetCard = cardSlot.targetCard;
-    if (targetCard != null) {
-      if (interaction === Interaction.Drag) {
-        batch(() => {
-          cardSlot.targetCard = undefined;
-          this.setDragged([targetCard, cardSlot]);
-        });  
-      } else if (interaction === Interaction.LongPress) {
-        if (this.longPress() == null) {
-          const promise = this.cardManager.lookupController(targetCard)?.flipTemporarily(true);
-          if (promise) {
-            this.setLongPress([cardSlot, promise]);
-          }  
+    return this.politelyAnimate(async () => {
+      const interaction = this.allowedInteraction(cardSlot);
+      const targetCard = cardSlot.targetCard;
+      if (targetCard != null) {
+        if (interaction === Interaction.Drag) {
+          batch(() => {
+            this.cardSlotManager.lookupController(cardSlot)?.setTargetCardHidden(true);
+            this.setDragged([targetCard, cardSlot]);
+          });  
+        } else if (interaction === Interaction.LongPress) {
+          if (this.longPress() == null) {
+            await this.cardManager.lookupController(targetCard)?.flipTemporarily(true);
+            this.setLongPress(cardSlot);
+          }
         }
-      }
-    }
+      }  
+    });
   }
 
   clearDrag() {
-    const dragged = this.dragged();
-    if (dragged) {
-      const [draggedCard, draggedCardSlot] = dragged;
-      batch(() => {
-        draggedCardSlot.targetCard = draggedCard;
-        this.setDragged();
-      });  
-    }
-    const longPress = this.longPress();
-    if (longPress) {
-      const [cardSlot, promise] = longPress;
-      promise.finally(() => {
+    return this.politelyAnimate(async () => {
+      const dragged = this.dragged();
+      if (dragged) {
+        const [draggedCard, draggedCardSlot] = dragged;
+        batch(() => {
+          draggedCardSlot.targetCard = draggedCard;
+          this.cardSlotManager.lookupController(draggedCardSlot)?.setTargetCardHidden(false);
+          this.setDragged();
+        });  
+      }
+      const longPress = this.longPress();
+      if (longPress) {
+        const cardSlot = longPress;
         this.setLongPress();
-        return cardSlot.targetCard
-            && this.cardManager.lookupController(cardSlot.targetCard)?.flipTemporarily(false);
-      });
-    }
+        if (cardSlot.targetCard) {
+          await this.cardManager.lookupController(cardSlot.targetCard)?.flipTemporarily(false);
+        }            
+      }  
+    });
   }
 
   drop(targetCardSlot: CardSlot) {
-    const dragged = this.dragged();
-    if (dragged) {
-      const [draggedCard, draggedCardSlot] = dragged;
-      const interaction = this.allowedInteraction(targetCardSlot);
-      if (draggedCardSlot != targetCardSlot && interaction == Interaction.Drop) {
-        batch(() => {
-          targetCardSlot.playedCards = [...targetCardSlot.playedCards, draggedCard];
-          draggedCardSlot.targetCard = undefined;
-          this.setDragged();
-        });  
-        this.gameManager.normalizeBoard();
-      } else {
-        batch(() =>{
-          draggedCardSlot.targetCard = draggedCard;
-          this.setDragged();
-        });
-      }
-    }
+    return this.politelyAnimate(async () => {
+      const dragged = this.dragged();
+      if (dragged) {
+        const [draggedCard, draggedCardSlot] = dragged;
+        const interaction = this.allowedInteraction(targetCardSlot);
+        if (draggedCardSlot != targetCardSlot && interaction == Interaction.Drop) {
+          batch(() => {
+            targetCardSlot.playedCards = [...targetCardSlot.playedCards, draggedCard];
+            draggedCardSlot.targetCard = undefined;
+            this.setDragged();
+          });  
+          this.gameManager.normalizeBoard();
+        } else {
+          batch(() =>{
+            draggedCardSlot.targetCard = draggedCard;
+            this.setDragged();
+          });
+        }
+        this.cardSlotManager.lookupController(draggedCardSlot)?.setTargetCardHidden(false);
+      }  
+    });
+  }
+
+  private politelyAnimate(action: () => Promise<void>): Promise<void> {
+    this.lastAnimation = this.lastAnimation
+        // prevent errors from breaking this permanently
+        .catch(e => console.log(e))
+        .then(action)
+        // add a delay to ensure a render happens between state changes
+        .then(() => delay(0));
+    return this.lastAnimation;
   }
 }
 

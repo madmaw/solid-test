@@ -1,5 +1,7 @@
 @use '../card/card.module.scss';
 
+@value usedAnimationDuration: 400ms;
+
 .container {
   flex: 1;
   display: flex;
@@ -61,8 +63,27 @@
   flex-direction: column;
   align-items: center;
   justify-items: start;
+  transform-origin: calc(cardWidth/2) calc(cardHeight/2);
+  transition: transform usedAnimationDuration ease-in-out;
+}
+
+.played-cards.used {
+  transform: translateY(calc(cardHeight/-1)) rotateZ(90deg);
 }
 
 .played-card {
   margin-bottom: calc(-.75 * cardHeight);
+  transition: margin-bottom usedAnimationDuration ease-in-out;
 }
+
+.played-card.used {
+  margin-bottom: calc(-1 * cardHeight);
+}
+
+@for $i from 1 through 3 {
+  .played-card:nth-child(#{$i}) {
+    transform: translateZ(calc(#{$i}vw * 0.2));
+  }
+}
+
+

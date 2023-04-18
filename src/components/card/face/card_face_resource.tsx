@@ -1,14 +1,14 @@
-import { CardFaceResource, CardType } from "model/domain";
+import { CardFaceResource, CardDefinition } from "model/domain";
 import { CardFaceDescriptionComponent } from "./card_face_description";
 import { CardFaceNameComponent } from "./card_face_name";
 
 export function CardFaceResourceComponent(props: {
-  cardType: CardType,
+  definition: CardDefinition,
   face: CardFaceResource,
 }) {
   return (
     <CardFaceDescriptionComponent>
-      <CardFaceNameComponent name={props.cardType.name}/>
+      <CardFaceNameComponent name={props.definition.name}/>
     </CardFaceDescriptionComponent>
   );
 }

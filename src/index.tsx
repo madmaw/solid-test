@@ -6,8 +6,7 @@ import { createCardSlotManager, createCardSlots } from "components/card_slot/cre
 import { createCardManager } from "components/card/create";
 import { createPageManager } from "components/page/create";
 import { PageSide } from "components/page/page_controller";
-import { BookSpreadType, bookSpreadRoomDescriptor, bookSpreadTableOfContentsDescriptor } from "model/domain";
-import { cardMight, cardNextRoom, initialGame } from "data/initial";
+import { initialGame } from "data/initial";
 import { createSpread } from "components/spread/create";
 import { InteractionManager } from "rules/interaction_manager";
 import { createDragOverlay } from "components/drag/create";
@@ -18,55 +17,16 @@ window.onload = function () {
   const app = document.getElementById('app')!;
   const game = initialGame;
   const cardManager = createCardManager(game);
-  const gameManager = new GameManager(game, cardManager);
-  const interactionManger = new InteractionManager(gameManager, cardManager);
-  
-  window.addEventListener('mousemove', e => {
-    interactionManger.lastMousePosition = [e.clientX, e.clientY];
-  });
-
-  const {
-    Component: TableComponent,
-    controller: tableController,
-  } = createTable(interactionManger);
-
-  const onNavigate = async (to: BookSpreadType) => {
-    const spread = bookSpreadRoomDescriptor.create({
-      type: BookSpreadType.Room,
-      cardSlots: [
-        {
-          targetCard: undefined,
-          playedCards: [],
-        },
-        {
-          targetCard: undefined,
-          playedCards: [],
-        },
-        {
-          targetCard: undefined,
-          playedCards: [],
-        },
-      ],
-    });
-    spread.cardSlots[1].targetCard = cardNextRoom;
-    await bookController.showSpread(spread);
-    //await gameManager.normalizeBoard();    
-    await gameManager.startTurn();
-  };
-
   const leftPageManager = createPageManager({
     side: PageSide.Left,
-    onNavigate,
   });
   const rightPageManager = createPageManager({
     side: PageSide.Right,
-    onNavigate,
   });
-
 
   const cardSlotManager = createCardSlotManager(
     cardManager.FactoryComponent,
-    interactionManger,
+    () => interactionManger,
     game,
   );
 
@@ -89,6 +49,23 @@ window.onload = function () {
     book: game.book,
   });
 
+  const gameManager = new GameManager(game, cardManager, bookController);
+  const interactionManger = new InteractionManager(gameManager, cardManager, cardSlotManager);
+  
+  window.addEventListener('mousemove', e => {
+    interactionManger.lastMousePosition = [e.clientX, e.clientY];
+  });
+
+  const {
+    Component: TableComponent,
+    controller: tableController,
+  } = createTable(interactionManger);
+
+  const onNavigate = async () => {
+    gameManager.nextPage();
+  };
+
+
   const {
     Component: PlayerDeck,
   } = createDeck(() => game.playerDeck, cardManager.FactoryComponent);
@@ -98,7 +75,7 @@ window.onload = function () {
     // bookController.showSpread(bookSpreadTableOfContentsDescriptor.create({
     //   type: BookSpreadType.TableOfContents,
     // }));
-    onNavigate(BookSpreadType.Room);
+    onNavigate();
     console.log('show main menu');
   };
 

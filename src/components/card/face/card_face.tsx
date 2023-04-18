@@ -1,4 +1,4 @@
-import { CardBackgroundType, CardFace, CardFaceChoice, CardFaceChoiceBack, CardFaceResource, CardFaceResourceBack, CardFaceType, CardType, Effect } from "model/domain";
+import { CardBackgroundType, CardDefinition, CardFace, CardFaceChoice, CardFaceChoiceBack, CardFaceResource, CardFaceResourceBack, CardFaceType } from "model/domain";
 import styles from './card_face.module.scss';
 import { Component } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -14,17 +14,17 @@ const cardFaceComponents: { [K in CardFaceType]: Component<CardFaceProps>} = {
   [CardFaceType.Resource]: function (props: CardFaceProps) {
     return <CardFaceResourceComponent
         face={props.face as CardFaceResource}
-        cardType={props.cardType}/>;
+        definition={props.definition}/>;
   },
   [CardFaceType.ResourceBack]: function (props: CardFaceProps) {
     return <CardFaceResourceBackComponent
         face={props.face as CardFaceResourceBack}
-        cardType={props.cardType}/>;
+        definition={props.definition}/>;
   },
   [CardFaceType.Choice]: function (props: CardFaceProps) {
     return <CardFaceChoiceComponent
         face={props.face as CardFaceChoice}
-        cardType={props.cardType}/>;
+        definition={props.definition}/>;
   },
   [CardFaceType.ChoiceBack]: function (props: CardFaceProps) {
     return <CardFaceChoiceBackComponent
@@ -34,7 +34,7 @@ const cardFaceComponents: { [K in CardFaceType]: Component<CardFaceProps>} = {
 
 type CardFaceProps = {
   face: CardFace
-  cardType: CardType,
+  definition: CardDefinition,
 };
 
 export function CardFaceComponent(props: CardFaceProps & {
@@ -53,7 +53,7 @@ export function CardFaceComponent(props: CardFaceProps & {
       <Dynamic
           component={cardFaceComponents[props.face.type]}
           face={props.face}
-          cardType={props.cardType}/>
+          definition={props.definition}/>
       <EffectStripComponent effects={props.cost}/>
     </div>
   );
