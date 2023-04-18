@@ -6,7 +6,7 @@ import { allCardSlots } from "./games";
 import { batch } from "solid-js";
 import { delay } from "base/delay";
 import { BookController } from "components/book/book_controller";
-import { cardNextRoom } from "data/initial";
+import { cardNextRoom, cardNextRoomJammedDoor } from "data/initial";
 
 export class GameManager {
   constructor(
@@ -35,15 +35,15 @@ export class GameManager {
       type: BookSpreadType.Room,
       cardSlots: [
         {
-          targetCard: cardDescriptor.snapshot(cardNextRoom),
+          targetCard: cardDescriptor.snapshot(Math.random() > .5 ? cardNextRoomJammedDoor: cardNextRoom),
           playedCards: [],
         },
         {
-          targetCard: cardDescriptor.snapshot(cardNextRoom),
+          targetCard: cardDescriptor.snapshot(Math.random() > .5 ? cardNextRoomJammedDoor: cardNextRoom),
           playedCards: [],
         },
         {
-          targetCard: cardDescriptor.snapshot(cardNextRoom),
+          targetCard: cardDescriptor.snapshot(Math.random() > .5 ? cardNextRoomJammedDoor: cardNextRoom),
           playedCards: [],
         },
       ],
@@ -75,7 +75,7 @@ export class GameManager {
     const cardSlots = allCardSlots(this.game);
     await batch<Promise<void[]>>(() => {
       return Promise.all(cardSlots.flatMap(cardSlot => {
-        if (cardSlot.targetCard != null && this.game.cardSlots.indexOf(cardSlot) <  0) {
+        if (cardSlot.targetCard != null && this.game.cardSlots.indexOf(cardSlot) >= 0) {
           return [];
         }
         const playedCards = cardSlot.playedCards;
