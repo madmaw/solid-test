@@ -3,11 +3,11 @@ import styles from './effect.module.scss';
 
 const ResourceSymbols: Record<SymbolType, string> = {
   [SymbolType.Force]: 'A',
-  [SymbolType.Finesse]: 'B',
-  [SymbolType.Magic]: 'C',
-  [SymbolType.Damage]: 'D',
-  [SymbolType.Age]: 'E',
-  [SymbolType.Fire]: 'F',
+  [SymbolType.Finesse]: 'P',
+  [SymbolType.Magic]: 'V',
+  [SymbolType.Damage]: 'W',
+  [SymbolType.Age]: 'Q',
+  [SymbolType.Fire]: 'M',
   [SymbolType.Draw]: 'G',
 };
 

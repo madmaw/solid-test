@@ -1,0 +1,42 @@
+@value padding: min(2vw, 2vh);
+@value healthBox: min(4vw, 4vh);
+
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.status-bar {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  top: 0;
+  padding: padding;
+  box-sizing: border-box;
+}
+
+.health-container {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
+.health {
+  width: healthBox;
+  height: healthBox;
+  font-size: healthBox;
+  text-align: center;
+  color: white;
+}
+
+.health::after {
+  content: '♡';
+}
+
+.health.filled::after {
+  content: '♥';
+}

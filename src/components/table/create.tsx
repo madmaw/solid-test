@@ -20,6 +20,7 @@ export function createTable(interactionManager: InteractionManager) {
     Deck: Component,
     SpreadOverlay: Component,
     DragOverlay: Component,
+    StatusOverlay: Component,
   }) {
     return (
       <TableComponent
@@ -27,6 +28,7 @@ export function createTable(interactionManager: InteractionManager) {
           Hand={props.Hand}
           Deck={props.Deck}
           SpreadOverlay={props.SpreadOverlay}
+          StatusOverlay={props.StatusOverlay}
           DragOverlay={props.DragOverlay}
           view={tableUI.view} 
           animations={animations}

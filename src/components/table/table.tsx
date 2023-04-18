@@ -8,6 +8,7 @@ export function TableComponent(props: {
   Hand: Component,
   Deck: Component,
   SpreadOverlay: Component,
+  StatusOverlay: Component,
   DragOverlay: Component,
   view: View,
   animations: AnimationManager<Animations>,
@@ -49,6 +50,9 @@ export function TableComponent(props: {
             <props.Hand/>
           </div>
         </div>
+      </div>
+      <div class={styles['status-overlay']}>
+        <props.StatusOverlay/>
       </div>
       <div class={styles['drag-overlay']}>
         <props.DragOverlay/>

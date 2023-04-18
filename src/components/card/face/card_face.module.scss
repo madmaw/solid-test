@@ -11,26 +11,24 @@
   border-width: .1vh;
   border-style: solid;  
   box-sizing: border-box;
-}
-
-.card-face.backgroundClear {
-  background-color: blue;
-  border-color: darkblue;
-}
-
-.card-face.backgroundDoor {
-  background-color: brown;
-  border-color: black;
-}
-
-.card-face.backgroundCrosshatched {
-  background-color: grey;
+  color: white;
   border-color: #222;
 }
 
+.card-face.backgroundClear {
+  background-color: #335;
+}
+
+.card-face.backgroundDoor {
+  background-color: #533;
+}
+
+.card-face.backgroundCrosshatched {
+  background-color: #444;
+}
+
 .card-face.backgroundPassageway {
-  background-color: green;
-  border-color: darkgreen;
+  background-color: #353;
 
 }
 

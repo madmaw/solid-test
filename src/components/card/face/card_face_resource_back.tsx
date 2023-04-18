@@ -8,7 +8,7 @@ export function CardFaceResourceBackComponent(props: {
 }) {
   return (
     <CardFaceDescriptionComponent>
-      <CardFaceNameComponent name={props.definition.name}/>
+      <CardFaceNameComponent name={props.face.name}/>
     </CardFaceDescriptionComponent>
   );
 }

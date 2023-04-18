@@ -5,6 +5,6 @@ export function allCardSlots(game: Game): readonly CardSlot[] {
   const bookSlots = spread?.type === BookSpreadType.Room
       ? spread.cardSlots
       : [];
-  return [...game.cardSlots, ...bookSlots]
+  return [...game.playerHand, ...bookSlots]
 }
 

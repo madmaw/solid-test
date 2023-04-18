@@ -55,10 +55,34 @@ export type ChoiceNextTurn = {
   type: ChoiceType.NextTurn,
 };
 
+export const enum EncounterType {
+  Battle = 1,
+  Event,
+};
+
+export const enum MonsterType {
+  BigRat = 1,
+};
+
+export const enum EventType {
+  Fountain = 1,
+}
+
+export type EncounterBattleDefinition = {
+  type: EncounterType.Battle,
+  monster: MonsterType,
+};
+
+export type EncounterEventDefinition = {
+  type: EncounterType.Event,
+  event: EventType,
+};
+
+export type EncounterDefinition = EncounterBattleDefinition | EncounterEventDefinition;
+
 export type ChoiceNextPage = {
   type: ChoiceType.NextPage,
-  // TODO
-  eventDescription: undefined,
+  encounter: EncounterDefinition | undefined,
 };
 
 export type ChoiceNextChapter = {
@@ -69,11 +93,13 @@ export type Choice = ChoiceNextTurn | ChoiceNextPage | ChoiceNextChapter;
 
 
 const cardFaceCommon = {
+  name: stringDescriptor,
   background: new LiteralTypeDescriptor<CardBackgroundType>,
   cost: listDescriptor(effectDescriptor),
 };
 
 export const cardFaceResourceDescriptor = valueRecordDescriptor({
+  description: stringDescriptor,
   type: new LiteralTypeDescriptor<CardFaceType.Resource>(),
   benefit: listDescriptor(effectDescriptor),
   ...cardFaceCommon,
@@ -93,7 +119,6 @@ export const cardFaceChoiceDescriptor = valueRecordDescriptor({
 
 export const cardFaceChoiceBackDescriptor = valueRecordDescriptor({
   type: new LiteralTypeDescriptor<CardFaceType.ChoiceBack>(),
-  name: stringDescriptor,
   ...cardFaceCommon,
 });
 
@@ -115,11 +140,9 @@ export const enum RecycleTarget {
   DiscardDeckTop,
 }
 
-// TODO given the definition will be immitable, this could probably just
+// TODO given the definition will be immutable, this could probably just
 // be a literalDescriptor
 export const cardDefinitionDescriptor = valueRecordDescriptor({
-  name: stringDescriptor,
-  description: stringDescriptor,
   // TODO: not required for room/event cards (maybe?)
   recycleTarget: new LiteralTypeDescriptor<RecycleTarget>(),
   faces: listDescriptor(cardFaceDescriptor),
@@ -145,9 +168,36 @@ export const bookSpreadTableOfContentsDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<BookSpreadType.TableOfContents>(),
 });
 
+export const deckDescriptor = listDescriptor(cardDescriptor);
+
+export const entityDescriptor = activeRecordDescriptor({
+  health: numberDescriptor,
+  maxHealth: numberDescriptor,
+  deck: deckDescriptor,
+});
+
+export const encounterBattleDescriptor = activeRecordDescriptor({
+  type: new LiteralTypeDescriptor<EncounterType.Battle>(),
+  monster: entityDescriptor,
+});
+
+export const encounterEventDescriptor = activeRecordDescriptor({
+  type: new LiteralTypeDescriptor<EncounterType.Event>(),
+});
+
+export const encounterDescriptor = discriminatingUnionDescriptor(
+  {
+    [EncounterType.Battle]: encounterBattleDescriptor,
+    [EncounterType.Event]: encounterEventDescriptor,
+  },
+  s => s.type,
+  m => m.type,  
+);
+
 export const bookSpreadRoomDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<BookSpreadType.Room>(),
   cardSlots: listDescriptor(cardSlotDescriptor),
+  encounter: optionalDescriptor(encounterDescriptor),
 });
 
 export const bookSpreadDescriptor = discriminatingUnionDescriptor(
@@ -164,12 +214,10 @@ export const bookDescriptor = activeRecordDescriptor({
   spread: optionalDescriptor(bookSpreadDescriptor),
 });
 
-export const deckDescriptor = listDescriptor(cardDescriptor);
-
 export const gameDescriptor = activeRecordDescriptor({
   book: bookDescriptor,
-  cardSlots: listDescriptor(cardSlotDescriptor),
-  playerDeck: deckDescriptor,
+  playerCharacter: optionalDescriptor(entityDescriptor),
+  playerHand: listDescriptor(cardSlotDescriptor),
 });
 
 export type Effect = typeof effectDescriptor.aMutable;
@@ -196,9 +244,13 @@ export type BookSpreadRoom = typeof bookSpreadRoomDescriptor.aMutable;
 export type BookSpreadRoomState = typeof bookSpreadRoomDescriptor.aState;
 export type BookSpread = typeof bookSpreadDescriptor.aMutable;
 export type BookSpreadState = typeof bookSpreadDescriptor.aState;
+export type Encounter = typeof encounterDescriptor.aMutable;
+export type EncounterState = typeof encounterDescriptor.aState;
 export type Book = typeof bookDescriptor.aMutable;
 export type BookState = typeof bookDescriptor.aState;
 export type Deck = typeof deckDescriptor.aMutable;
 export type DeckState = typeof deckDescriptor.aState;
+export type Entity = typeof entityDescriptor.aMutable;
+export type EntityState = typeof entityDescriptor.aState;
 export type Game = typeof gameDescriptor.aMutable;
 export type GameState = typeof gameDescriptor.aState;

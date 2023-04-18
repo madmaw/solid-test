@@ -1,6 +1,6 @@
 import { UnreachableError } from "base/unreachable_error";
 import { CardController } from "components/card/card_controller";
-import { ComponentManager, ControllerManger } from "components/component_manager";
+import { ControllerManger } from "components/component_manager";
 import { Card, CardFaceType, CardSlot } from "model/domain";
 import { Accessor, Setter, batch, createSignal } from "solid-js";
 import { cardFace } from "./cards";

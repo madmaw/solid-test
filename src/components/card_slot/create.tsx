@@ -56,7 +56,7 @@ export function createCardSlotManager(
               onDragStart={internalOnDragStart}
               onDrop={internalOnDrop}
               onClick={internalOnClick}
-              bordered={game.cardSlots.indexOf(cardSlot) >= 0}
+              bordered={game.playerHand.indexOf(cardSlot) >= 0}
               used={cardSlot.targetCard == null && cardSlot.playedCards.length > 0}
           >
             <For each={cardSlot.playedCards}>

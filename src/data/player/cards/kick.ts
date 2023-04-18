@@ -1,20 +1,25 @@
 import { DamageUp, ForceUp } from "data/effects";
-import { CardBackgroundType, CardFaceType, RecycleTarget, cardDefinitionDescriptor, cardFaceResourceBackDescriptor, cardFaceResourceDescriptor } from "model/domain";
+import { CardBackgroundType, CardFaceType, RecycleTarget, cardDefinitionDescriptor, cardDescriptor, cardFaceResourceBackDescriptor, cardFaceResourceDescriptor } from "model/domain";
 
 const cardFaceKickBack = cardFaceResourceBackDescriptor.freeze({
+  name: 'kick',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
-  cost: [ForceUp, ForceUp],
+  cost: [ForceUp],
 });
 const cardFaceKickFront = cardFaceResourceDescriptor.freeze({
+  name: 'kick',
+  description: 'A swift kick.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   cost: [ForceUp],
   benefit: [DamageUp],
 });
 export const cardTypeKick = cardDefinitionDescriptor.freeze({
-  name: 'kick',
-  description: 'A swift kick.',
-  recycleTarget: RecycleTarget.DrawDeckTop,
+  recycleTarget: RecycleTarget.DrawDeckRandom,
   faces: [cardFaceKickBack, cardFaceKickFront],
+});
+export const cardKick = cardDescriptor.freeze({
+  definition: cardTypeKick,
+  visibleFaceIndex: 0,
 });

@@ -9,7 +9,7 @@ export function CardFaceChoiceComponent(props: {
   return (
     <CardFaceDescriptionComponent>
       <CardFaceNameComponent
-          name={props.definition.name}/>
+          name={props.face.name}/>
     </CardFaceDescriptionComponent>
   );
 }

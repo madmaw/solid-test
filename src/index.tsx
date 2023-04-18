@@ -12,6 +12,7 @@ import { InteractionManager } from "rules/interaction_manager";
 import { createDragOverlay } from "components/drag/create";
 import { GameManager } from "rules/game_manager";
 import { createDeck } from "components/deck/create";
+import { createStatusOverlay } from "components/status/create";
 
 window.onload = function () {
   const app = document.getElementById('app')!;
@@ -40,6 +41,8 @@ window.onload = function () {
     CardSlotsComponent,
   });
 
+  const StatusOverlayComponent = createStatusOverlay()
+
   const {
     Component: BookImpl,
     controller: bookController,
@@ -62,25 +65,26 @@ window.onload = function () {
   } = createTable(interactionManger);
 
   const onNavigate = async () => {
-    gameManager.nextPage();
+    gameManager.nextPage(undefined);
   };
 
 
   const {
     Component: PlayerDeck,
-  } = createDeck(() => game.playerDeck, cardManager.FactoryComponent);
+  } = createDeck(() => game.playerCharacter?.deck, cardManager.FactoryComponent);
 
   const onClickCover = async () => {
     await tableController.setView(View.Tilted);
     // bookController.showSpread(bookSpreadTableOfContentsDescriptor.create({
     //   type: BookSpreadType.TableOfContents,
     // }));
+    gameManager.createPlayer();
     onNavigate();
-    console.log('show main menu');
   };
 
   function Hand() {
-    return <CardSlotsComponent model={game.cardSlots}/>;
+    // <>{}</> is needed to re-render on game.playerCharacter changing
+    return <CardSlotsComponent model={game.playerHand}/>;
   }
 
   function SpreadOverlay() {
@@ -99,9 +103,20 @@ window.onload = function () {
     cardManager.FactoryComponent,
   );
 
-
   function Book() {
     return <BookImpl onClickCover={onClickCover} />;
+  }
+
+  function StatusOverlay() {
+    // <>{}</> is needed to re-render on game.playerCharacter.spread changing
+    return (
+      <>
+        {
+          game.playerCharacter
+              && <StatusOverlayComponent playerCharacter={game.playerCharacter}/>
+        }
+      </>
+    );
   }
 
   render(() => (
@@ -110,6 +125,7 @@ window.onload = function () {
           Hand={Hand}
           Deck={PlayerDeck}
           SpreadOverlay={SpreadOverlay}
+          StatusOverlay={StatusOverlay}
           DragOverlay={DragOverlay}
       />
   ), app);

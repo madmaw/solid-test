@@ -1,12 +1,15 @@
 import { CardController } from "components/card/card_controller";
 import { ControllerManger } from "components/component_manager";
-import { BookSpreadType, Card, CardFaceType, CardSlot, Game, bookSpreadRoomDescriptor, cardDescriptor } from "model/domain";
+import { BookSpreadType, Card, CardFaceType, CardSlot, ChoiceType, EncounterDefinition, Game, bookSpreadRoomDescriptor, cardDescriptor, cardSlotDescriptor, entityDescriptor } from "model/domain";
 import { calculateTargetCardEffectUsages, cardFace } from "./cards";
 import { allCardSlots } from "./games";
 import { batch } from "solid-js";
 import { delay } from "base/delay";
 import { BookController } from "components/book/book_controller";
-import { cardNextRoom, cardNextRoomJammedDoor } from "data/initial";
+import { nextRoomCards } from "data/room/cards/next_room";
+import { defaultPlayerCharacter } from "data/player/initial";
+import { UnreachableError } from "base/unreachable_error";
+import { hydrateEncounter } from "./encounters";
 
 export class GameManager {
   constructor(
@@ -24,29 +27,39 @@ export class GameManager {
     }
     const face = cardFace(card, false);
     if (face.type === CardFaceType.Choice) {
-      this.nextPage();
+      const choice = face.choice;
+      switch (choice.type) {
+        case ChoiceType.NextChapter:
+          // TODO 
+          return this.nextPage(undefined);
+        case ChoiceType.NextPage:
+          return this.nextPage(choice.encounter);
+        case ChoiceType.NextTurn:
+          // TODO 
+          return this.nextPage(undefined);
+        default:
+          throw new UnreachableError(choice);
+      }
     }
-
   }
 
-  async nextPage() {
+  async createPlayer() {
+    this.game.playerCharacter = entityDescriptor.create(defaultPlayerCharacter);
+  }
+
+
+  async nextPage(encounter: EncounterDefinition | undefined) {
     await this.endTurn();
     const spread = bookSpreadRoomDescriptor.create({
       type: BookSpreadType.Room,
-      cardSlots: [
-        {
-          targetCard: cardDescriptor.snapshot(Math.random() > .5 ? cardNextRoomJammedDoor: cardNextRoom),
-          playedCards: [],
-        },
-        {
-          targetCard: cardDescriptor.snapshot(Math.random() > .5 ? cardNextRoomJammedDoor: cardNextRoom),
-          playedCards: [],
-        },
-        {
-          targetCard: cardDescriptor.snapshot(Math.random() > .5 ? cardNextRoomJammedDoor: cardNextRoom),
-          playedCards: [],
-        },
-      ],
+      encounter: encounter && hydrateEncounter(encounter),
+      cardSlots: new Array(3).fill(0).map(() => cardSlotDescriptor.freeze({
+        targetCard: cardDescriptor.freeze({
+          definition: nextRoomCards[Math.floor(Math.random() * nextRoomCards.length)],
+          visibleFaceIndex: 0,
+        }),
+        playedCards: [],
+      })),
     });
     await this.bookController.showSpread(spread);
     await this.startTurn();
@@ -75,7 +88,10 @@ export class GameManager {
     const cardSlots = allCardSlots(this.game);
     await batch<Promise<void[]>>(() => {
       return Promise.all(cardSlots.flatMap(cardSlot => {
-        if (cardSlot.targetCard != null && this.game.cardSlots.indexOf(cardSlot) >= 0) {
+        if (cardSlot.targetCard != null
+            && this.game.playerCharacter != null
+            && this.game.playerHand.indexOf(cardSlot) >= 0
+        ) {
           return [];
         }
         const playedCards = cardSlot.playedCards;
@@ -85,29 +101,35 @@ export class GameManager {
             await this.cardControllerManger.lookupController(card)?.flip();
           }
           // TODO animate back in
-          this.game.playerDeck = [...this.game.playerDeck, card];
+          if (this.game.playerCharacter != null) {
+            this.game.playerCharacter.deck = [...this.game.playerCharacter.deck, card];
+          }
         });
       }));
     });
   }
 
   async startTurn(draw = 3) {
-    const availableSlots = this.game.cardSlots.reduce(
-      (acc, slot) => acc
-          + (slot.targetCard == null && slot.playedCards.length === 0 ? 1 : 0),
-      0,
-    );
-    const availableDraw = Math.min(draw, availableSlots);
-    const drawnCards = this.game.playerDeck.slice(-availableDraw);
-    batch(() => {
-      this.game.playerDeck = this.game.playerDeck.slice(0, -availableDraw);
-      drawnCards.reverse().forEach(card => {
-        const cardSlot = this.game.cardSlots.find(slot => slot.targetCard == null);
-        if (cardSlot != null) {
-          cardSlot.targetCard = card;
-        }
-      });
-    });
+    const playerHand = this.game.playerHand;
+    if (playerHand != null) {
+      const availableSlots = playerHand.filter(
+        slot => slot.targetCard == null && slot.playedCards.length === 0,
+      );
+      const availableDraw = Math.min(draw, availableSlots.length);
+      const playerCharacter = this.game.playerCharacter;
+      if (availableDraw > 0 && playerCharacter != null) {
+        // NOTE: be careful not to remove above check because -0 == 0
+        // in the below slide operations
+        const drawnCards = playerCharacter.deck.slice(-availableDraw);
+        batch(() => {
+          playerCharacter.deck = playerCharacter.deck.slice(0, -availableDraw);
+          drawnCards.reverse().forEach((card, i) => {
+            const cardSlot = availableSlots[i];
+            cardSlot.targetCard = card;
+          });
+        });    
+      }
+    }
     // delay 0 is necessary so free cards render in their face down state before
     // auto-flipping
     await delay(0);

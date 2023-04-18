@@ -13,7 +13,7 @@
 @value bookTop: 10%;
 
 @value handSlotTop: 8%;
-@value handSlotWidth: calc(tableWidth / 2.5);
+@value handSlotWidth: calc(tableWidth / 3);
 @value handSlotHeight: cardHeight;
 
 @value tableColor: #763F13;
@@ -108,7 +108,7 @@
 .deck {
   position: absolute;
   top: calc(bookTop + bookHeight + handSlotTop);
-  left: calc(50% - bookWidth + 2vw);
+  left: calc(50% - bookWidth * .8);
   width: cardWidth;
   height: cardHeight;
 }
@@ -123,7 +123,7 @@
   transform-origin: top;
 }
 
-.drag-overlay {
+.drag-overlay, .status-overlay {
   position: absolute;
   top: 0;
   left: 0;
