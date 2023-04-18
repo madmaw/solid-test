@@ -25,14 +25,14 @@ export function CardSlotComponent(props: ParentProps<{
   return (
     <div
         class={styles.container}
-        onMouseUp={props.onDrop}>
+        onPointerUp={props.onDrop}>
       <div
           classList={{ 
             [styles['target-card']]: true,
             [interactionStyles[props.targetInteraction]]: true,
             [styles.bordered]: props.bordered
           }}
-          onMouseDown={props.onDragStart}
+          onPointerDown={props.onDragStart}
           onClick={props.onClick}>
         {props.targetCard}
       </div>

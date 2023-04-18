@@ -22,7 +22,7 @@ export function TableComponent(props: {
             [styles.room]: true,
             [styles.dragging]: props.dragging,
           }}
-          onMouseUp={props.onDragCancel}
+          onPointerUp={props.onDragCancel}
       >
         <div
             classList={{

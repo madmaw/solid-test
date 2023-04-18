@@ -52,7 +52,7 @@ window.onload = function () {
   const gameManager = new GameManager(game, cardManager, bookController);
   const interactionManger = new InteractionManager(gameManager, cardManager, cardSlotManager);
   
-  window.addEventListener('mousemove', e => {
+  window.addEventListener('pointermove', e => {
     interactionManger.lastMousePosition = [e.clientX, e.clientY];
   });
 
