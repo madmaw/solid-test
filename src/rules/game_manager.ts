@@ -52,6 +52,19 @@ export class GameManager {
     }
   }
 
+  async applyTargetCardEffects(cardSlot: CardSlot) {
+    const targetCard = cardSlot.targetCard;
+    if (targetCard == null) {
+      return;
+    }
+    const usages = calculateTargetCardEffectUsages(cardSlot, undefined);
+    for (const usage of usages.cost) {
+      if (!usage.used) {
+        
+      }
+    }
+  }
+
   async createPlayer() {
     this.game.playerCharacter = entityDescriptor.create(defaultPlayerCharacter);
   }

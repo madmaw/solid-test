@@ -112,7 +112,7 @@ $tableColorDark: #221100;
   left: calc($tableWidth/2 - $bookWidth/2);
   width: calc($bookWidth);
   height: constants.$cardHeight;
-  transform: translateZ(calc(constants.$cardHeight * 3.5)) rotateX(constants.$tableTiltCorrectionAngle);
+  transform: translateZ(calc(constants.$cardHeight * 3)) rotateX(constants.$tableTiltCorrectionAngle);
   transform-origin: top;
 }
 

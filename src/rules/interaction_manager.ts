@@ -179,7 +179,7 @@ export class InteractionManager {
   private politelyAnimate(action: () => Promise<void>): Promise<void> {
     this.lastAnimation = this.lastAnimation
         // prevent errors from breaking this permanently
-        .catch(e => console.log(e))
+        .catch(e => console.warn(e))
         .then(action)
         // add a delay to ensure a render happens between state changes
         .then(() => delay(0));
