@@ -1,40 +1,65 @@
 .entity {
-  transform-origin: center bottom;
+  transform-origin: center;
+}
+
+.entity.hidden {
+  visibility: hidden;
 }
 
 .entity.idle {
-  animation-name: idle;
+  animation-name: idleAnimation;
   animation-iteration-count: infinite;
-  animation-duration: 1s;
+  animation-duration: 3s;
   animation-timing-function: ease-in-out;
   animation-direction: alternate;
+  transform-origin: bottom;
 }
 
-@keyframes idle {
+@keyframes idleAnimation {
   from {
     transform: scaleY(1);
   }
 
   to {
-    transform: skewY(1.1);
+    transform: scaleY(1.1);
   }
-
 }
 
 .entity.appear {
-  transform: skewX(90deg);
-  animation-name: appear;
+  animation-name: appearAnimation;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
   animation-duration: 300ms;
 }
 
-@keyframes appear {
+@keyframes appearAnimation {
   from {
-    transform: skewX(90deg);
+    transform: skewX(90deg) scaleX(0);
   }
 
   to {
-    transform: skewX(0);
+    transform: skewX(0) scaleX(1);
   }
+}
+
+.entity.attack {
+  animation-name: attackAnimation;
+  animation-timing-function: ease-in;
+  animation-direction: alternate;
+  animation-duration: 150ms;
+  animation-iteration-count: 2;
+}
+
+@keyframes attackAnimation {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(20%);
+  }
+}
+
+.inner.flipX {
+  transform: scaleX(-1);
 }

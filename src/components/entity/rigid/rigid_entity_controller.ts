@@ -2,8 +2,9 @@ import { AnimationManager } from "ui/animation/animation_manager";
 import { EntityController } from "../entity_controller";
 import { CardFace } from "model/domain";
 import { activeRecordDescriptor } from "model/descriptor/record";
-import { LiteralTypeDescriptor } from "model/descriptor/literals";
+import { LiteralTypeDescriptor, booleanDescriptor } from "model/descriptor/literals";
 import { optionalDescriptor } from "model/descriptor/option";
+import { batch } from "solid-js";
 
 export const enum Animations {
   Appear = 1,
@@ -15,6 +16,7 @@ export const enum Animations {
 
 export const rigidEntityUI = activeRecordDescriptor({
   activeAnimation: optionalDescriptor(new LiteralTypeDescriptor<Animations>()),
+  hidden: booleanDescriptor,
 });
 
 export type RigidEntityUI = typeof rigidEntityUI.aMutable;
@@ -33,17 +35,22 @@ export class RigidEntityController implements EntityController {
 
   async perform(face: CardFace) {
     const animation = this.actions.get(face) || this.fallbackAnimation;
-    this.performAnimation(
+    await this.performAnimation(
       animation,
       () => this.dynamicEntityController?.perform(face),
     );
+    this.rigidEntityUI.activeAnimation = undefined;
   }
 
   async appear() {
-    return this.performAnimation(
-      Animations.Die,
-      () => this.dynamicEntityController?.appear(),
-    );
+    await batch(() => {
+      this.rigidEntityUI.hidden = false;
+      return this.performAnimation(
+        Animations.Appear,
+        () => this.dynamicEntityController?.appear(),
+      );  
+    });
+    this.rigidEntityUI.activeAnimation = undefined;
   }
 
   async die() {
@@ -63,6 +70,4 @@ export class RigidEntityController implements EntityController {
       dynamicAnimation(),
     ]);
   }
-
-
 }

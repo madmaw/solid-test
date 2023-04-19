@@ -1,20 +1,22 @@
 import { CardController } from "components/card/card_controller";
 import { ControllerManger } from "components/component_manager";
-import { BookSpreadType, Card, CardFaceType, CardSlot, ChoiceType, EncounterDefinition, Game, RecycleTarget, bookSpreadRoomDescriptor, cardDescriptor, cardSlotDescriptor, entityDescriptor } from "model/domain";
+import { BookSpreadType, Card, CardFaceType, CardSlot, ChoiceType, Encounter, EncounterBattle, EncounterDefinition, Game, RecycleTarget, bookSpreadRoomDescriptor, cardDescriptor, cardSlotDescriptor, entityDescriptor } from "model/domain";
 import { calculateTargetCardEffectUsages, cardFace } from "./cards";
-import { DeckHolder, allCardSlots, pageCardSlots, pageDeck, playerDeck } from "./games";
+import { DeckHolder, allCardSlots, gameEncounterBattle, pageCardSlots, pageDeck, playerDeck } from "./games";
 import { batch } from "solid-js";
 import { delay } from "base/delay";
 import { BookController } from "components/book/book_controller";
 import { defaultPlayerCharacter } from "data/player/initial";
 import { UnreachableError } from "base/unreachable_error";
 import { hydrateEncounter } from "./encounters";
+import { EntityController } from "components/entity/entity_controller";
 
 export class GameManager {
   constructor(
     private readonly game: Game,
-    private readonly cardControllerManger: ControllerManger<Card, CardController>,
     private readonly bookController: BookController,
+    private readonly cardControllerManger: ControllerManger<Card, CardController>,
+    private readonly battleEncounterControllerManager: ControllerManger<EncounterBattle, EntityController>, 
   ) {
     
   }
@@ -25,6 +27,11 @@ export class GameManager {
       await this.cardControllerManger.lookupController(card)?.flip();
       await delay(500);
       // TODO apply effects
+    }
+    const battle = gameEncounterBattle(this.game);
+    if (battle != null) {
+      const face = cardFace(card, false);
+      await this.battleEncounterControllerManager.lookupController(battle)?.perform(face);
     }
     const face = cardFace(card, false);
     if (face.type === CardFaceType.Choice) {
@@ -60,6 +67,12 @@ export class GameManager {
       })),
     });
     await this.bookController.showSpread(spread);
+    const battleEncounter = gameEncounterBattle(this.game);
+    if (battleEncounter != null) {
+      await this.battleEncounterControllerManager
+          .lookupController(battleEncounter)
+          ?.appear();
+    }
     await this.startTurn();
   }
 

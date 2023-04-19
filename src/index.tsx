@@ -55,8 +55,8 @@ window.onload = function () {
     rightPageComponentManager: rightPageManager,
     book: game.book,
   });
-
-  const gameManager = new GameManager(game, cardManager, bookController);
+  const encounterBattleManager = createEncounterBattleManger();
+  const gameManager = new GameManager(game, bookController, cardManager, encounterBattleManager);
   const interactionManger = new InteractionManager(gameManager, cardManager, cardSlotManager);
   
   window.addEventListener('pointermove', e => {
@@ -106,13 +106,11 @@ window.onload = function () {
     cardManager.FactoryComponent,
   );
 
-  const encounterBattleComponentManager = createEncounterBattleManger();
-
   function Book() {
     const battle = createMemo(() => gameEncounterBattle(game));
     return (
       <BookImpl onClickCover={onClickCover}>
-        {battle() && <encounterBattleComponentManager.FactoryComponent
+        {battle() && <encounterBattleManager.FactoryComponent
             model={battle()!}/>}
       </BookImpl>
     );

@@ -7,6 +7,6 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  transform-origin: center bottom;
+  transform-origin: bottom center;
   transform: rotateX(constants.$tableTiltCorrectionAngle);
 }

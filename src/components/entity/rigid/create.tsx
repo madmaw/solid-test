@@ -9,9 +9,11 @@ export function createRigidEntity(
   actions: Map<CardFace, Animations>,
   EntityComponent: Component,
   entityController: EntityController | undefined,
+  flipX: boolean,
 ) {
   const ui = rigidEntityUI.create({
     activeAnimation: undefined,
+    hidden: true,
   });
   const animations = new AnimationManager<Animations>();
   const controller = new RigidEntityController(
@@ -25,7 +27,9 @@ export function createRigidEntity(
     return (
       <RigidEntityComponent
           animations={animations}
-          rigidEntityUI={ui}>
+          hidden={ui.hidden}
+          activeAnimation={ui.activeAnimation}
+          flipX={flipX}>
         <EntityComponent/>
       </RigidEntityComponent>
     );
