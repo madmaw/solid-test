@@ -10,6 +10,6 @@ body {
 }
 
 * {
-    /* transform-style: preserve-3d; */
     user-select: none;
+    will-change: transform;
 }

@@ -23,7 +23,7 @@ const cardBackRatScurrying = cardFaceChoiceBackDescriptor.freeze({
   cost: [FinesseUp],
 });
 
-const cardFaceBite = cardFaceChoiceDescriptor.freeze({
+export const cardFaceBite = cardFaceChoiceDescriptor.freeze({
   name: 'bite',
   type: CardFaceType.Choice,
   choice: {
@@ -34,7 +34,7 @@ const cardFaceBite = cardFaceChoiceDescriptor.freeze({
   cost: [DamageDown],
   benefit: [],
 });
-const cardFaceScreech = cardFaceChoiceDescriptor.freeze({
+export const cardFaceScreech = cardFaceChoiceDescriptor.freeze({
   name: 'screech',
   type: CardFaceType.Choice,
   choice: {
@@ -45,7 +45,7 @@ const cardFaceScreech = cardFaceChoiceDescriptor.freeze({
   cost: [ForceDown, ForceDown],
   benefit: [],
 });
-const cardFaceCower = cardFaceChoiceDescriptor.freeze({
+export const cardFaceCower = cardFaceChoiceDescriptor.freeze({
   name: 'cower',
   type: CardFaceType.Choice,
   choice: {

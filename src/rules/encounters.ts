@@ -19,6 +19,7 @@ export function hydrateEncounter(encounter: EncounterDefinition): EncounterState
       const deck = randomizeDeck(monster.deck);
       return {
         type: encounter.type,
+        monsterType: encounter.monster,
         monster: {
           ...monster,
           deck,
@@ -27,6 +28,7 @@ export function hydrateEncounter(encounter: EncounterDefinition): EncounterState
     case EncounterType.Event:
       return {
         type: EncounterType.Event,
+        eventType: encounter.event,
       };
     default:
       throw new UnreachableError(encounter);

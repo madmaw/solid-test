@@ -186,10 +186,12 @@ export const entityDescriptor = activeRecordDescriptor({
 export const encounterBattleDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<EncounterType.Battle>(),
   monster: entityDescriptor,
+  monsterType: new LiteralTypeDescriptor<MonsterType>(),
 });
 
 export const encounterEventDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<EncounterType.Event>(),
+  eventType: new LiteralTypeDescriptor<EventType>(),
 });
 
 export const encounterDescriptor = discriminatingUnionDescriptor(

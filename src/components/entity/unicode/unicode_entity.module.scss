@@ -1,0 +1,5 @@
+@use 'components/constants.module.scss';
+
+.entity {
+  font-size: calc(constants.$pageWidth/6);
+}
