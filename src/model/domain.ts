@@ -1,7 +1,7 @@
 import { listDescriptor } from "./descriptor/list";
-import { LiteralTypeDescriptor, numberDescriptor, stringDescriptor } from "./descriptor/literals";
+import { LiteralTypeDescriptor, numberDescriptor } from "./descriptor/literals";
 import { optionalDescriptor } from "./descriptor/option";
-import { activeRecordDescriptor, valueRecordDescriptor } from "./descriptor/record";
+import { activeRecordDescriptor } from "./descriptor/record";
 import { discriminatingUnionDescriptor } from "./descriptor/union";
 
 export const enum SymbolType {
@@ -26,10 +26,10 @@ export const enum EffectDirection {
   Down,
 }
 
-export const effectDescriptor = new LiteralTypeDescriptor<{
-  symbol: SymbolType,
-  direction: EffectDirection,
-}>;
+export type Effect = {
+  readonly symbol: SymbolType,
+  readonly direction: EffectDirection,
+};
 
 export const enum CardBackgroundType {
   Crosshatched = 1,
@@ -58,7 +58,7 @@ export const enum ChoiceType {
 }
 
 export type ChoiceNextTurn = {
-  type: ChoiceType.NextTurn,
+  readonly type: ChoiceType.NextTurn,
 };
 
 export const enum EncounterType {
@@ -75,70 +75,61 @@ export const enum EventType {
 }
 
 export type EncounterBattleDefinition = {
-  type: EncounterType.Battle,
-  monster: MonsterType,
+  readonly type: EncounterType.Battle,
+  readonly monster: MonsterType,
 };
 
 export type EncounterEventDefinition = {
-  type: EncounterType.Event,
-  event: EventType,
+  readonly type: EncounterType.Event,
+  readonly event: EventType,
 };
 
 export type EncounterDefinition = EncounterBattleDefinition | EncounterEventDefinition;
 
 export type ChoiceNextPage = {
-  type: ChoiceType.NextPage,
-  encounter: EncounterDefinition | undefined,
+  readonly type: ChoiceType.NextPage,
+  readonly encounter: EncounterDefinition | undefined,
 };
 
 export type ChoiceNextChapter = {
-  type: ChoiceType.NextChapter,
+  readonly type: ChoiceType.NextChapter,
 };
 
 export type Choice = ChoiceNextTurn | ChoiceNextPage | ChoiceNextChapter;
 
 
-const cardFaceCommon = {
-  name: stringDescriptor,
-  background: new LiteralTypeDescriptor<CardBackgroundType>(),
-  foreground: optionalDescriptor(new LiteralTypeDescriptor<CardForegroundType>()),
-  cost: listDescriptor(effectDescriptor),
+type CardFaceCommon = {
+  readonly name: string,
+  readonly background: CardBackgroundType,
+  readonly foreground: CardForegroundType | undefined,
+  readonly cost: readonly Effect[],
 };
 
-export const cardFaceResourceDescriptor = valueRecordDescriptor({
-  description: stringDescriptor,
-  type: new LiteralTypeDescriptor<CardFaceType.Resource>(),
-  benefit: listDescriptor(effectDescriptor),
-  ...cardFaceCommon,
-});
+export type CardFrontResource = CardFaceCommon & {
+  readonly description: string,
+  readonly type: CardFaceType.Resource,
+  readonly benefit: readonly Effect[],
+};
 
-export const cardFaceResourceBackDescriptor = valueRecordDescriptor({
-  type: new LiteralTypeDescriptor<CardFaceType.ResourceBack>(),
-  ...cardFaceCommon,
-});
+export type CardBackResource = CardFaceCommon & {
+  readonly type: CardFaceType.ResourceBack,
+};
 
-export const cardFaceChoiceDescriptor = valueRecordDescriptor({
-  type: new LiteralTypeDescriptor<CardFaceType.Choice>(),
-  benefit: listDescriptor(effectDescriptor),
-  choice: new LiteralTypeDescriptor<Choice>(),
-  ...cardFaceCommon,
-});
+export type CardFrontChoice = CardFaceCommon & {
+  readonly type: CardFaceType.Choice,
+  readonly benefit: readonly Effect[],
+  readonly choice: Choice,
+};
 
-export const cardFaceChoiceBackDescriptor = valueRecordDescriptor({
-  type: new LiteralTypeDescriptor<CardFaceType.ChoiceBack>(),
-  ...cardFaceCommon,
-});
+export type CardBackChoice = CardFaceCommon & {
+  readonly type: CardFaceType.ChoiceBack,
+};
 
-export const cardFaceDescriptor = discriminatingUnionDescriptor(
-  {
-    [CardFaceType.Resource]: cardFaceResourceDescriptor,
-    [CardFaceType.ResourceBack]: cardFaceResourceBackDescriptor,
-    [CardFaceType.Choice]: cardFaceChoiceDescriptor,
-    [CardFaceType.ChoiceBack]: cardFaceChoiceBackDescriptor,
-  },
-  s => s.type,
-  m => m.type,
-);
+export type CardFace = 
+    | CardFrontChoice
+    | CardBackChoice
+    | CardFrontResource
+    | CardBackResource;
 
 export const enum RecycleTarget {
   DrawDeckTop = 1,
@@ -147,16 +138,14 @@ export const enum RecycleTarget {
   DiscardDeckTop,
 }
 
-// TODO given the definition will be immutable, this could probably just
-// be a literalDescriptor
-export const cardDefinitionDescriptor = valueRecordDescriptor({
+export type CardDefinition = {
   // TODO: not required for room/event cards (maybe?)
-  recycleTarget: new LiteralTypeDescriptor<RecycleTarget>(),
-  faces: listDescriptor(cardFaceDescriptor),
-});
+  readonly recycleTarget: RecycleTarget,
+  readonly faces: readonly CardFace[],
+};
 
 export const cardDescriptor = activeRecordDescriptor({
-  definition: cardDefinitionDescriptor,
+  definition: new LiteralTypeDescriptor<CardDefinition>(),
   visibleFaceIndex: numberDescriptor,
 });
 
@@ -239,20 +228,6 @@ export const gameDescriptor = activeRecordDescriptor({
   playerHand: listDescriptor(cardSlotDescriptor),
 });
 
-export type Effect = typeof effectDescriptor.aMutable;
-export type EffectState = typeof effectDescriptor.aState;
-export type CardFaceResource = typeof cardFaceResourceDescriptor.aMutable;
-export type CardFaceResourceState = typeof cardFaceResourceDescriptor.aState;
-export type CardFaceResourceBack = typeof cardFaceResourceBackDescriptor.aMutable;
-export type CardFaceResourceBackState = typeof cardFaceResourceBackDescriptor.aState;
-export type CardFaceChoice = typeof cardFaceChoiceDescriptor.aMutable;
-export type CardFaceChoiceState = typeof cardFaceChoiceDescriptor.aState;
-export type CardFaceChoiceBack = typeof cardFaceChoiceBackDescriptor.aMutable;
-export type CardFaceChoiceBackState = typeof cardFaceChoiceBackDescriptor.aState;
-export type CardFace = typeof cardFaceDescriptor.aMutable;
-export type CardFaceState = typeof cardFaceDescriptor.aState;
-export type CardDefinition = typeof cardDefinitionDescriptor.aMutable;
-export type CardDefinitionState = typeof cardDefinitionDescriptor.aState;
 export type Card = typeof cardDescriptor.aMutable;
 export type CardState = typeof cardDescriptor.aState;
 export type CardSlot = typeof cardSlotDescriptor.aMutable;

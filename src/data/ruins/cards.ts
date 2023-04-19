@@ -1,21 +1,21 @@
 import { DamageDown, DamageUp } from "data/effects";
-import { CardBackgroundType, CardFaceType, cardFaceChoiceBackDescriptor, cardFaceChoiceDescriptor, cardDefinitionDescriptor, RecycleTarget, ChoiceType, EncounterType, MonsterType, EventType, Card, CardState, CardForegroundType } from "model/domain";
+import { CardBackgroundType, CardFaceType, RecycleTarget, ChoiceType, EncounterType, MonsterType, EventType, CardState, CardForegroundType, CardBackChoice, CardFrontChoice, CardDefinition } from "model/domain";
 
-const cardFaceNextRoomJammedDoorBack = cardFaceChoiceBackDescriptor.freeze({
+const cardBackJammedDoor: CardBackChoice = {
   name: 'jammed door',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
   foreground: undefined,
   cost: [DamageUp],
-});
-const cardFaceNextRoomDoorBack = cardFaceChoiceBackDescriptor.freeze({
+};
+const cardBackDoor: CardBackChoice = {
   name: 'door',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
   foreground: undefined,
   cost: [],
-});
-const cardFaceEmptyNextRoomFront = cardFaceChoiceDescriptor.freeze({
+};
+const cardFrontEmpty: CardFrontChoice = {
   name: 'empty passage',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
@@ -26,8 +26,8 @@ const cardFaceEmptyNextRoomFront = cardFaceChoiceDescriptor.freeze({
   },
   cost: [],
   benefit: [],
-});
-const cardFaceRatNextRoomFront = cardFaceChoiceDescriptor.freeze({
+};
+const cardFrontRat: CardFrontChoice = {
   name: 'a big rat',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
@@ -41,8 +41,8 @@ const cardFaceRatNextRoomFront = cardFaceChoiceDescriptor.freeze({
   },
   cost: [],
   benefit: [],
-});
-const cardFaceTrappedNextRoomFront = cardFaceChoiceDescriptor.freeze({
+};
+const cardFrontTrapped: CardFrontChoice = {
   name: 'trapped hallway',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
@@ -53,8 +53,8 @@ const cardFaceTrappedNextRoomFront = cardFaceChoiceDescriptor.freeze({
   },
   cost: [DamageDown],
   benefit: [],
-});
-const cardFaceFountainNextRoomFront = cardFaceChoiceDescriptor.freeze({
+};
+const cardFrontFountain: CardFrontChoice = {
   name: 'fountain',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
@@ -68,22 +68,22 @@ const cardFaceFountainNextRoomFront = cardFaceChoiceDescriptor.freeze({
   },
   cost: [],
   benefit: [],
-});
+};
 
 export const cards = [
-  cardFaceNextRoomJammedDoorBack,
-  cardFaceNextRoomDoorBack,
+  cardBackDoor,
+  cardBackJammedDoor,
 ].flatMap(back => {
   return [
-    cardFaceEmptyNextRoomFront,
-    cardFaceRatNextRoomFront,
-    cardFaceTrappedNextRoomFront,
-    cardFaceFountainNextRoomFront,
-  ].map(front => {
-    return cardDefinitionDescriptor.freeze({
+    cardFrontEmpty,
+    cardFrontRat,
+    cardFrontTrapped,
+    cardFrontFountain,
+  ].map<CardDefinition>(front => {
+    return {
       recycleTarget: RecycleTarget.DiscardDeckTop,
       faces: [back, front],
-    })
+    };
   });
 }).map<CardState>(definition => ({
   definition,

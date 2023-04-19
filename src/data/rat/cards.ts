@@ -1,29 +1,30 @@
 import { DamageDown, DamageUp, FinesseUp, FireUp, ForceDown } from "data/effects";
-import { CardBackgroundType, CardFaceType, CardForegroundType, ChoiceType, RecycleTarget, cardDefinitionDescriptor, cardDescriptor, cardFaceChoiceBackDescriptor, cardFaceChoiceDescriptor, cardFaceDescriptor } from "model/domain";
+import { CardBackChoice, CardBackgroundType, CardDefinition, CardFaceType, CardForegroundType, CardFrontChoice, ChoiceType, RecycleTarget, cardDescriptor } from "model/domain";
 
-const cardBackRatBeligerence = cardFaceChoiceBackDescriptor.freeze({
+const cardBackRatBeligerence: CardBackChoice = {
   name: 'cornered',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Rat,
   cost: [],
-});
-const cardBackRatFurtiveMovement = cardFaceChoiceBackDescriptor.freeze({
+};
+const cardBackRatFurtiveMovement: CardBackChoice = {
   name: 'furtive squeak',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Rat,
+  // TODO observation
   cost: [FireUp],
-});
-const cardBackRatScurrying = cardFaceChoiceBackDescriptor.freeze({
+};
+const cardBackRatScurrying: CardBackChoice = {
   name: 'scurrying',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Rat,
   cost: [FinesseUp],
-});
+};
 
-export const cardFaceBite = cardFaceChoiceDescriptor.freeze({
+export const cardFrontRatBite: CardFrontChoice = {
   name: 'bite',
   type: CardFaceType.Choice,
   choice: {
@@ -33,8 +34,8 @@ export const cardFaceBite = cardFaceChoiceDescriptor.freeze({
   foreground: CardForegroundType.Rat,
   cost: [DamageDown],
   benefit: [],
-});
-export const cardFaceScreech = cardFaceChoiceDescriptor.freeze({
+};
+export const cardFrontRatScreech: CardFrontChoice = {
   name: 'screech',
   type: CardFaceType.Choice,
   choice: {
@@ -44,8 +45,8 @@ export const cardFaceScreech = cardFaceChoiceDescriptor.freeze({
   foreground: CardForegroundType.Rat,
   cost: [ForceDown, ForceDown],
   benefit: [],
-});
-export const cardFaceCower = cardFaceChoiceDescriptor.freeze({
+};
+export const cardFrontRatCower: CardFrontChoice = {
   name: 'cower',
   type: CardFaceType.Choice,
   choice: {
@@ -55,7 +56,7 @@ export const cardFaceCower = cardFaceChoiceDescriptor.freeze({
   foreground: CardForegroundType.Rat,
   cost: [DamageUp],
   benefit: [],
-});
+};
 
 export const cards = [
   cardBackRatBeligerence, 
@@ -63,14 +64,14 @@ export const cards = [
   cardBackRatScurrying,
 ].flatMap(cardBack => {
   return [
-    cardFaceBite,
-    cardFaceScreech,
-    cardFaceCower,
-  ].map(cardFace => {
-    return cardDefinitionDescriptor.freeze({
+    cardFrontRatBite,
+    cardFrontRatScreech,
+    cardFrontRatCower,
+  ].map<CardDefinition>(cardFace => {
+    return {
       faces: [cardBack, cardFace],
       recycleTarget: RecycleTarget.DrawDeckRandom,
-    });
+    };
   });
 }).map(definition => {
   return cardDescriptor.freeze({

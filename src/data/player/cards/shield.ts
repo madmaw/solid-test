@@ -1,14 +1,14 @@
 import { DamageDown, ForceUp } from "data/effects";
-import { CardBackgroundType, CardFaceType, RecycleTarget, cardDefinitionDescriptor, cardDescriptor, cardFaceResourceBackDescriptor, cardFaceResourceDescriptor } from "model/domain";
+import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, cardDescriptor } from "model/domain";
 
-const cardFaceShieldBack = cardFaceResourceBackDescriptor.freeze({
+const cardBackShield: CardBackResource = {
   name: 'shield',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
   cost: [ForceUp, ForceUp],
-});
-const cardFaceShieldFront = cardFaceResourceDescriptor.freeze({
+};
+const cardFrontShield: CardFrontResource = {
   name: 'shield',
   description: 'You cower behind your shield',
   type: CardFaceType.Resource,
@@ -16,11 +16,11 @@ const cardFaceShieldFront = cardFaceResourceDescriptor.freeze({
   foreground: undefined,
   cost: [],
   benefit: [DamageDown],
-});
-export const cardTypeShield = cardDefinitionDescriptor.freeze({
+};
+const cardTypeShield: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
-  faces: [cardFaceShieldBack, cardFaceShieldFront],
-});
+  faces: [cardBackShield, cardFrontShield],
+};
 export const cardShield = cardDescriptor.freeze({
   definition: cardTypeShield,
   visibleFaceIndex: 0,

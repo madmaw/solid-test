@@ -1,14 +1,14 @@
 import { ForceUp } from "data/effects";
-import { CardBackgroundType, CardFaceType, RecycleTarget, cardDefinitionDescriptor, cardDescriptor, cardFaceResourceBackDescriptor, cardFaceResourceDescriptor } from "model/domain";
+import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, cardDescriptor } from "model/domain";
 
-const cardFaceMightBack = cardFaceResourceBackDescriptor.freeze({
+const cardBackMight: CardBackResource = {
   name: 'might',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
   cost: [],
-});
-const cardFaceMightFront = cardFaceResourceDescriptor.freeze({
+};
+const cardFrontMight: CardFrontResource = {
   name: 'might',
   description: 'You brace for the next feat of strength.',
   type: CardFaceType.Resource,
@@ -16,11 +16,11 @@ const cardFaceMightFront = cardFaceResourceDescriptor.freeze({
   foreground: undefined,
   cost: [],
   benefit: [ForceUp],
-});
-export const cardTypeMight = cardDefinitionDescriptor.freeze({
+};
+const cardTypeMight: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckTop,
-  faces: [cardFaceMightBack, cardFaceMightFront],
-});
+  faces: [cardBackMight, cardFrontMight],
+};
 
 export const cardMight = cardDescriptor.freeze({
   definition: cardTypeMight,

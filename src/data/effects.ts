@@ -1,62 +1,61 @@
-import { EffectDirection, SymbolType, effectDescriptor } from "model/domain";
+import { Effect, EffectDirection, SymbolType } from "model/domain";
 
-export const ForceUp = effectDescriptor.freeze({
+export const ForceUp: Effect = {
   direction: EffectDirection.Up,
   symbol: SymbolType.Force,
-});
+};
 
-export const ForceDown = effectDescriptor.freeze({
+export const ForceDown: Effect = {
   direction: EffectDirection.Down,
   symbol: SymbolType.Force,
-});
+};
 
-export const FinesseUp = effectDescriptor.freeze({
+export const FinesseUp: Effect = {
   direction: EffectDirection.Up,
   symbol: SymbolType.Finesse,
-});
+};
 
-export const FinesseDown = effectDescriptor.freeze({
+export const FinesseDown: Effect = {
   direction: EffectDirection.Down,
   symbol: SymbolType.Finesse,
-});
+};
 
-export const MagicUp = effectDescriptor.freeze({
+export const MagicUp: Effect = {
   direction: EffectDirection.Up,
   symbol: SymbolType.Magic,
-});
+};
 
-export const MagicDown = effectDescriptor.freeze({
+export const MagicDown: Effect = {
   direction: EffectDirection.Down,
   symbol: SymbolType.Magic,
-});
+};
 
-export const DamageUp = effectDescriptor.freeze({
+export const DamageUp: Effect = {
   direction: EffectDirection.Up,
   symbol: SymbolType.Damage,
-});
+};
 
-export const DamageDown = effectDescriptor.freeze({
+export const DamageDown: Effect = {
   direction: EffectDirection.Down,
   symbol: SymbolType.Damage,
-});
+};
 
-export const FireUp = effectDescriptor.freeze({
+export const FireUp: Effect = {
   direction: EffectDirection.Up,
   symbol: SymbolType.Fire,
-});
+};
 
-export const FireDown = effectDescriptor.freeze({
+export const FireDown: Effect = {
   direction: EffectDirection.Down,
   symbol: SymbolType.Fire,
-});
+};
 
-export const AgeUp = effectDescriptor.freeze({
+export const AgeUp: Effect = {
   direction: EffectDirection.Up,
   symbol: SymbolType.Age,
-});
+};
 
-export const AgeDown = effectDescriptor.freeze({
+export const AgeDown: Effect = {
   direction: EffectDirection.Down,
   symbol: SymbolType.Age,
-});
-
+};
