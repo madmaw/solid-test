@@ -12,23 +12,48 @@
   border-style: solid;  
   box-sizing: border-box;
   color: white;
+  text-shadow: black 0 0 .5vw;
   border-color: #222;
 }
 
-.card-face.backgroundClear {
+.card-face.background.clear {
   background-color: #335;
 }
 
-.card-face.backgroundDoor {
+.card-face.background.door {
   background-color: #533;
 }
 
-.card-face.backgroundCrosshatched {
+.card-face.background.crosshatched {
   background-color: #444;
 }
 
-.card-face.backgroundPassageway {
+.card-face.background.passageway {
   background-color: #353;
-
 }
 
+.card-face.foreground::before {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: grayscale(1);
+  opacity: .5;
+  position: absolute;
+  text-align: center;
+  vertical-align: middle;
+  font-size: calc(cardWidth/2);
+  line-height: cardHeight;
+}
+
+.card-face.foreground.rat::before {
+  content: '🐀';
+}
+
+.card-face.foreground.trap::before {
+  content: '🪤';
+}
+
+.card-face.foreground.fountain::before {
+  content: '⛲';
+}

@@ -1,12 +1,11 @@
 import { CardController } from "components/card/card_controller";
 import { ControllerManger } from "components/component_manager";
-import { BookSpreadType, Card, CardFaceType, CardSlot, ChoiceType, EncounterDefinition, Game, bookSpreadRoomDescriptor, cardDescriptor, cardSlotDescriptor, entityDescriptor } from "model/domain";
+import { BookSpreadType, Card, CardFaceType, CardSlot, ChoiceType, EncounterDefinition, Game, RecycleTarget, bookSpreadRoomDescriptor, cardDescriptor, cardSlotDescriptor, entityDescriptor } from "model/domain";
 import { calculateTargetCardEffectUsages, cardFace } from "./cards";
-import { allCardSlots } from "./games";
+import { DeckHolder, allCardSlots, pageCardSlots, pageDeck, playerDeck } from "./games";
 import { batch } from "solid-js";
 import { delay } from "base/delay";
 import { BookController } from "components/book/book_controller";
-import { nextRoomCards } from "data/room/cards/next_room";
 import { defaultPlayerCharacter } from "data/player/initial";
 import { UnreachableError } from "base/unreachable_error";
 import { hydrateEncounter } from "./encounters";
@@ -24,19 +23,22 @@ export class GameManager {
     const originalFace = cardFace(card, false);
     if (originalFace.type === CardFaceType.ChoiceBack) {
       await this.cardControllerManger.lookupController(card)?.flip();
+      await delay(500);
+      // TODO apply effects
     }
     const face = cardFace(card, false);
     if (face.type === CardFaceType.Choice) {
       const choice = face.choice;
       switch (choice.type) {
         case ChoiceType.NextChapter:
-          // TODO 
+          // TODO
           return this.nextPage(undefined);
         case ChoiceType.NextPage:
           return this.nextPage(choice.encounter);
         case ChoiceType.NextTurn:
-          // TODO 
-          return this.nextPage(undefined);
+          // TODO
+          await this.endTurn();
+          return this.startTurn();
         default:
           throw new UnreachableError(choice);
       }
@@ -47,17 +49,13 @@ export class GameManager {
     this.game.playerCharacter = entityDescriptor.create(defaultPlayerCharacter);
   }
 
-
   async nextPage(encounter: EncounterDefinition | undefined) {
     await this.endTurn();
     const spread = bookSpreadRoomDescriptor.create({
       type: BookSpreadType.Room,
       encounter: encounter && hydrateEncounter(encounter),
       cardSlots: new Array(3).fill(0).map(() => cardSlotDescriptor.freeze({
-        targetCard: cardDescriptor.freeze({
-          definition: nextRoomCards[Math.floor(Math.random() * nextRoomCards.length)],
-          visibleFaceIndex: 0,
-        }),
+        targetCard: undefined,
         playedCards: [],
       })),
     });
@@ -83,33 +81,17 @@ export class GameManager {
     }));
   }
 
-  async endTurn() {
-    // place all loose cards back in the deck
-    const cardSlots = allCardSlots(this.game);
-    await batch<Promise<void[]>>(() => {
-      return Promise.all(cardSlots.flatMap(cardSlot => {
-        if (cardSlot.targetCard != null
-            && this.game.playerCharacter != null
-            && this.game.playerHand.indexOf(cardSlot) >= 0
-        ) {
-          return [];
-        }
-        const playedCards = cardSlot.playedCards;
-        cardSlot.playedCards = [];
-        return playedCards.map(async card => {
-          if (card.visibleFaceIndex > 0) {
-            await this.cardControllerManger.lookupController(card)?.flip();
-          }
-          // TODO animate back in
-          if (this.game.playerCharacter != null) {
-            this.game.playerCharacter.deck = [...this.game.playerCharacter.deck, card];
-          }
-        });
-      }));
-    });
-  }
-
   async startTurn(draw = 3) {
+    const cardSlots = pageCardSlots(this.game);
+    const [pageDeckGetter, pageDeckSetter] = pageDeck(this.game);
+    cardSlots.forEach(cardSlot => {
+      const deck = pageDeckGetter();
+      if (deck.length > 0) {
+        cardSlot.targetCard = deck[deck.length - 1];
+        pageDeckSetter(deck.slice(0, -1));  
+      }
+    });
+
     const playerHand = this.game.playerHand;
     if (playerHand != null) {
       const availableSlots = playerHand.filter(
@@ -130,10 +112,40 @@ export class GameManager {
         });    
       }
     }
-    // delay 0 is necessary so free cards render in their face down state before
-    // auto-flipping
-    await delay(0);
+    // a delay (can be zero) is necessary so free cards render in their
+    // face down state before auto-flipping
+    await delay(500);
     await this.normalizeBoard();
+  }
+
+  async endTurn() {
+    // place all loose cards back in the deck
+    const pageDeckHolder = pageDeck(this.game);
+    const playerDeckHolder = playerDeck(this.game);
+    const cardSlots = allCardSlots(this.game);
+    await batch<Promise<void>>(async () => {
+      await Promise.all(cardSlots.flatMap(async cardSlot => {
+        const inPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0;
+        if (cardSlot.targetCard != null && inPlayerHand) {
+          return [];
+        }
+        const playedCards = cardSlot.playedCards;
+        cardSlot.playedCards = [];
+        const targetCard = cardSlot.targetCard;
+        if (!inPlayerHand && targetCard != null) {
+          // TODO parallelise this promise
+          await this.returnCardToDeck(targetCard, pageDeckHolder);
+          cardSlot.targetCard = undefined;
+        }
+        if (playerDeckHolder != null) {
+          await Promise.all(playedCards.map(async card => {
+            // TODO player discard deck
+            return this.returnCardToDeck(card, playerDeckHolder);
+          }));  
+        }
+        return;
+      }));
+    });
   }
 
   private isAutoFlippable(cardSlot: CardSlot): boolean {
@@ -150,7 +162,32 @@ export class GameManager {
     }
     return calculateTargetCardEffectUsages(cardSlot, this.cardControllerManger).cost.every(c => c.used);
   }
-  
+
+  private async returnCardToDeck(
+    card: Card,
+    drawDeck: DeckHolder,
+    discardDeck?: DeckHolder,
+  ) {
+    if (card.visibleFaceIndex > 0) {
+      await this.cardControllerManger.lookupController(card)?.flip();
+    }
+    // TODO animate to target deck
+    const recycleTarget = card.definition.recycleTarget;
+    const targetDeck = recycleTarget === RecycleTarget.DiscardDeckTop
+        ? discardDeck
+        : drawDeck;
+    if (targetDeck != null) {
+      const [getDeck, setDeck] = targetDeck;
+      const deck = getDeck();
+      const deckLength = deck.length;
+      const index = recycleTarget === RecycleTarget.DrawDeckBottom
+          ? 0
+          : recycleTarget === RecycleTarget.DrawDeckRandom
+              ? Math.floor(Math.random() * (deckLength + 1))
+              : deckLength
+      setDeck([...deck.slice(0, index), card, ...deck.slice(index)]);
+    }
+  }
 }
 
 

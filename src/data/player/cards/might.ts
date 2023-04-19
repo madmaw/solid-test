@@ -5,6 +5,7 @@ const cardFaceMightBack = cardFaceResourceBackDescriptor.freeze({
   name: 'might',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
+  foreground: undefined,
   cost: [],
 });
 const cardFaceMightFront = cardFaceResourceDescriptor.freeze({
@@ -12,6 +13,7 @@ const cardFaceMightFront = cardFaceResourceDescriptor.freeze({
   description: 'You brace for the next feat of strength.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
+  foreground: undefined,
   cost: [],
   benefit: [ForceUp],
 });

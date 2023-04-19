@@ -38,6 +38,12 @@ export const enum CardBackgroundType {
   Passageway,
 }
 
+export const enum CardForegroundType {
+  Rat = 1,
+  Trap,
+  Fountain,
+}
+
 export const enum CardFaceType {
   Resource = 1,
   ResourceBack,
@@ -94,7 +100,8 @@ export type Choice = ChoiceNextTurn | ChoiceNextPage | ChoiceNextChapter;
 
 const cardFaceCommon = {
   name: stringDescriptor,
-  background: new LiteralTypeDescriptor<CardBackgroundType>,
+  background: new LiteralTypeDescriptor<CardBackgroundType>(),
+  foreground: optionalDescriptor(new LiteralTypeDescriptor<CardForegroundType>()),
   cost: listDescriptor(effectDescriptor),
 };
 
@@ -209,9 +216,19 @@ export const bookSpreadDescriptor = discriminatingUnionDescriptor(
   m => m.type,
 );
 
+export const enum ChapterType {
+  Ruins = 1,
+}
+
+export const chapterDescriptor = activeRecordDescriptor({
+  type: new LiteralTypeDescriptor<ChapterType>(),
+  deck: deckDescriptor,
+});
+
 export const bookDescriptor = activeRecordDescriptor({
   // undefined == closed
   spread: optionalDescriptor(bookSpreadDescriptor),
+  chapter: chapterDescriptor,
 });
 
 export const gameDescriptor = activeRecordDescriptor({

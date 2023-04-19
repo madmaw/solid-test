@@ -5,6 +5,7 @@ const cardFaceKickBack = cardFaceResourceBackDescriptor.freeze({
   name: 'kick',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
+  foreground: undefined,
   cost: [ForceUp],
 });
 const cardFaceKickFront = cardFaceResourceDescriptor.freeze({
@@ -12,6 +13,7 @@ const cardFaceKickFront = cardFaceResourceDescriptor.freeze({
   description: 'A swift kick.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
+  foreground: undefined,
   cost: [ForceUp],
   benefit: [DamageUp],
 });

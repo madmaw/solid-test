@@ -162,4 +162,3 @@ function calculatePlayedCardEffectTotals(cardSlot: CardSlot, cardControllerMange
     return acc;
   }, new Map<Effect, number>());
 }
-

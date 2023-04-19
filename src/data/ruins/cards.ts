@@ -1,22 +1,25 @@
 import { DamageDown, DamageUp } from "data/effects";
-import { CardBackgroundType, CardFaceType, cardFaceChoiceBackDescriptor, cardFaceChoiceDescriptor, cardDefinitionDescriptor, RecycleTarget, ChoiceType, EncounterType, MonsterType, EventType } from "model/domain";
+import { CardBackgroundType, CardFaceType, cardFaceChoiceBackDescriptor, cardFaceChoiceDescriptor, cardDefinitionDescriptor, RecycleTarget, ChoiceType, EncounterType, MonsterType, EventType, Card, CardState, CardForegroundType } from "model/domain";
 
 const cardFaceNextRoomJammedDoorBack = cardFaceChoiceBackDescriptor.freeze({
   name: 'jammed door',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
+  foreground: undefined,
   cost: [DamageUp],
 });
 const cardFaceNextRoomDoorBack = cardFaceChoiceBackDescriptor.freeze({
   name: 'door',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
+  foreground: undefined,
   cost: [],
 });
 const cardFaceEmptyNextRoomFront = cardFaceChoiceDescriptor.freeze({
   name: 'empty passage',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
+  foreground: undefined,
   choice: {
     type: ChoiceType.NextPage,
     encounter: undefined,
@@ -28,6 +31,7 @@ const cardFaceRatNextRoomFront = cardFaceChoiceDescriptor.freeze({
   name: 'a big rat',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
+  foreground: CardForegroundType.Rat,
   choice: {
     type: ChoiceType.NextPage,
     encounter: {
@@ -42,6 +46,7 @@ const cardFaceTrappedNextRoomFront = cardFaceChoiceDescriptor.freeze({
   name: 'trapped hallway',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
+  foreground: CardForegroundType.Trap,
   choice: {
     type: ChoiceType.NextPage,
     encounter: undefined,
@@ -53,6 +58,7 @@ const cardFaceFountainNextRoomFront = cardFaceChoiceDescriptor.freeze({
   name: 'fountain',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
+  foreground: CardForegroundType.Fountain,
   choice: {
     type: ChoiceType.NextPage,
     encounter: {
@@ -64,7 +70,7 @@ const cardFaceFountainNextRoomFront = cardFaceChoiceDescriptor.freeze({
   benefit: [],
 });
 
-export const nextRoomCards = [
+export const cards = [
   cardFaceNextRoomJammedDoorBack,
   cardFaceNextRoomDoorBack,
 ].flatMap(back => {
@@ -79,4 +85,7 @@ export const nextRoomCards = [
       faces: [back, front],
     })
   });
-});
+}).map<CardState>(definition => ({
+  definition,
+  visibleFaceIndex: 0,
+}));

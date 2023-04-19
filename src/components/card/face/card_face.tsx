@@ -1,4 +1,4 @@
-import { CardBackgroundType, CardDefinition, CardFace, CardFaceChoice, CardFaceChoiceBack, CardFaceResource, CardFaceResourceBack, CardFaceType } from "model/domain";
+import { CardBackgroundType, CardDefinition, CardFace, CardFaceChoice, CardFaceChoiceBack, CardFaceResource, CardFaceResourceBack, CardFaceType, CardForegroundType } from "model/domain";
 import styles from './card_face.module.scss';
 import { Component } from "solid-js";
 import { Dynamic } from "solid-js/web";
@@ -44,10 +44,17 @@ export function CardFaceComponent(props: CardFaceProps & {
   return (
     <div classList={{
       [styles['card-face']]: true,
-      [styles['backgroundClear']]: props.face.background === CardBackgroundType.Clear,
-      [styles['backgroundCrosshatched']]: props.face.background === CardBackgroundType.Crosshatched,
-      [styles['backgroundDoor']]: props.face.background === CardBackgroundType.Door,
-      [styles['backgroundPassageway']]: props.face.background === CardBackgroundType.Passageway,
+      // backgrounds
+      [styles.background]: true,
+      [styles.clear]: props.face.background === CardBackgroundType.Clear,
+      [styles.crosshatched]: props.face.background === CardBackgroundType.Crosshatched,
+      [styles.door]: props.face.background === CardBackgroundType.Door,
+      [styles.passageway]: props.face.background === CardBackgroundType.Passageway,
+      // foregrounds
+      [styles.foreground]: props.face.foreground != null,
+      [styles.rat]: props.face.foreground === CardForegroundType.Rat,
+      [styles.trap]: props.face.foreground === CardForegroundType.Trap,
+      [styles.fountain]: props.face.foreground === CardForegroundType.Fountain,
     }}>
       <EffectStripComponent effects={props.benefit}/>
       <Dynamic

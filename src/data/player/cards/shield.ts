@@ -5,6 +5,7 @@ const cardFaceShieldBack = cardFaceResourceBackDescriptor.freeze({
   name: 'shield',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
+  foreground: undefined,
   cost: [ForceUp, ForceUp],
 });
 const cardFaceShieldFront = cardFaceResourceDescriptor.freeze({
@@ -12,11 +13,12 @@ const cardFaceShieldFront = cardFaceResourceDescriptor.freeze({
   description: 'You cower behind your shield',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
+  foreground: undefined,
   cost: [],
   benefit: [DamageDown],
 });
 export const cardTypeShield = cardDefinitionDescriptor.freeze({
-  recycleTarget: RecycleTarget.DrawDeckRandom,
+  recycleTarget: RecycleTarget.DrawDeckBottom,
   faces: [cardFaceShieldBack, cardFaceShieldFront],
 });
 export const cardShield = cardDescriptor.freeze({

@@ -4,7 +4,7 @@ import { AnimationManager } from "ui/animation/animation_manager";
 import { CardComponent } from "./card";
 import { CardFaceComponent } from "./face/card_face";
 import { ComponentManager } from "components/component_manager";
-import { createEffect, createMemo } from "solid-js";
+import { createMemo } from "solid-js";
 import { calculateCardEffectUsages, cardFace } from "rules/cards";
 
 export function createCardManager(game: Game) {
@@ -20,9 +20,6 @@ export function createCardManager(game: Game) {
       const usage = createMemo(() => {
         return calculateCardEffectUsages(game, card, cardManager);
       });
-      // createEffect(() =>{
-      //   console.log(usage());
-      // });
   
       return (
         <CardComponent
