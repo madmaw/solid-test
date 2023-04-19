@@ -2,6 +2,7 @@ import { Book, BookSpread } from "model/domain";
 import { BookComponent, PagePair } from "./book";
 import { Animations, BookController, PageComponentManager, bookUIDescriptor } from "./book_controller";
 import { AnimationManager } from "ui/animation/animation_manager";
+import { ParentProps } from "solid-js";
 
 export function createBook({
   leftPageComponentManager,
@@ -34,14 +35,15 @@ export function createBook({
     [leftPageComponentManager, rightPageComponentManager],
   );
 
-  const Component = (props: { onClickCover: () => void }) => {
+  const Component = (props: ParentProps<{ onClickCover: () => void }>) => {
     return (
       <BookComponent
           animations={animations}
           previousPages={renderPagePair(bookUI.previousSpread)}
           currentPages={renderPagePair(book.spread)}
-          onClickCover={props.onClickCover}
-      />
+          onClickCover={props.onClickCover}>
+        {props.children}
+      </BookComponent>
     );
   };
 

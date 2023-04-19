@@ -32,7 +32,9 @@ export class BookController {
       const previousSpread = this.book.spread;
       if (previousSpread != null) {
         await Promise.all(
-          this.pageComponentManagers.map(m => m.lookupController(previousSpread)?.popDown())
+          this.pageComponentManagers.map(
+            m => m.lookupController(previousSpread)?.popDown()
+          )
         );
       }
       batch(() => {

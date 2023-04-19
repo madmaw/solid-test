@@ -7,12 +7,12 @@ const FAKE_PAGE_COUNT = 64;
 
 export type PagePair = [JSXElement, JSXElement];
 
-export function PageComponent(props: ParentProps & {
+export function PageComponent(props: ParentProps<{
   z: number,
   onClick?: () => void,
   // TODO: find correct typing for style
   style?: JSX.CSSProperties,
-}) {
+}>) {
   return (
     <div class={styles.page} onClick={props.onClick} style={{
       transform: `translateZ(${props.z}px)`,
@@ -23,12 +23,12 @@ export function PageComponent(props: ParentProps & {
   );
 }
 
-export function BookComponent(props: {
+export function BookComponent(props: ParentProps<{
   animations: AnimationManager<Animations>,
   previousPages: PagePair | undefined,
   currentPages: PagePair | undefined,
   onClickCover?: () => void,
-}) {
+}>) {
   const [spineRef, setSpineRef] = createSignal<HTMLDivElement>();
   return (
     <div class={styles.container}>
@@ -77,6 +77,11 @@ export function BookComponent(props: {
             <h1>GRAND TERMINUS</h1>
           </PageComponent>
         </div>
+        {props.children && (
+          <div class={styles.spread}>
+            {props.children}
+          </div>
+        )}
       </div>
     </div>
   );

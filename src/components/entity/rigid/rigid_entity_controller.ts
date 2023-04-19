@@ -39,6 +39,20 @@ export class RigidEntityController implements EntityController {
     );
   }
 
+  async appear() {
+    return this.performAnimation(
+      Animations.Die,
+      () => this.dynamicEntityController?.appear(),
+    );
+  }
+
+  async die() {
+    return this.performAnimation(
+      Animations.Die,
+      () => this.dynamicEntityController?.die(),
+    );
+  }
+
   private async performAnimation(
     animation: Animations | undefined,
     dynamicAnimation: () => Promise<void> | undefined,
@@ -49,4 +63,6 @@ export class RigidEntityController implements EntityController {
       dynamicAnimation(),
     ]);
   }
+
+
 }

@@ -7,12 +7,16 @@ import { createCardManager } from "components/card/create";
 import { createPageManager } from "components/page/create";
 import { PageSide } from "components/page/page_controller";
 import { initialGame } from "data/initial";
-import { createSpread } from "components/spread/create";
+import { createSpreadOverlay } from "components/spread/overlay/create";
 import { InteractionManager } from "rules/interaction_manager";
 import { createDragOverlay } from "components/drag/create";
 import { GameManager } from "rules/game_manager";
 import { createDeck } from "components/deck/create";
 import { createStatusOverlay } from "components/status/create";
+import { createEncounter } from "components/encounter/create";
+import { createEncounterBattleManger } from "components/encounter/battle/create";
+import { gameEncounterBattle } from "rules/games";
+import { createMemo } from "solid-js";
 
 window.onload = function () {
   const app = document.getElementById('app')!;
@@ -36,8 +40,8 @@ window.onload = function () {
   } = createCardSlots(cardSlotManager.FactoryComponent);
 
   const {
-    Component: SpreadComponent,
-  } = createSpread({
+    Component: SpreadOverlayComponent,
+  } = createSpreadOverlay({
     CardSlotsComponent,
   });
 
@@ -91,7 +95,7 @@ window.onload = function () {
     return (
       <>
         {
-          game.book.spread && <SpreadComponent model={game.book.spread}/>
+          game.book.spread && <SpreadOverlayComponent model={game.book.spread}/>
         }
       </>
     );
@@ -102,8 +106,16 @@ window.onload = function () {
     cardManager.FactoryComponent,
   );
 
+  const encounterBattleComponentManager = createEncounterBattleManger();
+
   function Book() {
-    return <BookImpl onClickCover={onClickCover} />;
+    const battle = createMemo(() => gameEncounterBattle(game));
+    return (
+      <BookImpl onClickCover={onClickCover}>
+        {battle() && <encounterBattleComponentManager.FactoryComponent
+            model={battle()!}/>}
+      </BookImpl>
+    );
   }
 
   function StatusOverlay() {
