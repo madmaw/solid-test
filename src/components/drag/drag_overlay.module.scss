@@ -1,11 +1,11 @@
-@use '../card/card.module.scss';
+@use 'components/constants.module.scss';
 
 .drag {
   position: absolute;
-  width: cardWidth;
-  height: cardHeight;
-  margin-left: calc(cardWidth/-2);
-  margin-top: calc(cardHeight * -1);
+  width: constants.$cardWidth;
+  height: constants.$cardHeight;
+  margin-left: calc(constants.$cardWidth/-2);
+  margin-top: calc(constants.$cardHeight * -1);
 }
 
 .scale-up { 

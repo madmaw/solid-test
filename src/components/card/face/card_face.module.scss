@@ -1,4 +1,4 @@
-@use '../card.module.scss';
+@use '../../constants.module.scss';
 
 .card-face {
   display: flex;
@@ -7,7 +7,7 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: cardBorderRadius;
+  border-radius: constants.$cardBorderRadius;
   border-width: .1vh;
   border-style: solid;  
   box-sizing: border-box;
@@ -42,8 +42,8 @@
   position: absolute;
   text-align: center;
   vertical-align: middle;
-  font-size: calc(cardWidth/2);
-  line-height: cardHeight;
+  font-size: calc(constants.$cardWidth/2);
+  line-height: constants.$cardHeight;
 }
 
 .card-face.foreground.rat::before {

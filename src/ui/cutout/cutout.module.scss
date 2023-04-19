@@ -1,4 +1,5 @@
-@value popupAngle: -85deg;
+@use 'components/constants.module.scss';
+
 
 .cutout {
   transform-origin: bottom;
@@ -9,8 +10,8 @@
 }
 
 .cutout.up {
-  transform: rotateX(popupAngle);
-  transition-duration: 400ms;
+  transform: rotateX(constants.$tableTiltCorrectionAngle);
+  transition-duration: 300ms;
   transition-timing-function: cubic-bezier(.47,1.64,.41,.8);
 }
 

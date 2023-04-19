@@ -1,6 +1,6 @@
-@use '../card/card.module.scss';
+@use '../constants.module.scss';
 
-@value usedAnimationDuration: 400ms;
+$usedAnimationDuration: 400ms;
 
 .container {
   flex: 1;
@@ -8,18 +8,18 @@
   flex-direction: column;
   align-items: center;
   justify-items: start;
-  height: calc(cardHeight * 2.5);
+  height: calc(constants.$cardHeight * 2.5);
   gap: 2%;
 }
 
 .target-card {
-  width: cardWidth;
-  height: cardHeight;
+  width: constants.$cardWidth;
+  height: constants.$cardHeight;
 }
 
 .target-card.bordered {
   border: .1vw solid #422;
-  border-radius: cardBorderRadius;
+  border-radius: constants.$cardBorderRadius;
 }
 
 .target-card.none {
@@ -63,21 +63,21 @@
   flex-direction: column;
   align-items: center;
   justify-items: start;
-  transform-origin: calc(cardWidth/2) calc(cardHeight/2);
-  transition: transform usedAnimationDuration ease-in-out;
+  transform-origin: calc(constants.$cardWidth/2) calc(constants.$cardHeight/2);
+  transition: transform $usedAnimationDuration ease-in-out;
 }
 
 .played-cards.used {
-  transform: translateY(calc(cardHeight/-1)) rotateZ(90deg);
+  transform: translateY(calc(constants.$cardHeight/-1)) rotateZ(90deg);
 }
 
 .played-card {
-  margin-bottom: calc(-.75 * cardHeight);
-  transition: margin-bottom usedAnimationDuration ease-in-out;
+  margin-bottom: calc(-.75 * constants.$cardHeight);
+  transition: margin-bottom $usedAnimationDuration ease-in-out;
 }
 
 .played-card.used {
-  margin-bottom: calc(-1 * cardHeight);
+  margin-bottom: calc(-1 * constants.$cardHeight);
 }
 
 @for $i from 1 through 3 {

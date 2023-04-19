@@ -1,25 +1,18 @@
-@use '../card/card.module.scss';
+@use 'components/constants.module.scss';
 
-@value tableWidth: min(100vw, 100vh);
-@value tableHeight: calc(tableWidth * 1.3);
+$tableWidth: min(100vw, 100vh);
+$tableHeight: calc($tableWidth * 1.3);
 
-// NOTE: this crashes parceljs 
-// @value pageWidth: min(30vh, 30vw);
-@value pageWidth: 30vh;
-@value pageHeight: calc(pageWidth * 1.4);
+$bookWidth: constants.$pageWidth;
+$bookHeight: constants.$pageHeight;
+$bookTop: 10%;
 
-@value bookWidth: pageWidth;
-@value bookHeight: pageHeight;
-@value bookTop: 10%;
+$handSlotTop: 8%;
+$handSlotWidth: calc($tableWidth / 3);
+$handSlotHeight: constants.$cardHeight;
 
-@value handSlotTop: 8%;
-@value handSlotWidth: calc(tableWidth / 3);
-@value handSlotHeight: cardHeight;
-
-@value tableColor: #763F13;
-@value tableColorDark: #221100;
-
-@value tiltAngle: 50deg;
+$tableColor: #763F13;
+$tableColorDark: #221100;
 
 .container {
   position: absolute;
@@ -32,7 +25,7 @@
 
 .room {
   position: absolute;
-  perspective: calc(tableWidth);
+  perspective: calc($tableWidth);
   perspective-origin: 50% 50%;
   width: 100%;
   height: 100%;
@@ -48,78 +41,78 @@
 }
 
 .table {
-  background: tableColor;
+  background: $tableColor;
   position: absolute;
-  width: tableWidth;
-  height: tableHeight;
-  transform-origin: calc(tableWidth/2) tableHeight;
+  width: $tableWidth;
+  height: $tableHeight;
+  transform-origin: calc($tableWidth/2) $tableHeight;
   transition: transform 1s ease-in-out;
   pointer-events: all;
   bottom: 0;
-  left: calc((100vw - tableWidth)/2);
+  left: calc((100vw - $tableWidth)/2);
 }
 
 .table.topDown {
-  background: tableColorDark;
+  background: $tableColorDark;
   transform:
       rotateX(20deg)
-      translate(0, calc(bookHeight))
-      translateZ(calc(-1 * tableWidth));
+      translate(0, calc($bookHeight))
+      translateZ(calc(-1 * $tableWidth));
 }
 
 .table.topDownBookCentered {
   // TODO gradients aren't transitionable, but an overlay with opacity is...
-  background: linear-gradient(tableColorDark, tableColor);
+  background: linear-gradient($tableColorDark, $tableColor);
   transform:
       rotateX(20deg)
-      translate(calc(-1 * (bookWidth / 2)), calc(tableHeight - bookHeight - bookTop - handSlotTop))
-      translateZ(calc(tableHeight/4))
+      translate(calc(-1 * ($bookWidth / 2)), calc($tableHeight - $bookHeight - $bookTop - $handSlotTop))
+      translateZ(calc($tableHeight/4))
       ;
 }
 
 .table.tilted {
   // TODO gradients aren't transitionable, but an overlay with opacity is...
-  background: linear-gradient(tableColorDark, tableColor);
+  background: linear-gradient($tableColorDark, $tableColor);
   transform:
-      translateZ(calc(tableHeight * .8))
+      translateZ(calc($tableHeight * .8))
       translate(0, 0)
-      rotateX(tiltAngle)
+      rotateX(constants.$tableTiltAngle)
       ;
 }
 
 .book {
   position: absolute;
-  top: bookTop;
+  top: $bookTop;
   left: 50%;
-  width: bookWidth;
-  height: bookHeight;
+  width: $bookWidth;
+  height: $bookHeight;
   background-color: brown;
 }
 
 .hand {
   position: absolute;
   display: flex;
-  top: calc(bookTop + bookHeight + handSlotTop);
-  left: calc((100% - handSlotWidth) / 2);
-  width: handSlotWidth;
-  height: handSlotHeight;
+  top: calc($bookTop + $bookHeight + $handSlotTop);
+  left: calc((100% - $handSlotWidth) / 2);
+  width: $handSlotWidth;
+  height: $handSlotHeight;
 }
 
 .deck {
   position: absolute;
-  top: calc(bookTop + bookHeight + handSlotTop);
-  left: calc(50% - bookWidth * .8);
-  width: cardWidth;
-  height: cardHeight;
+  top: calc($bookTop + $bookHeight + $handSlotTop);
+  left: calc(50% - $bookWidth * .8);
+  width: constants.$cardWidth;
+  height: constants.$cardHeight;
 }
 
 .spread-overlay {
   position: absolute;
-  top: calc(bookTop + bookHeight);
-  left: calc(tableWidth/2 - bookWidth/2);
-  width: calc(bookWidth);
-  height: cardHeight;
-  transform: translateZ(calc(cardHeight * 2.5)) rotateX(calc(-80deg));
+  top: calc($bookTop + $bookHeight);
+  left: calc($tableWidth/2 - $bookWidth/2);
+  width: calc($bookWidth);
+  height: constants.$cardHeight;
+  transform: translateZ(calc(constants.$cardHeight * 2.5)) rotateX(constants.$tableTiltCorrectionAngle);
   transform-origin: top;
 }
 

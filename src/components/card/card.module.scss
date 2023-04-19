@@ -1,18 +1,17 @@
-@value cardWidth: min(4.5vw, 4.5vh);
-@value cardHeight: calc(cardWidth * 1.39);
-@value cardBorderRadius: .4vw;
-@value flipAnimationDuration: 200ms;
+@use 'components/constants.module.scss';
+
+$flipAnimationDuration: 200ms;
 
 .card {
-  width: cardWidth;
-  height: cardHeight;
+  width: constants.$cardWidth;
+  height: constants.$cardHeight;
   transform-origin: center;
   transform: translateZ(0);
-  transition: transform flipAnimationDuration ease-in-out;
+  transition: transform $flipAnimationDuration ease-in-out;
 }
 
 .card.elevated {
-  transform: translateZ(calc(cardWidth/2));
+  transform: translateZ(calc(constants.$cardWidth/2));
 }
 
 .rotate {
@@ -22,13 +21,13 @@
 
 .rotate.flippingUpToVertical {
   transform: rotateY(90deg);
-  transition: transform calc(flipAnimationDuration/2) ease-in;
-  transition-delay: flipAnimationDuration;
+  transition: transform calc($flipAnimationDuration/2) ease-in;
+  transition-delay: $flipAnimationDuration;
 }
 
 .rotate.flippingDownFromVertical {
   transform: rotateY(180deg);
-  transition: transform calc(flipAnimationDuration/2) ease-out;
+  transition: transform calc($flipAnimationDuration/2) ease-out;
 }
 
 .scale {

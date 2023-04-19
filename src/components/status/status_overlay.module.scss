@@ -1,5 +1,5 @@
-@value padding: min(2vw, 2vh);
-@value healthBox: min(4vw, 4vh);
+$padding: min(2vw, 2vh);
+$healthBox: min(4vw, 4vh);
 
 .overlay {
   position: absolute;
@@ -26,9 +26,9 @@
 }
 
 .health {
-  width: healthBox;
-  height: healthBox;
-  font-size: healthBox;
+  width: $healthBox;
+  height: $healthBox;
+  font-size: $healthBox;
   text-align: center;
   color: white;
 }

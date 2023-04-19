@@ -1,0 +1,14 @@
+$unit: min(1vw, 1vh);
+
+$cardWidth: calc($unit * 4.5);
+$cardHeight: calc($cardWidth * 1.39);
+$cardBorderRadius: calc($cardWidth * .1);
+
+//$pageWidth: min(30vh, 30vw);
+$pageWidth: 30vh;
+$pageHeight: calc($pageWidth * 1.4);
+
+$tableTiltAngle: 50deg;
+$tableTiltCorrectionAngle: -80deg;
+
+
