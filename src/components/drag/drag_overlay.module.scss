@@ -5,9 +5,9 @@
   width: constants.$cardWidth;
   height: constants.$cardHeight;
   margin-left: calc(constants.$cardWidth/-2);
-  margin-top: calc(constants.$cardHeight * -1);
+  margin-top: calc(constants.$cardHeight/-2);
 }
 
 .scale-up { 
-  transform: scale(2.5);
+  transform: scale(1);
 }

@@ -9,7 +9,7 @@ export function EncounterBattleComponent(props: ParentProps<{ model: EncounterBa
       <EntityHealth
           health={props.model.monster.health}
           maxHealth={props.model.monster.maxHealth}
-          small={true}/>
+          />
       {props.children}
     </div>
   )
