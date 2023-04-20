@@ -1,4 +1,4 @@
-import { DamageDown, DamageUp, Finesse, FireUp, Force } from "data/effects";
+import { DamageDown, DamageUp, Finesse, FireUp, Force, Mind } from "data/effects";
 import { CardBackChoice, CardBackgroundType, CardDefinition, CardFaceType, CardForegroundType, CardFrontChoice, ChoiceType, RecycleTarget, cardDescriptor } from "model/domain";
 
 const cardBackRatBeligerence: CardBackChoice = {
@@ -43,7 +43,7 @@ export const cardFrontRatScreech: CardFrontChoice = {
   },
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Rat,
-  cost: [Force, Force],
+  cost: [Force, Finesse, Mind],
   benefit: [],
 };
 export const cardFrontRatCower: CardFrontChoice = {

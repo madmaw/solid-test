@@ -1,7 +1,7 @@
 import { Effect, EffectDirection, SymbolType } from "model/domain";
 import styles from './effect.module.scss';
 import { Component } from "solid-js";
-import { SymbolDamageComponent, SymbolFinesseComponent, SymbolForceComponent } from "./symbol/symbols";
+import { SymbolDamageComponent, SymbolFinesseComponent, SymbolForceComponent, SymbolMindComponent } from "./symbol/symbols";
 import { Dynamic } from "solid-js/web";
 
 const ResourceSymbols: Record<SymbolType, Component<{ used: boolean }>> = {
@@ -10,6 +10,9 @@ const ResourceSymbols: Record<SymbolType, Component<{ used: boolean }>> = {
       stroke={styles.stroke}/>,
   [SymbolType.Finesse]: props => <SymbolFinesseComponent
       fill={props.used ? styles.fill : styles.fillFinesse}
+      stroke={styles.stroke}/>,
+  [SymbolType.Mind]: props => <SymbolMindComponent
+      fill={props.used ? styles.fill : styles.fillMind}
       stroke={styles.stroke}/>,
   [SymbolType.Magic]: () => <>{'R'}</>,
   [SymbolType.Damage]: props => <SymbolDamageComponent

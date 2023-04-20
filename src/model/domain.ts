@@ -9,6 +9,8 @@ export const enum SymbolType {
   Force = 1,
   // finesse resource
   Finesse,
+  // mind resource
+  Mind,
   // magic resource (fey?)
   Magic,
   // fire damage/light

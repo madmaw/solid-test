@@ -1,4 +1,4 @@
-@use '../../constants.module.scss';
+@use 'components/constants.module.scss';
 
 .card-face {
   display: flex;
@@ -12,8 +12,9 @@
   border-style: solid;  
   box-sizing: border-box;
   color: white;
-  text-shadow: black 0 0 .5vw;
+  text-shadow: black 0 0 calc(constants.$unit/2);
   border-color: #222;
+  padding: calc(constants.$unit/2) 0;  
 }
 
 .card-face.background.clear {
@@ -56,4 +57,19 @@
 
 .card-face.foreground.fountain::before {
   content: '⛲';
+}
+
+.flip {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+svg {
+  width: 100%;
+  height: calc(constants.$unit * 2);
+  stroke: #fff;
+  fill: none; 
+  stroke-width: constants.$unit;
 }

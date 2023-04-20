@@ -8,7 +8,7 @@ $bookHeight: constants.$pageHeight;
 $bookTop: 10%;
 
 $handSlotTop: 8%;
-$handSlotWidth: calc($tableWidth/3);
+$handSlotWidth: calc($tableWidth * .4);
 $handSlotHeight: constants.$cardHeight;
 
 $tableColor: #763F13;
@@ -103,7 +103,7 @@ $tableColorDark: #221100;
 .deck {
   position: absolute;
   top: calc($bookTop + $bookHeight + $handSlotTop);
-  left: calc(50% - $bookWidth * .9);
+  left: calc(50% - $handSlotWidth/2 - 10vw);
   width: constants.$cardWidth;
   height: constants.$cardHeight;
 }
@@ -114,7 +114,7 @@ $tableColorDark: #221100;
   left: calc($tableWidth/2 - $bookWidth/2);
   width: calc($bookWidth);
   height: constants.$cardHeight;
-  transform: translateZ(calc(constants.$cardHeight * 3)) rotateX(constants.$tableTiltCorrectionAngle);
+  transform: translateZ(calc(constants.$cardHeight * 2)) rotateX(constants.$tableTiltCorrectionAngle);
   transform-origin: top;
 }
 

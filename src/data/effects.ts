@@ -10,6 +10,11 @@ export const Finesse: Effect = {
   symbol: SymbolType.Finesse,
 };
 
+export const Mind: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.Mind,
+};
+
 export const Magic: Effect = {
   direction: EffectDirection.Omni,
   symbol: SymbolType.Magic,

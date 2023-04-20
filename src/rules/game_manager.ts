@@ -221,15 +221,23 @@ export class GameManager {
     await batch<Promise<void>>(async () => {
       await Promise.all(cardSlots.flatMap(async cardSlot => {
         const inPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0;
-        if (cardSlot.targetCard != null && inPlayerHand) {
+        const targetCard = cardSlot.targetCard;
+        if (
+            targetCard != null
+                && inPlayerHand
+                && targetCard.visibleFaceIndex > 0
+                || playerDeckHolder == null
+        ) {
           return [];
         }
         const playedCards = cardSlot.playedCards;
         cardSlot.playedCards = [];
-        const targetCard = cardSlot.targetCard;
-        if (!inPlayerHand && targetCard != null) {
+        if (targetCard != null) {
           // TODO parallelise this promise
-          await this.returnCardToDeck(targetCard, pageDeckHolder);
+          await this.returnCardToDeck(
+              targetCard,
+              inPlayerHand ? playerDeckHolder : pageDeckHolder,
+          );
           cardSlot.targetCard = undefined;
         }
         if (playerDeckHolder != null) {

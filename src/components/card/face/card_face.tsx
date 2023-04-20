@@ -1,4 +1,4 @@
-import { CardBackgroundType, CardDefinition, CardFace, CardForegroundType } from "model/domain";
+import { CardBackgroundType, CardDefinition, CardFace, CardFaceType, CardForegroundType } from "model/domain";
 import styles from './card_face.module.scss';
 import { EffectUsage } from "rules/cards";
 import { EffectStripComponent } from "components/effect/effect_strip";
@@ -30,11 +30,27 @@ export function CardFaceComponent(props: CardFaceProps & {
       [styles.trap]: props.face.foreground === CardForegroundType.Trap,
       [styles.fountain]: props.face.foreground === CardForegroundType.Fountain,
     }}>
-      <EffectStripComponent effects={props.benefit}/>
+      {props.face.type === CardFaceType.ChoiceBack
+          || props.face.type === CardFaceType.ResourceBack
+          ? <FlipArrow/>
+          : <EffectStripComponent effects={props.benefit}/>} 
       <CardFaceDescriptionComponent>
         <CardFaceNameComponent name={props.face.name}/>
       </CardFaceDescriptionComponent>
       <EffectStripComponent effects={props.cost}/>
+    </div>
+  );
+}
+
+function FlipArrow() {
+  return (
+    <div class={styles.flip}>
+      <svg viewBox="0 0 200 100">
+        <g>
+          <path d="M 10 70 A 120 120 0 0 1 180 70"/>
+          <path d="M 180 50 L 180 70 L 160 70"/>
+        </g>
+      </svg>
     </div>
   );
 }
