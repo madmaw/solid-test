@@ -6,6 +6,10 @@
   visibility: hidden;
 }
 
+.inner.flipX {
+  transform: scaleX(-1);
+}
+
 .entity.idle {
   animation-name: idleAnimation;
   animation-iteration-count: infinite;
@@ -21,7 +25,7 @@
   }
 
   to {
-    transform: scaleY(1.1);
+    transform: scaleY(1.05);
   }
 }
 
@@ -29,16 +33,16 @@
   animation-name: appearAnimation;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
-  animation-duration: 300ms;
+  animation-duration: 200ms;
 }
 
 @keyframes appearAnimation {
   from {
-    transform: skewX(90deg) scaleX(0);
+    transform: translateY(100%);
   }
 
   to {
-    transform: skewX(0) scaleX(1);
+    transform: translateY(0);
   }
 }
 
@@ -60,6 +64,27 @@
   }
 }
 
-.inner.flipX {
-  transform: scaleX(-1);
+.entity.die {
+  animation-name: dieAnimation;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+  animation-duration: 800ms;
+}
+
+@keyframes dieAnimation {
+  from {
+    transform: translateY(0);
+  }
+
+  33% {
+    transform: translateY(-10%);
+  }
+
+  66% {
+    transform: translateY(-10%) rotate(180deg);
+  }
+
+  to {
+    transform: translateY(100%) rotate(180deg);
+  }
 }

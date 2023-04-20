@@ -1,5 +1,4 @@
 $padding: min(2vw, 2vh);
-$healthBox: min(4vw, 4vh);
 
 .overlay {
   position: absolute;
@@ -25,18 +24,3 @@ $healthBox: min(4vw, 4vh);
   justify-content: start;
 }
 
-.health {
-  width: $healthBox;
-  height: $healthBox;
-  font-size: $healthBox;
-  text-align: center;
-  color: white;
-}
-
-.health::after {
-  content: '♡';
-}
-
-.health.filled::after {
-  content: '♥';
-}

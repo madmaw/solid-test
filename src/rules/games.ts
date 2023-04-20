@@ -55,4 +55,5 @@ export function gameEncounterBattle(game: Game): EncounterBattle | undefined {
       return spread.encounter;
     }
   }
+  return
 }

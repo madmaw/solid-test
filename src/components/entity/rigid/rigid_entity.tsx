@@ -18,6 +18,7 @@ export function RigidEntityComponent(props: ParentProps<{
       case Animations.Attack:
         return styles.attackAnimation;
       case Animations.Die:
+        return styles.dieAnimation;
       case Animations.Special:
       case Animations.TakeDamage:
       case undefined:
@@ -36,6 +37,7 @@ export function RigidEntityComponent(props: ParentProps<{
           [styles.idle]: props.activeAnimation == null,
           [styles.appear]: props.activeAnimation === Animations.Appear,
           [styles.attack]: props.activeAnimation === Animations.Attack,
+          [styles.die]: props.activeAnimation === Animations.Die,
         }}
         onAnimationEnd={onAnimationEnd}
         ref={setRef}>

@@ -1,8 +1,36 @@
 import { CardController } from "components/card/card_controller";
 import { ControllerManger } from "components/component_manager";
-import { BookSpreadType, Card, CardFaceType, CardSlot, ChoiceType, Encounter, EncounterBattle, EncounterDefinition, Game, RecycleTarget, bookSpreadRoomDescriptor, cardDescriptor, cardSlotDescriptor, entityDescriptor } from "model/domain";
-import { calculateTargetCardEffectUsages, cardFace } from "./cards";
-import { DeckHolder, allCardSlots, gameEncounterBattle, pageCardSlots, pageDeck, playerDeck } from "./games";
+import {
+  BookSpreadType,
+  Card,
+  CardFaceType,
+  CardSlot,
+  ChoiceType,
+  EffectDirection,
+  EncounterBattle,
+  EncounterDefinition,
+  Entity,
+  Game,
+  RecycleTarget,
+  SymbolType,
+  bookSpreadRoomDescriptor,
+  cardSlotDescriptor,
+  entityDescriptor,
+} from "model/domain";
+import {
+  EffectUsage,
+  calculateCardEffectUsages,
+  calculateTargetCardEffectUsages,
+  cardFace,
+} from "./cards";
+import {
+  DeckHolder,
+  allCardSlots,
+  gameEncounterBattle,
+  pageCardSlots,
+  pageDeck,
+  playerDeck,
+} from "./games";
 import { batch } from "solid-js";
 import { delay } from "base/delay";
 import { BookController } from "components/book/book_controller";
@@ -21,19 +49,27 @@ export class GameManager {
     
   }
 
-  async chooseCard(card: Card) {
-    const originalFace = cardFace(card, false);
+  async chooseTargetCard(cardSlot: CardSlot) {
+    const targetCard = cardSlot.targetCard;
+    if (targetCard == null) {
+      return;
+    }
+
+    const originalFace = cardFace(targetCard, false);
     if (originalFace.type === CardFaceType.ChoiceBack) {
-      await this.cardControllerManger.lookupController(card)?.flip();
+      await this.cardControllerManger.lookupController(targetCard)?.flip();
       await delay(500);
       // TODO apply effects
     }
+
     const battle = gameEncounterBattle(this.game);
     if (battle != null) {
-      const face = cardFace(card, false);
+      const face = cardFace(targetCard, false);
       await this.battleEncounterControllerManager.lookupController(battle)?.perform(face);
     }
-    const face = cardFace(card, false);
+    await this.applyCardEffects(cardSlot);
+
+    const face = cardFace(targetCard, false);
     if (face.type === CardFaceType.Choice) {
       const choice = face.choice;
       switch (choice.type) {
@@ -52,15 +88,37 @@ export class GameManager {
     }
   }
 
-  async applyTargetCardEffects(cardSlot: CardSlot) {
+  async applyCardEffects(cardSlot: CardSlot) {
     const targetCard = cardSlot.targetCard;
-    if (targetCard == null) {
+    const playerCharacter = this.game.playerCharacter;
+    if (targetCard == null || playerCharacter == null) {
       return;
     }
-    const usages = calculateTargetCardEffectUsages(cardSlot, undefined);
-    for (const usage of usages.cost) {
+    const cardUsages = calculateTargetCardEffectUsages(cardSlot, undefined);
+    await this.applyUsages(cardUsages.cost, EffectDirection.Down, playerCharacter);
+    // is there a monster, and is the slot in the monsters hand?
+    const battle = gameEncounterBattle(this.game);
+    if (battle == null || this.game.playerHand.indexOf(cardSlot) >= 0) {
+      return;
+    }
+    await this.applyUsages(cardUsages.benefit, EffectDirection.Up, battle.monster);
+    // also apply the cards
+    for (const playedCard of cardSlot.playedCards) {
+      const playedCardUsages = calculateCardEffectUsages(this.game, playedCard, undefined);
+      await this.applyUsages(playedCardUsages.benefit, EffectDirection.Up, battle.monster);
+    }
+  }
+
+  private async applyUsages(usages: readonly EffectUsage[], direction: EffectDirection, to: Entity) {
+    for(const usage of usages) {
       if (!usage.used) {
-        
+        if (usage.effect.direction === direction) {
+          switch (usage.effect.symbol) {
+            case SymbolType.Damage:
+              to.health--;
+              break;
+          }
+        }
       }
     }
   }
@@ -145,6 +203,12 @@ export class GameManager {
   }
 
   async endTurn() {
+    // if we're in battle and the monster is dead, clear the battle
+    const battle = gameEncounterBattle(this.game);
+    let dead = battle != null && battle.monster.health <= 0;
+    if (dead && battle) {
+      await this.battleEncounterControllerManager.lookupController(battle)?.die();
+    }
     // place all loose cards back in the deck
     const pageDeckHolder = pageDeck(this.game);
     const playerDeckHolder = playerDeck(this.game);
@@ -172,6 +236,12 @@ export class GameManager {
         return;
       }));
     });
+    if (dead) {
+      const spread = this.game.book.spread;
+      if (spread?.type === BookSpreadType.Room) {
+        spread.encounter = undefined;
+      }
+    }
   }
 
   private isAutoFlippable(cardSlot: CardSlot): boolean {

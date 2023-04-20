@@ -1,0 +1,29 @@
+$healthBoxLarge: min(4vw, 4vh);
+$healthBoxSmall: min(2vw, 2vh);
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.health {
+  width: $healthBoxLarge;
+  height: $healthBoxLarge;
+  font-size: $healthBoxLarge;
+  text-align: center;
+  color: white;
+}
+
+.health.small {
+  width: $healthBoxSmall;
+  height: $healthBoxSmall;
+  font-size: $healthBoxSmall;
+}
+
+.health::after {
+  content: '♡';
+}
+
+.health.filled::after {
+  content: '♥';
+}

@@ -54,10 +54,14 @@ export class RigidEntityController implements EntityController {
   }
 
   async die() {
-    return this.performAnimation(
+    await this.performAnimation(
       Animations.Die,
       () => this.dynamicEntityController?.die(),
     );
+    batch(() =>{
+      this.rigidEntityUI.hidden = true;
+      this.rigidEntityUI.activeAnimation = undefined;  
+    });
   }
 
   private async performAnimation(

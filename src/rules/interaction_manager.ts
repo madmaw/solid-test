@@ -104,9 +104,7 @@ export class InteractionManager {
 
   click(cardSlot: CardSlot) {
     return this.politelyAnimate(async () => {
-      if (cardSlot.targetCard != null) {
-        return this.gameManager.chooseCard(cardSlot.targetCard);
-      }  
+      return this.gameManager.chooseTargetCard(cardSlot);
     });
   }
 
@@ -159,12 +157,16 @@ export class InteractionManager {
         const [draggedCard, draggedCardSlot] = dragged;
         const interaction = this.allowedInteraction(targetCardSlot);
         if (draggedCardSlot != targetCardSlot && interaction == Interaction.Drop) {
+          // apply effects of dragged card
+          await this.gameManager.applyCardEffects(draggedCardSlot);
+
           batch(() => {
             targetCardSlot.playedCards = [...targetCardSlot.playedCards, draggedCard];
             draggedCardSlot.targetCard = undefined;
             this.setDragged();
-          });  
-          this.gameManager.normalizeBoard();
+          });
+
+          await this.gameManager.normalizeBoard();
         } else {
           batch(() =>{
             draggedCardSlot.targetCard = draggedCard;
@@ -172,7 +174,7 @@ export class InteractionManager {
           });
         }
         this.cardSlotManager.lookupController(draggedCardSlot)?.setTargetCardHidden(false);
-      }  
+      }
     });
   }
 
