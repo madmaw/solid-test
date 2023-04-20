@@ -109,10 +109,15 @@ export class GameManager {
     }
   }
 
-  private async applyUsages(usages: readonly EffectUsage[], direction: EffectDirection, to: Entity) {
+  private async applyUsages(
+      usages: readonly EffectUsage[],
+      direction: EffectDirection.Up | EffectDirection.Down,
+      to: Entity,
+  ) {
     for(const usage of usages) {
       if (!usage.used) {
-        if (usage.effect.direction === direction) {
+        // direction can be used as a bitwise flag
+        if (usage.effect.direction & direction) {
           switch (usage.effect.symbol) {
             case SymbolType.Damage:
               to.health--;

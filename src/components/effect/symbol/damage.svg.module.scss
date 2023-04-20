@@ -1,0 +1,5 @@
+@use './symbol.module.scss';
+
+.path {
+  stroke-width: symbol.$strokeWidth;
+}

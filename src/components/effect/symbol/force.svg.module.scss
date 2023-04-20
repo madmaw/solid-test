@@ -1,0 +1,16 @@
+@use './symbol.module.scss';
+
+$rectWidth: 60%;
+$rectHeight: 60%;
+
+.rect {
+  width: $rectWidth;
+  height: $rectHeight;
+  x: calc((100% - $rectWidth)/2);
+  y: calc((100% - $rectHeight)/2);
+  rx: 10%;
+  ry: 10%;
+  stroke-width: symbol.$strokeWidth;
+  // transform: rotate(45deg);
+  transform-origin: center;
+}

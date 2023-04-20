@@ -1,5 +1,5 @@
-import { ForceUp } from "data/effects";
-import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, cardDescriptor } from "model/domain";
+import { Force } from "data/effects";
+import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, SymbolType, cardDescriptor } from "model/domain";
 
 const cardBackMight: CardBackResource = {
   name: 'might',
@@ -15,10 +15,11 @@ const cardFrontMight: CardFrontResource = {
   background: CardBackgroundType.Clear,
   foreground: undefined,
   cost: [],
-  benefit: [ForceUp],
+  benefit: [Force],
 };
 const cardTypeMight: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckTop,
+  symbol: SymbolType.Force,
   faces: [cardBackMight, cardFrontMight],
 };
 

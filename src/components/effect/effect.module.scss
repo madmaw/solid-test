@@ -1,3 +1,9 @@
+@value stroke: #FFF;
+@value fill: transparent;
+@value fillForce: #773;
+@value fillFinesse: #393;
+@value fillDamage: #933;
+
 .container {
   font-size: 1vw;
   text-align: center;
@@ -7,7 +13,6 @@
   height: 1vw;
   opacity: 1;
   transition: filter 1000ms ease-in-out;
-  color: red;
 }
 
 .container.down {
@@ -15,6 +20,3 @@
   transform-origin: center;
 }
 
-.container.used {
-  filter: grayscale(1);
-}

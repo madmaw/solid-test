@@ -23,7 +23,8 @@ export const enum SymbolType {
 
 export const enum EffectDirection {
   Up = 1,
-  Down,
+  Down = 2,
+  Omni = 3,
 }
 
 export type Effect = {
@@ -142,6 +143,7 @@ export type CardDefinition = {
   // TODO: not required for room/event cards (maybe?)
   readonly recycleTarget: RecycleTarget,
   readonly faces: readonly CardFace[],
+  readonly symbol: SymbolType | undefined,
 };
 
 export const cardDescriptor = activeRecordDescriptor({

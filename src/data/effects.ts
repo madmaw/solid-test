@@ -1,32 +1,17 @@
 import { Effect, EffectDirection, SymbolType } from "model/domain";
 
-export const ForceUp: Effect = {
-  direction: EffectDirection.Up,
+export const Force: Effect = {
+  direction: EffectDirection.Omni,
   symbol: SymbolType.Force,
 };
 
-export const ForceDown: Effect = {
-  direction: EffectDirection.Down,
-  symbol: SymbolType.Force,
-};
-
-export const FinesseUp: Effect = {
-  direction: EffectDirection.Up,
+export const Finesse: Effect = {
+  direction: EffectDirection.Omni,
   symbol: SymbolType.Finesse,
 };
 
-export const FinesseDown: Effect = {
-  direction: EffectDirection.Down,
-  symbol: SymbolType.Finesse,
-};
-
-export const MagicUp: Effect = {
-  direction: EffectDirection.Up,
-  symbol: SymbolType.Magic,
-};
-
-export const MagicDown: Effect = {
-  direction: EffectDirection.Down,
+export const Magic: Effect = {
+  direction: EffectDirection.Omni,
   symbol: SymbolType.Magic,
 };
 

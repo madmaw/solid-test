@@ -1,28 +1,28 @@
-import { DamageDown, Force } from "data/effects";
+import { DamageDown, Finesse } from "data/effects";
 import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, SymbolType, cardDescriptor } from "model/domain";
 
-const cardBackShield: CardBackResource = {
-  name: 'shield',
+const cardBackDodge: CardBackResource = {
+  name: 'dodge',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
-  cost: [Force, Force],
+  cost: [Finesse],
 };
-const cardFrontShield: CardFrontResource = {
-  name: 'shield',
-  description: 'You cower behind your shield',
+const cardFrontDodge: CardFrontResource = {
+  name: 'dodge',
+  description: 'Cat like, you jump out of the way.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
   cost: [],
   benefit: [DamageDown],
 };
-const cardTypeShield: CardDefinition = {
+const cardTypeDodge: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
-  symbol: SymbolType.Force,
-  faces: [cardBackShield, cardFrontShield],
+  symbol: SymbolType.Finesse,
+  faces: [cardBackDodge, cardFrontDodge],
 };
-export const cardShield = cardDescriptor.freeze({
-  definition: cardTypeShield,
+export const cardDodge = cardDescriptor.freeze({
+  definition: cardTypeDodge,
   visibleFaceIndex: 0,
 });

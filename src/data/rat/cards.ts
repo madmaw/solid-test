@@ -1,4 +1,4 @@
-import { DamageDown, DamageUp, FinesseUp, FireUp, ForceDown } from "data/effects";
+import { DamageDown, DamageUp, Finesse, FireUp, Force } from "data/effects";
 import { CardBackChoice, CardBackgroundType, CardDefinition, CardFaceType, CardForegroundType, CardFrontChoice, ChoiceType, RecycleTarget, cardDescriptor } from "model/domain";
 
 const cardBackRatBeligerence: CardBackChoice = {
@@ -21,7 +21,7 @@ const cardBackRatScurrying: CardBackChoice = {
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Rat,
-  cost: [FinesseUp],
+  cost: [Finesse],
 };
 
 export const cardFrontRatBite: CardFrontChoice = {
@@ -43,7 +43,7 @@ export const cardFrontRatScreech: CardFrontChoice = {
   },
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Rat,
-  cost: [ForceDown, ForceDown],
+  cost: [Force, Force],
   benefit: [],
 };
 export const cardFrontRatCower: CardFrontChoice = {
@@ -71,6 +71,7 @@ export const cards = [
     return {
       faces: [cardBack, cardFace],
       recycleTarget: RecycleTarget.DrawDeckRandom,
+      symbol: undefined,
     };
   });
 }).map(definition => {

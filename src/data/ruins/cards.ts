@@ -83,6 +83,7 @@ export const cards = [
     return {
       recycleTarget: RecycleTarget.DiscardDeckTop,
       faces: [back, front],
+      symbol: undefined,
     };
   });
 }).map<CardState>(definition => ({

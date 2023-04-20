@@ -1,14 +1,23 @@
 import { Effect, EffectDirection, SymbolType } from "model/domain";
 import styles from './effect.module.scss';
+import { Component } from "solid-js";
+import { SymbolDamageComponent, SymbolFinesseComponent, SymbolForceComponent } from "./symbol/symbols";
+import { Dynamic } from "solid-js/web";
 
-const ResourceSymbols: Record<SymbolType, string> = {
-  [SymbolType.Force]: 'A',
-  [SymbolType.Finesse]: 'P',
-  [SymbolType.Magic]: 'V',
-  [SymbolType.Damage]: 'W',
-  [SymbolType.Age]: 'Q',
-  [SymbolType.Fire]: 'M',
-  [SymbolType.Draw]: 'G',
+const ResourceSymbols: Record<SymbolType, Component<{ used: boolean }>> = {
+  [SymbolType.Force]: props => <SymbolForceComponent
+      fill={props.used ? styles.fill : styles.fillForce}
+      stroke={styles.stroke}/>,
+  [SymbolType.Finesse]: props => <SymbolFinesseComponent
+      fill={props.used ? styles.fill : styles.fillFinesse}
+      stroke={styles.stroke}/>,
+  [SymbolType.Magic]: () => <>{'R'}</>,
+  [SymbolType.Damage]: props => <SymbolDamageComponent
+      fill={props.used ? styles.fill : styles.fillDamage}
+      stroke={styles.stroke}/>,
+  [SymbolType.Age]: () => <>{'Q'}</>,
+  [SymbolType.Fire]: () => <>{'M'}</>,
+  [SymbolType.Draw]: () => <>{'G'}</>,
 };
 
 export function EffectComponent(props: {
@@ -19,9 +28,8 @@ export function EffectComponent(props: {
     <div classList={{
       [styles.container]: true,
       [styles.down]: props.effect.direction === EffectDirection.Down,
-      [styles.used]: props.used,
     }}>
-      {ResourceSymbols[props.effect.symbol]}
+      <Dynamic component={ResourceSymbols[props.effect.symbol]} used={props.used}/>
     </div>
   );
 }

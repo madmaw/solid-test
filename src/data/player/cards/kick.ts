@@ -1,12 +1,12 @@
-import { DamageUp, ForceUp } from "data/effects";
-import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, cardDescriptor } from "model/domain";
+import { DamageUp, Force } from "data/effects";
+import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, SymbolType, cardDescriptor } from "model/domain";
 
 const cardBackKick: CardBackResource = {
   name: 'kick',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
-  cost: [ForceUp],
+  cost: [Force],
 };
 const cardFrontKick: CardFrontResource = {
   name: 'kick',
@@ -14,11 +14,12 @@ const cardFrontKick: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
-  cost: [ForceUp],
+  cost: [Force],
   benefit: [DamageUp],
 };
 const cardTypeKick: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckRandom,
+  symbol: SymbolType.Force,
   faces: [cardBackKick, cardFrontKick],
 };
 export const cardKick = cardDescriptor.freeze({
