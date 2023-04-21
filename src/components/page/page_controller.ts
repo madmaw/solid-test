@@ -1,36 +1,27 @@
-import { booleanDescriptor } from "model/descriptor/literals";
-import { activeRecordDescriptor } from "model/descriptor/record";
-import { AnimationManager } from "ui/animation/animation_manager";
+import { ComponentManager } from "components/component_manager";
+import { BookSpread } from "model/domain";
 
 export const enum PageSide {
   Left = 1,
   Right,
 }
 
-export type Animations = 'pop-up' | 'pop-down';
+export interface PageController {
 
-export const pageUIDescriptor = activeRecordDescriptor({
-  popped: booleanDescriptor,
-});
+  popup(): Promise<void>;
 
-export type PageUI = typeof pageUIDescriptor.aMutable;
-export type PageUIState = typeof pageUIDescriptor.aState;
+  popdown(): Promise<void>;
+}
 
-export class PageController {
 
-  constructor(
-    private readonly pageUI: PageUI,
-    private readonly animations: AnimationManager<Animations>,
-  ) {
+export class EmptyPageController implements PageController {
+  async popup() {
+
   }
 
-  async popUp() {
-    this.pageUI.popped = true;
-    return this.animations.waitForAnimation('pop-up');
-  }
+  async popdown() {
 
-  async popDown() {
-    this.pageUI.popped = false;
-    return this.animations.waitForAnimation('pop-down');
   }
 }
+
+export type PageComponentManager = ComponentManager<BookSpread, PageController, { side: PageSide }>;

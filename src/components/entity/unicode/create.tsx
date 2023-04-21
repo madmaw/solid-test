@@ -1,7 +1,12 @@
 import { UnicodeEntityComponent } from "./unicode_entity";
 
-export function createUnicodeEntity(unicode: string) {
+export function createUnicodeEntity(unicode: string, fontSize?: string) {
   return function() {
-    return <UnicodeEntityComponent unicode={unicode}/>;
+    return (
+        <UnicodeEntityComponent
+            unicode={unicode}
+            fontSize={fontSize}
+            />
+    );
   }
 }

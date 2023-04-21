@@ -26,7 +26,7 @@ function ToCEntryComponent(props: PageToCProps & {
 }
 
 
-function PageTocRightComponent(props: PageToCProps) {
+function ToCPageRightComponent(props: PageToCProps) {
   return (
     <div class={styles.toc}>
       <h2>
@@ -45,9 +45,7 @@ function PageTocRightComponent(props: PageToCProps) {
 const sideComponents: { [K in PageSide]: Component<PageToCProps>} = {
   [PageSide.Left]:PageBlankComponent,
   [PageSide.Right]: function (props: PageToCProps) {
-    return <PageTocRightComponent
-        animations={props.animations}
-        pageUI={props.pageUI}
+    return <ToCPageRightComponent
         side={props.side}
         spread={props.spread}
         navigation={props.navigation}/>
@@ -55,11 +53,10 @@ const sideComponents: { [K in PageSide]: Component<PageToCProps>} = {
 }
 
 
-export function PageToCComponent(props: PageToCProps) {
+export function ToCPageComponent(props: PageToCProps) {
   return (
     <Dynamic
-      component={sideComponents[props.side]} animations={props.animations}
-      pageUI={props.pageUI}
+      component={sideComponents[props.side]}
       side={props.side}
       spread={props.spread}
       navigation={props.navigation}

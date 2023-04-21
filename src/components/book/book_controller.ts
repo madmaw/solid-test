@@ -1,6 +1,5 @@
 import { delay } from "base/delay";
-import { ComponentManager } from "components/component_manager";
-import { PageController } from "components/page/page_controller";
+import { PageComponentManager } from "components/page/page_controller";
 import { booleanDescriptor } from "model/descriptor/literals";
 import { optionalDescriptor } from "model/descriptor/option";
 import { activeRecordDescriptor } from "model/descriptor/record";
@@ -9,8 +8,6 @@ import { batch } from "solid-js";
 import { AnimationManager } from "ui/animation/animation_manager";
 
 export type Animations = 'open' | 'turn' | 'close' | 'midway';
-
-export type PageComponentManager = ComponentManager<BookSpread, PageController>;
 
 export const bookUIDescriptor = activeRecordDescriptor({
   previousSpread: optionalDescriptor(bookSpreadDescriptor),
@@ -26,7 +23,7 @@ export class BookController {
     private readonly book: Book,
     private readonly bookUI: BookUI,
     private animations: AnimationManager<Animations>,
-    private pageComponentManagers: readonly PageComponentManager[],
+    private pageComponentManager:  PageComponentManager,
   ) { }
 
   async showSpread(spread: BookSpread | undefined, turnLeftToRight: boolean = false) {
@@ -34,11 +31,7 @@ export class BookController {
       const opening = this.book.spread == null;
       const previousSpread = this.book.spread;
       if (previousSpread != null) {
-        await Promise.all(
-          this.pageComponentManagers.map(
-            m => m.lookupController(previousSpread)?.popDown()
-          )
-        );
+        await this.pageComponentManager.lookupController(previousSpread)?.popdown();
       }
       batch(() => {
         this.bookUI.previousSpread = this.book.spread;
@@ -58,9 +51,7 @@ export class BookController {
       await delay(0);
       await batch(async () => {
         if (spread != null) {
-          await Promise.all(
-            this.pageComponentManagers.map(m => m.lookupController(spread)?.popUp())
-          );
+          await this.pageComponentManager.lookupController(spread)?.popup();
         }
       });
     }

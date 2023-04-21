@@ -1,17 +1,16 @@
 import { Book, BookSpread } from "model/domain";
 import { BookComponent, PagePair } from "./book";
-import { Animations, BookController, PageComponentManager, bookUIDescriptor } from "./book_controller";
+import { Animations, BookController, bookUIDescriptor } from "./book_controller";
 import { AnimationManager } from "ui/animation/animation_manager";
 import { ParentProps } from "solid-js";
 import { ChrononomiconCoverComponent } from "./cover/chrononomicon";
+import { PageComponentManager, PageSide } from "components/page/page_controller";
 
 export function createBook({
-  leftPageComponentManager,
-  rightPageComponentManager,
+  pageComponentManager,
   book,
 }: {
-  leftPageComponentManager: PageComponentManager,
-  rightPageComponentManager: PageComponentManager,
+  pageComponentManager: PageComponentManager,
   book: Book,
 }) {
   function renderPagePair(spread: BookSpread | undefined): PagePair | undefined {
@@ -19,8 +18,8 @@ export function createBook({
       return;
     }
     return [
-      <leftPageComponentManager.FactoryComponent model={spread}/>,
-      <rightPageComponentManager.FactoryComponent model={spread}/>
+      <pageComponentManager.FactoryComponent model={spread} side={PageSide.Left}/>,
+      <pageComponentManager.FactoryComponent model={spread} side={PageSide.Right}/>
     ];
   }
   
@@ -34,7 +33,7 @@ export function createBook({
     book,
     bookUI,
     animations,
-    [leftPageComponentManager, rightPageComponentManager],
+    pageComponentManager,
   );
 
   const Component = (props: ParentProps) => {

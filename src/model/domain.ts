@@ -213,7 +213,9 @@ export const bookSpreadDescriptor = discriminatingUnionDescriptor(
 );
 
 export const enum ChapterType {
-  Ruins = 1,
+  Forest = 1,
+  Ruins,
+  Tower,
 }
 
 export const chapterDescriptor = activeRecordDescriptor({

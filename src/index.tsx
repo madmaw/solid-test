@@ -5,7 +5,6 @@ import { createBook } from "components/book/create";
 import { createCardSlotManager, createCardSlots } from "components/card_slot/create";
 import { createCardManager } from "components/card/create";
 import { createPageManager } from "components/page/create";
-import { PageSide } from "components/page/page_controller";
 import { initialGame } from "data/initial";
 import { createSpreadOverlay } from "components/spread/overlay/create";
 import { InteractionManager } from "rules/interaction_manager";
@@ -44,14 +43,9 @@ window.onload = function () {
   };
 
 
-  const leftPageManager = createPageManager({
-    side: PageSide.Left,
+  const pageComponentManager = createPageManager(
     navigation,
-  });
-  const rightPageManager = createPageManager({
-    side: PageSide.Right,
-    navigation,
-  });
+  );
 
   const cardSlotManager = createCardSlotManager(
     cardManager.FactoryComponent,
@@ -75,8 +69,7 @@ window.onload = function () {
     Component: BookImpl,
     controller: bookController,
   } = createBook({
-    leftPageComponentManager: leftPageManager,
-    rightPageComponentManager: rightPageManager,
+    pageComponentManager,
     book: game.book,
   });
   const encounterBattleManager = createEncounterBattleManger();
