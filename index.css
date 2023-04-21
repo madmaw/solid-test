@@ -12,4 +12,16 @@ body {
 * {
     user-select: none;
     will-change: transform;
+    font-family: "Charm", fantasy, sans-serif;
+}
+
+@font-face {
+    font-family: "Charm";
+    src: local('Charm Regular'), url("./res/fonts/charm/Charm-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Charm";
+    font-weight: bold;
+    src: local('Charm Bold'), url("./res/fonts/charm/Charm-Bold.ttf") format("truetype");
 }

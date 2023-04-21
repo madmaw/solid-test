@@ -1,0 +1,19 @@
+@use 'components/constants.module.scss';
+
+.scenery {
+  transform-origin: bottom;
+  transform: rotateX(0);
+  transition-property: transform;
+}
+
+.scenery.up {
+  transform: rotateX(constants.$tableTiltCorrectionAngle);
+  transition-duration: constants.$popupDuration;
+  transition-timing-function: constants.$popupTimingFunction;
+}
+
+.scenery.down {
+  transform: rotateX(0);
+  transition-duration: constants.$popdownDuration;
+  transition-timing-function: constants.$popdownTimingFunction;
+}

@@ -18,7 +18,7 @@ const cardFrontKick: CardFrontResource = {
   benefit: [DamageUp],
 };
 const cardTypeKick: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckRandom,
+  recycleTarget: RecycleTarget.DrawDeckBottom,
   symbol: SymbolType.Force,
   faces: [cardBackKick, cardFrontKick],
 };

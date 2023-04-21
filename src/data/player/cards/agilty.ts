@@ -27,7 +27,7 @@ const cardFrontAgility: CardFrontResource = {
   benefit: [Finesse],
 };
 const cardTypeAgility: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckTop,
+  recycleTarget: RecycleTarget.DrawDeckBottom,
   symbol: SymbolType.Finesse,
   faces: [cardBackAgility, cardFrontAgility],
 };

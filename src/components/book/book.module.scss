@@ -4,8 +4,8 @@ $bookDepth: calc(constants.$unit * 6);
 $pageGap: calc(constants.$unit/2);
 $pageColor1: grey;
 $pageColor2: whitesmoke;
-
-$pageTurnAnimationDuration: 900ms;
+$pageColorSpine: gainsboro;
+$pageTurnAnimationDuration: 500ms;
 
 .container {
   //display: flex;
@@ -32,7 +32,7 @@ $pageTurnAnimationDuration: 900ms;
   position: absolute;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, gainsboro 0%, ghostwhite 5%);
+  background: linear-gradient(to right, $pageColorSpine, $pageColor2 5%);
 }
 
 .spine {
@@ -77,13 +77,19 @@ $pageTurnAnimationDuration: 900ms;
   bottom: 0;
   width: 100%;
   height: $bookDepth;
-  background: repeating-linear-gradient(to bottom, $pageColor1, $pageColor2 $pageGap);
+  background:
+    linear-gradient(to right, $pageColorSpine, transparent 10%),
+    repeating-linear-gradient(to bottom, $pageColor1, $pageColor2 $pageGap)
+    ;
   transform: rotateX(-90deg);
   transform-origin: bottom;
 }
 
 .spine .book-half-front {
-  background: repeating-linear-gradient(to top, $pageColor1, $pageColor2 $pageGap);
+  background:
+      linear-gradient(to right, $pageColorSpine, transparent 10%),
+      repeating-linear-gradient(to top, $pageColor1, $pageColor2 $pageGap)
+      ;
 }
 
 .book-half-left {

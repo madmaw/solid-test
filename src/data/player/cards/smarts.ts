@@ -27,7 +27,7 @@ const cardFrontSmarts: CardFrontResource = {
   benefit: [Mind],
 };
 const cardTypeSmarts: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckTop,
+  recycleTarget: RecycleTarget.DrawDeckBottom,
   symbol: SymbolType.Mind,
   faces: [cardBackSmarts, cardFrontSmarts],
 };

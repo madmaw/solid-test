@@ -10,3 +10,7 @@ $pageHeight: calc($pageWidth * 1.4);
 
 $tableTiltAngle: 55deg;
 $tableTiltCorrectionAngle: -80deg;
+$popupDuration: 200ms;
+$popupTimingFunction: cubic-bezier(.47,1.64,.41,.8);
+$popdownDuration: 150ms;
+$popdownTimingFunction: ease-in;
