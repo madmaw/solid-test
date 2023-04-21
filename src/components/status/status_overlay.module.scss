@@ -1,4 +1,6 @@
-$padding: min(2vw, 2vh);
+@use 'components/constants.module.scss';
+
+$padding: calc(constants.$unit * 2);
 
 .overlay {
   position: absolute;

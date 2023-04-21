@@ -1,5 +1,5 @@
-$healthBoxLarge: min(4vw, 4vh);
-$healthBoxSmall: min(2vw, 2vh);
+$healthBoxLarge: 4vmin;
+$healthBoxSmall: 2vmin;
 
 .container {
   display: flex;

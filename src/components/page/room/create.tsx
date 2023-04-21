@@ -21,17 +21,18 @@ function createScenery(spread: BookSpreadRoom) {
     const {
       Component: Scenery,
       controller,
-    } = createRigidScenery(createUnicodeEntity('🌲', `${height}vh`));
-    const y = Math.random() * (pageWidth - height);
-    const popupDelayMillis = (100 - y) * 30;
+    } = createRigidScenery(createUnicodeEntity('🌲', `${height}vmin`));
+    const y = Math.random() * (pageHeight * .8 - height);
+    const popupDelayMillis = (pageHeight - y) * 30;
     const x = Math.random() * (pageWidth * 2 - height);
     function Component() {
       return (
         <div
             style={{
-              left: `${x}vh`,
-              top: `${y}vh`,
+              left: `${x}vmin`,
+              top: `${y}vmin`,
               position: 'absolute',
+              transform: `translateZ(${y/1000}vmin)`
             }}>
           <Scenery/>
         </div>

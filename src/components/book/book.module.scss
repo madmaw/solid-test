@@ -116,7 +116,7 @@ $pageTurnAnimationDuration: 500ms;
   position: absolute;
   width: 100%;
   height: 100%;
-  transform: translateZ($bookDepth);
+  transform: translateZ(calc($bookDepth * 1.01));
 }
 
 .turn-page-flip {
