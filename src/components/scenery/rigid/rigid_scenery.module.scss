@@ -1,9 +1,11 @@
 @use 'components/constants.module.scss';
 
 .scenery {
+  width: 100%;
   transform-origin: bottom;
   transform: rotateX(0);
   transition-property: transform;
+  overflow: hidden;
 }
 
 .scenery.up {

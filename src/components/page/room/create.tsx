@@ -6,44 +6,52 @@ import { createRigidScenery } from "components/scenery/rigid/create";
 import { createUnicodeEntity } from "components/entity/unicode/create";
 
 import styles from '../../constants.module.scss';
+import { exists } from "base/exists";
 
 const pageWidth = parseInt(styles.pageWidth);
 const pageHeight = parseInt(styles.pageHeight);
 
 function createScenery(spread: BookSpreadRoom) {
-  if (spread.encounter == null) {
-    // want a clearing
-  }
+  const cx = pageWidth;
+  const cy = pageHeight;
+  const r = spread.encounter != null ? pageWidth : 0; 
+
   const trees = Math.floor(Math.random() * 20) + 20;
 
-  return new Array(trees).fill(0).map<Scenery>(() => {
+  return new Array(trees).fill(0).map(() => {
     const height = Math.random() * pageHeight/8 + pageHeight/8;
     const {
       Component: Scenery,
       controller,
     } = createRigidScenery(createUnicodeEntity('🌲', `${height}vmin`));
-    const y = Math.random() * (pageHeight * .8 - height);
-    const popupDelayMillis = (pageHeight - y) * 30;
     const x = Math.random() * (pageWidth * 2 - height);
-    function Component() {
+    const y = Math.random() * (pageHeight * .8 - height);
+    const dx = x - cx;
+    const dy = y - cy;
+    if (dx * dx + dy * dy < r * r) {
+      return;
+    }
+
+    const popupDelayMillis = (pageHeight - y) * 30;
+    function Component(props: { side: PageSide }) {
       return (
         <div
             style={{
-              left: `${x}vmin`,
+              width: '100%',
               top: `${y}vmin`,
               position: 'absolute',
               transform: `translateZ(${y/1000}vmin)`
             }}>
-          <Scenery/>
+          <Scenery x={`${x - (props.side === PageSide.Left ? 0 : pageWidth)}vmin`}/>
         </div>
-      )
+      );
     }
     return {
       Component,
       controller,
       popupDelayMillis,
     };
-  });
+  }).filter(exists);
 }
 
 export function createRoomPage(

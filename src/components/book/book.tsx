@@ -5,27 +5,30 @@ import { Animations } from './book_controller';
 
 export type PagePair = [JSXElement, JSXElement];
 
-function PageComponent(props: ParentProps) {
+function PageComponent(props: ParentProps<{ flipped: boolean }>) {
   return (
-    <div class={styles.page}>
+    <div classList={{
+      [styles.page]: true,
+      [styles.flipped]: props.flipped,
+    }}>
       {props.children}
     </div>
   );
 }
 
-function BookHalfComponent(props: {topPage?: JSX.Element, bottomPage?: JSX.Element}) {
+function BookHalfComponent(props: {topPage?: JSX.Element, bottomPage?: JSX.Element, flipped: boolean}) {
   return (
     <div class={styles['book-half']}>
       <div class={styles['book-half-front']}/>
       <div class={styles['book-half-right']}/>
       <div class={styles['book-half-left']}/>
       <div class={styles['book-half-top']}>
-        <PageComponent>
+        <PageComponent flipped={props.flipped}>
           {props.topPage}
         </PageComponent>
       </div>
       <div class={styles['book-half-bottom']}>
-        <PageComponent>
+        <PageComponent  flipped={props.flipped}>
           {props.bottomPage}
         </PageComponent>
       </div>
@@ -68,7 +71,7 @@ export function BookComponent(props: ParentProps<{
     <div class={styles.container}>
       <div class={styles.book}>
         {/* Right half */}
-        <BookHalfComponent topPage={rightPages()?.[1]}/>
+        <BookHalfComponent topPage={rightPages()?.[1]} flipped={false}/>
         {/* turning page */}
         {props.previousPages && props.currentPages && (
           <div classList={{
@@ -92,10 +95,12 @@ export function BookComponent(props: ParentProps<{
                 [styles.down]: props.turnPastMidway,
                 [styles.up]: !props.turnPastMidway,
               }}>
-                <PageComponent>
+                <PageComponent
+                    flipped={props.turnLeftToRight && !props.turnPastMidway
+                      || !props.turnLeftToRight && props.turnPastMidway}>
                   {props.turnLeftToRight && !props.turnPastMidway
                       || !props.turnLeftToRight && props.turnPastMidway
-                      ? rightPages()?.[0] 
+                      ? rightPages()?.[0]
                       : leftPages()?.[1]
                   }
                 </PageComponent>
@@ -116,7 +121,8 @@ export function BookComponent(props: ParentProps<{
           {/* Left half */}
           <BookHalfComponent
               topPage={<props.Cover/>}
-              bottomPage={leftPages()?.[0]}/>
+              bottomPage={leftPages()?.[0]}
+              flipped={true}/>
         </div>
         {/* spread overlay (monsters etc...)*/}
         {props.children && (

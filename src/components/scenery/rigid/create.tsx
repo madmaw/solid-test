@@ -9,11 +9,14 @@ export function createRigidScenery(C: Component) {
   });
   const animations = new AnimationManager<Animations>;
   const controller = new RigidSceneryController(animations, ui);
-  function Component() {
+  function Component(props: {
+    x: string,
+  }) {
     return (
         <RigidSceneryComponent
             animations={animations}
-            up={ui.up}>
+            up={ui.up}
+            x={props.x}>
           <C/>
         </RigidSceneryComponent>
     );

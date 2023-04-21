@@ -10,11 +10,10 @@ export function RoomPageComponent(props: {
   return (
     <div classList={{
       [styles.room]: true,
-      [styles.right]: props.side === PageSide.Right,
     }}>
       <For each={props.scenery}>
         {scenery => (
-          <scenery.Component/>
+          <scenery.Component side={props.side}/>
         )}
       </For>
     </div>

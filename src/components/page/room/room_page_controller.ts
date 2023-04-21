@@ -1,11 +1,11 @@
-import { PageController } from "../page_controller";
+import { PageController, PageSide } from "../page_controller";
 import { SceneryController } from "components/scenery/scenery_controller";
 import { delay } from "base/delay";
-import { maxBy } from 'base/max_by';
+import { maxBy, minBy } from 'base/max_by';
 import { Component } from "solid-js";
 
 export type Scenery = {
-  Component: Component,
+  Component: Component<{ side: PageSide }>,
   controller: SceneryController,
   popupDelayMillis: number,
 }
@@ -21,9 +21,10 @@ export class RoomPageController implements PageController {
 
 
   async popup(): Promise<void> {
+    const minPopupDelay = minBy(this.ui.scenery, s => s.popupDelayMillis) || 0;
     await Promise.all(
         this.ui.scenery.map(async scenery => {
-          await delay(scenery.popupDelayMillis);
+          await delay(scenery.popupDelayMillis - minPopupDelay);
           await scenery.controller.popup();
         }),
     );

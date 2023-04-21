@@ -35,6 +35,10 @@ $pageTurnAnimationDuration: 500ms;
   background: linear-gradient(to right, $pageColorSpine, $pageColor2 5%);
 }
 
+.page.flipped {
+  background: linear-gradient(to left, $pageColorSpine, $pageColor2 5%);
+}
+
 .spine {
   position: absolute;
   width: 100%;
@@ -146,10 +150,20 @@ $pageTurnAnimationDuration: 500ms;
 
 @keyframes ltrup {
   from {
-    transform: rotateY(-180deg);
+    transform: rotateY(-180deg) matrix3d(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0,-1, 0,
+      0, 0, 0, 1
+    );
   }
   to {
-    transform: rotateY(-90deg)
+    transform: rotateY(-90deg) matrix3d(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0,-1, 0,
+      0, 0, 0, 1
+    );
   }
 }
 
@@ -163,7 +177,7 @@ $pageTurnAnimationDuration: 500ms;
     transform: rotateY(-90deg);
   }
   to {
-    transform: rotateY(0deg)
+    transform: rotateY(0deg);
   }
 }
 
@@ -177,7 +191,7 @@ $pageTurnAnimationDuration: 500ms;
     transform: rotateY(0deg);
   }
   to {
-    transform: rotateY(-90deg)
+    transform: rotateY(-90deg);
   }
 }
 
@@ -188,9 +202,19 @@ $pageTurnAnimationDuration: 500ms;
 
 @keyframes rtldown {
   from {
-    transform: rotateY(-90deg);
+    transform: rotateY(-90deg) matrix3d(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0,-1, 0,
+      0, 0, 0, 1
+    );
   }
   to {
-    transform: rotateY(-180deg)
+    transform: rotateY(-180deg) matrix3d(
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0,-1, 0,
+      0, 0, 0, 1
+    );
   }
 }

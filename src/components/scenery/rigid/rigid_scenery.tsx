@@ -6,6 +6,7 @@ import { Animations } from "./rigid_scenery_controller";
 export function RigidSceneryComponent(props: ParentProps<{
   up: boolean,
   animations: AnimationManager<Animations>,
+  x: string,
 }>) {
   const [ref, setRef] = createSignal<HTMLDivElement>();
   return (
@@ -17,7 +18,13 @@ export function RigidSceneryComponent(props: ParentProps<{
           [styles.up]: props.up,
         }}
         onTransitionEnd={props.animations.createTransitionEndEventListener(ref, () => Animations.Popped)}>
-      {props.children}
+      <div
+        style={{
+          'margin-left': props.x,
+        }}
+      >
+        {props.children}
+      </div>
     </div>
   )
 }
