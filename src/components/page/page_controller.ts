@@ -1,6 +1,5 @@
 import { booleanDescriptor } from "model/descriptor/literals";
 import { activeRecordDescriptor } from "model/descriptor/record";
-import { createEffect } from "solid-js";
 import { AnimationManager } from "ui/animation/animation_manager";
 
 export const enum PageSide {
@@ -25,12 +24,12 @@ export class PageController {
   ) {
   }
 
-  popUp() {
+  async popUp() {
     this.pageUI.popped = true;
     return this.animations.waitForAnimation('pop-up');
   }
 
-  popDown() {
+  async popDown() {
     this.pageUI.popped = false;
     return this.animations.waitForAnimation('pop-down');
   }

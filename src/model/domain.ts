@@ -166,6 +166,7 @@ export const enum BookSpreadType {
 
 export const bookSpreadTableOfContentsDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<BookSpreadType.TableOfContents>(),
+  unlockedChapters: numberDescriptor,
 });
 
 export const deckDescriptor = listDescriptor(cardDescriptor);

@@ -53,32 +53,28 @@ $tableColorDark: #221100;
 }
 
 .table.topDown {
-  background: $tableColorDark;
-  transform:
-      rotateX(20deg)
-      translate(0, calc($bookHeight))
-      translateZ(calc(-1 * $tableWidth));
-}
-
-.table.topDownBookCentered {
-  // TODO gradients aren't transitionable, but an overlay with opacity is...
   background: linear-gradient($tableColorDark, $tableColor);
   transform:
       rotateX(20deg)
+      translate(0, calc($tableHeight - $bookHeight - $bookTop - $handSlotTop));
+      //translateZ(calc(-1 * $tableWidth));
+}
+
+.table.topDownBookCentered {
+  background: linear-gradient($tableColorDark, $tableColor);
+  transform:
+      rotateX(0deg)
       translate(calc(-1 * ($bookWidth / 2)), calc($tableHeight - $bookHeight - $bookTop - $handSlotTop))
-      //translateZ(calc($tableHeight/4))
       ;
 }
 
 .table.tilted {
-  // TODO gradients aren't transitionable, but an overlay with opacity is...
   background: linear-gradient($tableColorDark, $tableColor);
   transform:
       //translate(0, 0)
       rotateX(constants.$tableTiltAngle)
       translate(0, calc($tableHeight - $bookHeight - $bookTop - $handSlotTop * 2))
       translateZ(min(30vw, 30vh))
-      
       ;
 }
 

@@ -1,3 +1,12 @@
+@use 'components/constants.module.scss';
+
+$bookDepth: calc(constants.$unit * 6);
+$pageGap: calc(constants.$unit/2);
+$pageColor1: grey;
+$pageColor2: whitesmoke;
+
+$pageTurnAnimationDuration: 900ms;
+
 .container {
   //display: flex;
   position: absolute;
@@ -5,16 +14,12 @@
   // justify-content: center;
   width: 100%;
   height: 100%;
-  transform: translateZ(32px);
 }
 
 .book {
   position: absolute;
   width: 100%;
   height: 100%;
-  /* TODO: use an animation to center book */
-  transition: transform 1s;
-  will-change: transform;
 }
 
 .spread {
@@ -23,47 +28,163 @@
   height: 100%; 
 }
 
+.page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, gainsboro 0%, ghostwhite 5%);
+}
+
 .spine {
   position: absolute;
   width: 100%;
   height: 100%;
   transform-origin: left;
+  transform: translateZ($bookDepth) rotateY(0deg);
 }
 
-.page {
+.spine.open {
+  transform: translateZ($bookDepth) rotateY(-180deg);
+  transition: $pageTurnAnimationDuration;
+  transition-timing-function: ease-in;
+}
+
+.spine.open .book-half-bottom {
+  transform: scaleZ(-1) scaleX(-1);
+}
+
+.book-half {
+  position: absolute;
+  width: constants.$pageWidth;
+  height: constants.$pageHeight;
+}
+
+.book-half-bottom {
   position: absolute;
   width: 100%;
   height: 100%;
-  transform-origin: left bottom;
-  background: ghostwhite;
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 1.95px 0px;
-  background: linear-gradient(90deg, gainsboro 0%, ghostwhite 5%);
 }
 
-.page:last-child {
-  background: darkslategray;
-  color: white;
-  text-align: center;
+.book-half-top {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: translateZ($bookDepth);
 }
 
-.open {
-  animation-name: openAnimation;
-  animation-duration: .5s;
-  animation-timing-function: ease-in;
-  // NOTE
-  // rather than rely on filling forward, I saw a talk 
-  // internally at Canva where the speaker recommended having the final
-  // state in your class, and animating from the old state to the final state.
-  // I think it's more robust or something
+.book-half-front {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: $bookDepth;
+  background: repeating-linear-gradient(to bottom, $pageColor1, $pageColor2 $pageGap);
+  transform: rotateX(-90deg);
+  transform-origin: bottom;
+}
+
+.spine .book-half-front {
+  background: repeating-linear-gradient(to top, $pageColor1, $pageColor2 $pageGap);
+}
+
+.book-half-left {
+  position: absolute;
+  left: 0;
+  width: $bookDepth;
+  height: 100%;
+  background: repeating-linear-gradient(to right, $pageColor1, $pageColor2 $pageGap);
+  transform: rotateY(-90deg);
+  transform-origin: left;
+}
+
+.book-half-right {
+  position: absolute;
+  right: 0;
+  width: $bookDepth;
+  height: 100%;
+  background: repeating-linear-gradient(to left, $pageColor1, $pageColor2 $pageGap);
+  transform: rotateY(90deg);
+  transform-origin: right;
+}
+
+.turn-page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: translateZ($bookDepth);
+}
+
+.turn-page-flip {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.turn-page-flip.rtl.down, .turn-page-flip.ltr.up {
+  transform-origin: center;
+  transform: scaleX(-1);
+}
+
+.turn-page-rotate {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform-origin: left;
+  animation-duration: calc($pageTurnAnimationDuration/2);
   animation-fill-mode: forwards;
 }
 
-@keyframes openAnimation {
+.turn-page-rotate.ltr.up {
+  animation-name: ltrup;
+  animation-timing-function: ease-in;
+}
+
+@keyframes ltrup {
+  from {
+    transform: rotateY(-180deg);
+  }
+  to {
+    transform: rotateY(-90deg)
+  }
+}
+
+.turn-page-rotate.ltr.down {
+  animation-name: ltrdown;
+  animation-timing-function: ease-out;  
+}
+
+@keyframes ltrdown {
+  from {
+    transform: rotateY(-90deg);
+  }
+  to {
+    transform: rotateY(0deg)
+  }
+}
+
+.turn-page-rotate.rtl.up {
+  animation-name: rtlup;
+  animation-timing-function: ease-in;  
+}
+
+@keyframes rtlup {
   from {
     transform: rotateY(0deg);
   }
-
   to {
-    transform: rotateY(-180deg);
+    transform: rotateY(-90deg)
+  }
+}
+
+.turn-page-rotate.rtl.down {
+  animation-name: rtldown;
+  animation-timing-function: ease-out;
+}
+
+@keyframes rtldown {
+  from {
+    transform: rotateY(-90deg);
+  }
+  to {
+    transform: rotateY(-180deg)
   }
 }

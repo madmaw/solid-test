@@ -3,11 +3,14 @@ import { Animations, PageController, PageSide, pageUIDescriptor } from "./page_c
 import { AnimationManager } from "ui/animation/animation_manager";
 import { PageComponent } from "./page";
 import { ComponentManager } from "components/component_manager";
+import { NavigationTarget } from "components/navigation_target";
 
 export function createPageManager({
   side,
+  navigation,
 }: {
   side: PageSide, 
+  navigation: (to: NavigationTarget) => void,
 }) {
   // might need a different controller per spread type?
   function createPage(spread: BookSpread) {
@@ -22,7 +25,8 @@ export function createPageManager({
           animations={animations}
           pageUI={pageUI}
           side={side}
-          spread={spread}/>
+          spread={spread}
+          navigation={navigation}/>
     );
   
     return {

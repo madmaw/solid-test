@@ -13,20 +13,44 @@ import { createDragOverlay } from "components/drag/create";
 import { GameManager } from "rules/game_manager";
 import { createDeck } from "components/deck/create";
 import { createStatusOverlay } from "components/status/create";
-import { createEncounter } from "components/encounter/create";
 import { createEncounterBattleManger } from "components/encounter/battle/create";
 import { gameEncounterBattle } from "rules/games";
 import { createMemo } from "solid-js";
+import { BookSpreadType, bookSpreadTableOfContentsDescriptor } from "model/domain";
+import { NavigationTarget, NavigationTargetType } from "components/navigation_target";
+import { UnreachableError } from "base/unreachable_error";
 
 window.onload = function () {
   const app = document.getElementById('app')!;
   const game = initialGame;
   const cardManager = createCardManager(game);
+
+  const navigation = async (to: NavigationTarget) => {
+    switch (to.type) {
+      case NavigationTargetType.Toc:
+        await tableController.setView(View.TopDown);
+        bookController.showSpread(bookSpreadTableOfContentsDescriptor.create({
+          type: BookSpreadType.TableOfContents,
+          unlockedChapters: 0,
+        }));
+        break;
+      case NavigationTargetType.Chapter:
+        await tableController.setView(View.Tilted);
+        gameManager.createPlayer();
+        return gameManager.nextPage(undefined);
+      default:
+        throw new UnreachableError(to);
+    }
+  };
+
+
   const leftPageManager = createPageManager({
     side: PageSide.Left,
+    navigation,
   });
   const rightPageManager = createPageManager({
     side: PageSide.Right,
+    navigation,
   });
 
   const cardSlotManager = createCardSlotManager(
@@ -68,23 +92,9 @@ window.onload = function () {
     controller: tableController,
   } = createTable(interactionManger);
 
-  const onNavigate = async () => {
-    gameManager.nextPage(undefined);
-  };
-
-
   const {
     Component: PlayerDeck,
   } = createDeck(() => game.playerCharacter?.deck, cardManager.FactoryComponent);
-
-  const onClickCover = async () => {
-    await tableController.setView(View.Tilted);
-    // bookController.showSpread(bookSpreadTableOfContentsDescriptor.create({
-    //   type: BookSpreadType.TableOfContents,
-    // }));
-    gameManager.createPlayer();
-    onNavigate();
-  };
 
   function Hand() {
     return <CardSlotsComponent model={game.playerHand}/>;
@@ -109,7 +119,7 @@ window.onload = function () {
   function Book() {
     const battle = createMemo(() => gameEncounterBattle(game));
     return (
-      <BookImpl onClickCover={onClickCover}>
+      <BookImpl>
         {battle() && <encounterBattleManager.FactoryComponent
             model={battle()!}/>}
       </BookImpl>
@@ -138,4 +148,11 @@ window.onload = function () {
           DragOverlay={DragOverlay}
       />
   ), app);
+
+  // TODO load assets
+  setTimeout(async () => {
+    navigation({
+      type: NavigationTargetType.Toc,
+    });
+  }, 2000);
 };

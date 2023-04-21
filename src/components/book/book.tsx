@@ -1,82 +1,124 @@
-import { For, JSX, JSXElement, ParentProps, createSignal } from 'solid-js';
+import { Component, For, JSX, JSXElement, ParentProps, createMemo, createSignal } from 'solid-js';
 import styles from './book.module.scss'
 import { AnimationManager } from 'ui/animation/animation_manager';
 import { Animations } from './book_controller';
 
-const FAKE_PAGE_COUNT = 64;
-
 export type PagePair = [JSXElement, JSXElement];
 
-export function PageComponent(props: ParentProps<{
-  z: number,
-  onClick?: () => void,
-  // TODO: find correct typing for style
-  style?: JSX.CSSProperties,
-}>) {
+function PageComponent(props: ParentProps) {
   return (
-    <div class={styles.page} onClick={props.onClick} style={{
-      transform: `translateZ(${props.z}px)`,
-      ...props.style
-    }}>
+    <div class={styles.page}>
       {props.children}
     </div>
   );
+}
+
+function BookHalfComponent(props: {topPage?: JSX.Element, bottomPage?: JSX.Element}) {
+  return (
+    <div class={styles['book-half']}>
+      <div class={styles['book-half-front']}/>
+      <div class={styles['book-half-right']}/>
+      <div class={styles['book-half-left']}/>
+      <div class={styles['book-half-top']}>
+        <PageComponent>
+          {props.topPage}
+        </PageComponent>
+      </div>
+      <div class={styles['book-half-bottom']}>
+        <PageComponent>
+          {props.bottomPage}
+        </PageComponent>
+      </div>
+    </div>
+  )
 }
 
 export function BookComponent(props: ParentProps<{
   animations: AnimationManager<Animations>,
   previousPages: PagePair | undefined,
   currentPages: PagePair | undefined,
-  onClickCover?: () => void,
+  turnLeftToRight: boolean,
+  turnPastMidway: boolean,
+  Cover: Component,
 }>) {
   const [spineRef, setSpineRef] = createSignal<HTMLDivElement>();
+  const rightPages = createMemo(() => {
+    return props.previousPages && props.turnLeftToRight
+        ? props.previousPages
+        : props.currentPages;
+  });
+  const leftPages = createMemo(() => {
+    return props.previousPages && !props.turnLeftToRight
+        ? props.previousPages
+        : props.currentPages;
+  });
+  const [pageTurnRef, setPageTurnRef] = createSignal<HTMLDivElement>();
+  const onTurnAnimationEnd = props.animations.createAnimationEndEventListener(
+    pageTurnRef,
+    () => props.turnLeftToRight
+        ? props.turnPastMidway
+            ? ['turn', styles.ltrdown]
+            : ['midway', styles.ltrup]
+        : props.turnPastMidway
+            ? ['turn', styles.rtldown]
+            : ['midway', styles.rtlup]
+  );
+
   return (
     <div class={styles.container}>
       <div class={styles.book}>
-        {/* Back half */}
-        <PageComponent z={-0.5 - FAKE_PAGE_COUNT / 2}/>
-
-        <For each={[...Array(FAKE_PAGE_COUNT / 2).keys()]}>
-          {page =>
-            // `FAKE_PAGE_COUNT / 2 - 1` is just so DOM order matches physical order but its pretty ugly, can probably just use `z-index`
-            <PageComponent z={-1.5 - (FAKE_PAGE_COUNT / 2 - 1 - page)} />
-          }
-          </For>
-
-        {/* Right page */}
-        <PageComponent z={-0.5}>
-          {props.currentPages?.[1]}
-        </PageComponent>
-
+        {/* Right half */}
+        <BookHalfComponent topPage={rightPages()?.[1]}/>
+        {/* turning page */}
+        {props.previousPages && props.currentPages && (
+          <div classList={{
+            [styles['turn-page']]: true,
+          }}>
+            <div
+                ref={setPageTurnRef}
+                classList={{
+                  [styles['turn-page-rotate']]: true,
+                  [styles.ltr]: props.turnLeftToRight,
+                  [styles.rtl]: !props.turnLeftToRight,
+                  [styles.down]: props.turnPastMidway,
+                  [styles.up]: !props.turnPastMidway,
+                }}
+                onAnimationEnd={onTurnAnimationEnd}
+            >
+              <div classList={{
+                [styles['turn-page-flip']]: true,
+                [styles.ltr]: props.turnLeftToRight,
+                [styles.rtl]: !props.turnLeftToRight,
+                [styles.down]: props.turnPastMidway,
+                [styles.up]: !props.turnPastMidway,
+              }}>
+                <PageComponent>
+                  {props.turnLeftToRight && !props.turnPastMidway
+                      || !props.turnLeftToRight && props.turnPastMidway
+                      ? rightPages()?.[0] 
+                      : leftPages()?.[1]
+                  }
+                </PageComponent>
+              </div>
+            </div>
+          </div>
+        )}
         <div
             classList={{
               [styles.spine]: true,
               [styles.open]: props.currentPages != null,
             }}
-            onAnimationEnd={props.animations.createAnimationEndEventListener(
+            onTransitionEnd={props.animations.createTransitionEndEventListener(
               spineRef,
-              () => ['turn', styles.openAnimation],
+              () => 'open',
             )}
             ref={setSpineRef}>
-          {/* Left page */}
-          <PageComponent z={0.5}>
-            {/* The left page has been rotated so we have to rotate its contents back */}
-            <div style={{ transform: 'rotateY(180deg)' }}>
-              {props.currentPages?.[0]}
-            </div>
-          </PageComponent>
-
-          {/* Front half */}
-          <For each={[...Array(FAKE_PAGE_COUNT / 2).keys()]}>
-            {page =>
-              <PageComponent z={1.5 + page} />
-            }
-          </For>
-
-          <PageComponent z={0.5 + FAKE_PAGE_COUNT / 2} onClick={props.onClickCover}>
-            <h1>GRAND TERMINUS</h1>
-          </PageComponent>
+          {/* Left half */}
+          <BookHalfComponent
+              topPage={<props.Cover/>}
+              bottomPage={leftPages()?.[0]}/>
         </div>
+        {/* spread overlay (monsters etc...)*/}
         {props.children && (
           <div class={styles.spread}>
             {props.children}

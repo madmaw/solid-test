@@ -3,6 +3,7 @@ import { BookComponent, PagePair } from "./book";
 import { Animations, BookController, PageComponentManager, bookUIDescriptor } from "./book_controller";
 import { AnimationManager } from "ui/animation/animation_manager";
 import { ParentProps } from "solid-js";
+import { ChrononomiconCoverComponent } from "./cover/chrononomicon";
 
 export function createBook({
   leftPageComponentManager,
@@ -27,6 +28,7 @@ export function createBook({
   const bookUI = bookUIDescriptor.create({
     previousSpread: undefined,
     turnLeftToRight: true,
+    turnPastMidway: false,
   });
   const controller = new BookController(
     book,
@@ -35,13 +37,15 @@ export function createBook({
     [leftPageComponentManager, rightPageComponentManager],
   );
 
-  const Component = (props: ParentProps<{ onClickCover: () => void }>) => {
+  const Component = (props: ParentProps) => {
     return (
       <BookComponent
           animations={animations}
           previousPages={renderPagePair(bookUI.previousSpread)}
           currentPages={renderPagePair(book.spread)}
-          onClickCover={props.onClickCover}>
+          turnLeftToRight={bookUI.turnLeftToRight}
+          turnPastMidway={bookUI.turnPastMidway}
+          Cover={ChrononomiconCoverComponent}>
         {props.children}
       </BookComponent>
     );

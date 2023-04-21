@@ -142,7 +142,7 @@ export class GameManager {
         playedCards: [],
       })),
     });
-    await this.bookController.showSpread(spread);
+    await this.bookController.showSpread(spread, true);
     const battleEncounter = gameEncounterBattle(this.game);
     if (battleEncounter != null) {
       await this.battleEncounterControllerManager
