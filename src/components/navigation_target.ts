@@ -1,17 +1,23 @@
 export const enum NavigationTargetType {
-  Toc = 1,
+  ToC = 1,
   Chapter,
+  Death
 }
 
 type NavigationTargetToC = {
-  type: NavigationTargetType.Toc,
+  type: NavigationTargetType.ToC,
 };
 
 type NavigationTargetChapter = {
   type: NavigationTargetType.Chapter,
   chapterIndex: number,
-}
+};
+
+type NavigationTargetDeath = {
+  type: NavigationTargetType.Death,
+};
 
 export type NavigationTarget =
     | NavigationTargetToC
-    | NavigationTargetChapter;
+    | NavigationTargetChapter
+    | NavigationTargetDeath;

@@ -14,6 +14,7 @@ import {
   RecycleTarget,
   SymbolType,
   bookSpreadRoomDescriptor,
+  chapterDescriptor,
   entityDescriptor,
 } from "model/domain";
 import {
@@ -39,10 +40,13 @@ import { hydrateEncounter } from "./encounters";
 import { EntityController } from "components/entity/entity_controller";
 import { TableController } from "components/table/table_controller";
 import { CardSlotController } from "components/card_slot/card_slot_controller";
+import { NavigationTarget, NavigationTargetType } from "components/navigation_target";
+import { chapter } from "data/ruins/chapter";
 
 export class GameManager {
   constructor(
     private readonly game: Game,
+    private readonly navigation: (to: NavigationTarget) => Promise<void>,
     private readonly tableController: TableController,
     private readonly bookController: BookController,
     private readonly cardControllerManager: ControllerManger<Card, CardController>,
@@ -89,9 +93,15 @@ export class GameManager {
           return this.nextPage(choice.encounter, cardSlot);
         case ChoiceType.NextTurn:
           // TODO
-          const finishEndTurn = await this.endTurn(cardSlot);
+          const {
+            playerDead,
+            finishEndTurn,
+          } = await this.endTurn(cardSlot);
           await finishEndTurn();
-          return this.startTurn();
+          if (!playerDead) {
+            return this.startTurn();
+          }
+          break;
         default:
           throw new UnreachableError(choice);
       }
@@ -146,15 +156,25 @@ export class GameManager {
     }
   }
 
-  async createPlayer() {
-    this.game.playerCharacter = entityDescriptor.create(defaultPlayerCharacter);
+  async maybeCreatePlayer() {
+    if (this.game.playerCharacter == null) {
+      this.game.playerCharacter = entityDescriptor.create(defaultPlayerCharacter);
+    }
+  }
+
+  async createChapter(chapterIndex: number) {
+    // TODO multiple chapters
+    this.game.book.chapter = chapterDescriptor.create(chapter);
   }
 
   async nextPage(
       encounter: EncounterDefinition | undefined,
       selectedCardSlot: CardSlot | undefined,
   ) {
-    const finishEndTurn = await this.endTurn(selectedCardSlot);
+    const { finishEndTurn, playerDead } = await this.endTurn(selectedCardSlot);
+    if (playerDead) {
+      return finishEndTurn();
+    }
     const spread = bookSpreadRoomDescriptor.create({
       type: BookSpreadType.Room,
       encounter: encounter && hydrateEncounter(encounter),
@@ -242,24 +262,25 @@ export class GameManager {
     }
     // a delay (can be zero) is necessary so free cards render in their
     // face down state before auto-flipping
-    await delay(500);
+    await delay(300);
     await this.normalizeBoard();
   }
 
   private async endTurn(
       playedCardSlot: CardSlot | undefined,
-  ): Promise<() => Promise<void>> {
+  ): Promise<{
+    playerDead: boolean,
+    finishEndTurn: () => Promise<void>
+  }> {
     // if we're in battle and the monster is dead, clear the battle
     const battle = gameEncounterBattle(this.game);
-    let dead = battle != null && battle.monster.health <= 0;
-    if (dead && battle) {
+    let monsterDead = battle != null && battle.monster.health <= 0;
+    if (monsterDead && battle) {
       await this.battleEncounterControllerManager.lookupController(battle)?.die();
     }
     // place all loose cards back in the deck
     const pageDeckHolder = pageDeck(this.game);
     const playerDeckHolder = playerDeck(this.game);
-    const cardSlots = allCardSlots(this.game)
-        .filter(cardSlot => cardSlot !== playedCardSlot);
 
     const processCardSlot = async (cardSlot: CardSlot) => {
       const inPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0;
@@ -295,19 +316,30 @@ export class GameManager {
       return;
     }
 
+    const playerCharacter = this.game.playerCharacter;
+    const playerDead = playerCharacter == null || playerCharacter.health <= 0;
+
+    const cardSlots = allCardSlots(this.game)
+        .filter(cardSlot => playerDead || cardSlot !== playedCardSlot);
     await batch<Promise<void>>(async () => {
       await Promise.all(cardSlots.flatMap(processCardSlot));
     });
-    if (dead) {
+    if (monsterDead) {
       const spread = this.game.book.spread;
       if (spread?.type === BookSpreadType.Room) {
         spread.encounter = undefined;
       }
     }
-    return async () => {
-      if (playedCardSlot != null) {
-        await processCardSlot(playedCardSlot);
-      }  
+    if (playerDead) {
+      await this.playerDeath();
+    }
+    return {
+      playerDead,
+      finishEndTurn: async () => {
+        if (playedCardSlot != null) {
+          await processCardSlot(playedCardSlot);
+        }
+      },
     };
   }
 
@@ -340,11 +372,18 @@ export class GameManager {
         ? discardDeck
         : drawDeck;
 
-    if (card.visibleFaceIndex > 0) {
-      await cardController?.flip();
+    const animateReturnToDeck = inPlayerHand || card !== cardSlot.targetCard;
+    if (animateReturnToDeck) {
+      if (card.visibleFaceIndex > 0) {
+        await cardController?.flip();
+      }
+    } else {
+      await cardController?.flipUpToVertical();
+      card.visibleFaceIndex = 0;
     }
-  
+
     if (targetDeck != null) {
+      
       const [getDeck, setDeck] = targetDeck;
       const deck = getDeck();
       const deckLength = deck.length;
@@ -361,8 +400,7 @@ export class GameManager {
       cardSlot.playedCards = cardSlot.playedCards.filter(c => c !== card);
     }
 
-    if (inPlayerHand || card !== cardSlot.targetCard) {
-      
+    if (animateReturnToDeck) {
       // TODO factor in other decks
       const deckPosition = this.tableController.getPlayerDeckTablePosition();
       // TODO event cards
@@ -379,9 +417,20 @@ export class GameManager {
           Easing.Gentle,
           playerSlotIndex < 0 ? 'rotateX(-90deg)' : undefined
       );
-    } else {
-      await cardController?.flipUpToVertical();
     }
+  }
+
+  private async playerDeath(): Promise<void> {
+    // die
+    await this.navigation({
+      type: NavigationTargetType.Death,
+    })
+    // clean up 
+    this.game.playerCharacter = undefined;
+    allCardSlots(this.game).forEach(c => {
+      c.targetCard = undefined;
+      c.playedCards = [];
+    });
   }
 }
 

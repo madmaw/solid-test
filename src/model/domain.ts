@@ -162,11 +162,16 @@ export const cardSlotDescriptor = activeRecordDescriptor({
 export const enum BookSpreadType {
   TableOfContents = 1,
   Room,
+  Death,
 }
 
 export const bookSpreadTableOfContentsDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<BookSpreadType.TableOfContents>(),
   unlockedChapters: numberDescriptor,
+});
+
+export const bookSpreadDeathDescriptor = activeRecordDescriptor({
+  type: new LiteralTypeDescriptor<BookSpreadType.Death>(),
 });
 
 export const deckDescriptor = listDescriptor(cardDescriptor);
@@ -206,6 +211,7 @@ export const bookSpreadDescriptor = discriminatingUnionDescriptor(
   {
     [BookSpreadType.TableOfContents]: bookSpreadTableOfContentsDescriptor,
     [BookSpreadType.Room]: bookSpreadRoomDescriptor,
+    [BookSpreadType.Death]: bookSpreadDeathDescriptor,
   },
   s => s.type,
   m => m.type,
@@ -243,6 +249,8 @@ export type BookSpreadTableOfContents = typeof bookSpreadTableOfContentsDescript
 export type BookSpreadTableOfContentsState = typeof bookSpreadTableOfContentsDescriptor.aState;
 export type BookSpreadRoom = typeof bookSpreadRoomDescriptor.aMutable;
 export type BookSpreadRoomState = typeof bookSpreadRoomDescriptor.aState;
+export type BookSpreadDeath = typeof bookSpreadDeathDescriptor.aMutable;
+export type BookSpreadDeathState = typeof bookSpreadDeathDescriptor.aState;
 export type BookSpread = typeof bookSpreadDescriptor.aMutable;
 export type BookSpreadState = typeof bookSpreadDescriptor.aState;
 export type EncounterBattle = typeof encounterBattleDescriptor.aMutable;

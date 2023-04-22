@@ -5,6 +5,7 @@ import { createToCPage } from "./toc/create";
 import { UnreachableError } from "base/unreachable_error";
 import { PageComponentManager, PageController, PageSide } from "./page_controller";
 import { createRoomPage } from "./room/create";
+import { createDeathPage } from "./death/create";
 
 export function createPageManager(
     navigation: (to: NavigationTarget) => void,
@@ -15,6 +16,8 @@ export function createPageManager(
         return createToCPage(spread, navigation);
       case BookSpreadType.Room:
         return createRoomPage(spread);
+      case BookSpreadType.Death:
+        return createDeathPage(spread, navigation);
       default:
         throw new UnreachableError(spread);
     }

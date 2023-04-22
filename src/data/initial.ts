@@ -1,16 +1,10 @@
-import { ChapterType, gameDescriptor } from "model/domain";
-import { cards } from "./ruins/cards";
+import { gameDescriptor } from "model/domain";
+import { chapter } from './ruins/chapter';
 
 export const initialGame = gameDescriptor.create({
   book: {
     spread: undefined,
-    chapter: {
-      type: ChapterType.Ruins,
-      deck: [
-        ...cards,
-        ...cards,
-      ],
-    },
+    chapter,
     cardSlots: new Array(3).fill(0).map(() => ({
       targetCard: undefined,
       playedCards: [],

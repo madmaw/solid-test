@@ -14,7 +14,7 @@ import { createStatusOverlay } from "components/status/create";
 import { createEncounterBattleManger } from "components/encounter/battle/create";
 import { gameEncounterBattle } from "rules/games";
 import { createMemo } from "solid-js";
-import { BookSpreadType, bookSpreadTableOfContentsDescriptor } from "model/domain";
+import { BookSpreadType, bookSpreadDeathDescriptor, bookSpreadTableOfContentsDescriptor } from "model/domain";
 import { NavigationTarget, NavigationTargetType } from "components/navigation_target";
 import { UnreachableError } from "base/unreachable_error";
 
@@ -23,19 +23,24 @@ window.onload = function () {
   const game = initialGame;
   const cardManager = createCardManager(game);
 
-  const navigation = async (to: NavigationTarget) => {
+  const navigation = async (to: NavigationTarget): Promise<void> => {
     switch (to.type) {
-      case NavigationTargetType.Toc:
+      case NavigationTargetType.ToC:
         await tableController.setView(View.TopDown);
-        bookController.showSpread(bookSpreadTableOfContentsDescriptor.create({
+        return bookController.showSpread(bookSpreadTableOfContentsDescriptor.create({
           type: BookSpreadType.TableOfContents,
           unlockedChapters: 0,
-        }));
-        break;
+        }), true);
       case NavigationTargetType.Chapter:
         await tableController.setView(View.Tilted);
-        gameManager.createPlayer();
+        gameManager.maybeCreatePlayer();
+        gameManager.createChapter(to.chapterIndex);
         return gameManager.nextPage(undefined, undefined);
+      case NavigationTargetType.Death:
+        await bookController.showSpread(bookSpreadDeathDescriptor.create({
+          type: BookSpreadType.Death,
+        }));
+        return tableController.setView(View.TopDown);
       default:
         throw new UnreachableError(to);
     }
@@ -81,6 +86,7 @@ window.onload = function () {
   const encounterBattleManager = createEncounterBattleManger();
   const gameManager = new GameManager(
       game,
+      navigation,
       tableController,
       bookController,
       cardManager,
@@ -163,7 +169,7 @@ window.onload = function () {
   // TODO load assets
   setTimeout(async () => {
     navigation({
-      type: NavigationTargetType.Toc,
+      type: NavigationTargetType.ToC,
     });
   }, 2000);
 };
