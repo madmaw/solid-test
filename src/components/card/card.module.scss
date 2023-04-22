@@ -2,6 +2,7 @@
 
 $flipAnimationDuration: 200ms;
 $transitionAnimationDuration: 500ms;
+$transitionAnimationViolentDuration: 200ms;
 
 .card {
   width: constants.$cardWidth;
@@ -21,9 +22,18 @@ $transitionAnimationDuration: 500ms;
 }
 
 .translate {
-  transition-duration: $transitionAnimationDuration;
   transition-property: transform;
+  transition-timing-function: ease-out;
+  transition-duration: $transitionAnimationViolentDuration;
+}
+
+.translate.gentle {
+  transition-duration: $transitionAnimationDuration;
   transition-timing-function: ease-in-out;
+}
+
+.translate.violent {
+  transition-timing-function: ease-in;
 }
 
 .rotate.flippingUpToVertical {

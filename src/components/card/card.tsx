@@ -1,4 +1,4 @@
-import { Animations, FlipState, Offset } from "./card_controller";
+import { Animations, Easing, FlipState, Offset } from "./card_controller";
 import styles from './card.module.scss';
 import { ParentProps, createSignal } from "solid-js";
 import { AnimationManager } from "ui/animation/animation_manager";
@@ -7,7 +7,7 @@ export type CardProps = ParentProps<{
   flipState: FlipState,
   elevated: boolean,
   animations: AnimationManager<Animations>,
-  offset: { dx: string, dy: string, dz: string } | undefined,
+  offset: { dx: string, dy: string, dz: string, easing: Easing } | undefined,
 }>;
 
 export function CardComponent(props: CardProps) {
@@ -21,7 +21,11 @@ export function CardComponent(props: CardProps) {
         }}
     >
       <div 
-          class={styles.translate}
+          classList={{
+            [styles.translate]: true,
+            [styles.gentle]: props.offset?.easing === Easing.Gentle,
+            [styles.violent]: props.offset?.easing === Easing.Violent,
+          }}
           style={props.offset && {
             transform: `translate3d(${props.offset.dx}, ${props.offset.dy}, ${props.offset.dz})`
           }}

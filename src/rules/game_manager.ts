@@ -1,4 +1,4 @@
-import { CardController } from "components/card/card_controller";
+import { CardController, Easing } from "components/card/card_controller";
 import { ControllerManger } from "components/component_manager";
 import {
   BookSpreadType,
@@ -59,11 +59,17 @@ export class GameManager {
     }
 
     const originalFace = cardFace(targetCard, false);
+    const cardController = this.cardControllerManager.lookupController(targetCard);
     if (originalFace.type === CardFaceType.ChoiceBack) {
-      await this.cardControllerManager.lookupController(targetCard)?.flip();
+      await cardController?.flip();
+
       await delay(500);
       // TODO apply effects
     }
+    cardController?.setElevated(true);
+    cardSlot.playedCards.forEach(
+        card => this.cardControllerManager.lookupController(card)?.setElevated(true),
+    );
 
     const battle = gameEncounterBattle(this.game);
     if (battle != null) {
@@ -99,31 +105,39 @@ export class GameManager {
       return;
     }
     const cardUsages = calculateTargetCardEffectUsages(cardSlot, undefined);
-    await this.applyUsages(cardUsages.cost, EffectDirection.Down, playerCharacter);
+    await this.applyUsages(targetCard, cardUsages.cost, EffectDirection.Down, playerCharacter);
     // is there a monster, and is the slot in the monsters hand?
     const battle = gameEncounterBattle(this.game);
     if (battle == null || this.game.playerHand.indexOf(cardSlot) >= 0) {
       return;
     }
-    await this.applyUsages(cardUsages.benefit, EffectDirection.Up, battle.monster);
+    await this.applyUsages(targetCard, cardUsages.benefit, EffectDirection.Up, battle.monster);
     // also apply the cards
     for (const playedCard of cardSlot.playedCards) {
       const playedCardUsages = calculateCardEffectUsages(this.game, playedCard, undefined);
-      await this.applyUsages(playedCardUsages.benefit, EffectDirection.Up, battle.monster);
+      await this.applyUsages(playedCard, playedCardUsages.benefit, EffectDirection.Up, battle.monster);
     }
   }
 
   private async applyUsages(
+      card: Card,
       usages: readonly EffectUsage[],
       direction: EffectDirection.Up | EffectDirection.Down,
       to: Entity,
   ) {
+    const cardController = this.cardControllerManager.lookupController(card);
     for(const usage of usages) {
       if (!usage.used) {
         // direction can be used as a bitwise flag
         if (usage.effect.direction & direction) {
           switch (usage.effect.symbol) {
             case SymbolType.Damage:
+              await cardController?.moveTo(
+                  '0',
+                  direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                  '1vmin',
+                  Easing.Violent,
+              );
               to.health--;
               break;
           }
@@ -216,7 +230,8 @@ export class GameManager {
                 await this.cardControllerManager.lookupController(card)?.moveTo(
                     ...(cardPosition
                         .map((v, i) => v - deckPosition[i])
-                        .map(v => `${v}vmin`) as [string, string, string])
+                        .map(v => `${v}vmin`) as [string, string, string]),
+                    Easing.Gentle,
                 );
                 cardSlot.targetCard = card;
               }),
@@ -319,10 +334,12 @@ export class GameManager {
   ) {
     const cardController = this.cardControllerManager.lookupController(card);
     const inPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0; 
+    cardController?.setElevated(false);
     if (inPlayerHand || card !== cardSlot.targetCard) {
       if (card.visibleFaceIndex > 0) {
-        await this.cardControllerManager.lookupController(card)?.flip();
+        await cardController?.flip();
       }
+      
       // TODO factor in other decks
       const deckPosition = this.tableController.getPlayerDeckTablePosition();
       // TODO event cards
@@ -332,7 +349,8 @@ export class GameManager {
       await cardController?.moveTo(
           ...(cardPosition
               .map((v, i) => deckPosition[i] - v)
-              .map(v => `${v}vmin`) as [string, string, string])
+              .map(v => `${v}vmin`) as [string, string, string]),
+          Easing.Gentle,
       );
     } else {
       await cardController?.flipUpToVertical();

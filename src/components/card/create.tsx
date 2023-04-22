@@ -14,6 +14,7 @@ export function createCardManager(game: Game) {
       flipState: FlipState.Flat,
       peeking: false,
       offset: undefined,
+      elevated: false,
     });
 
     function Component() {
@@ -25,7 +26,11 @@ export function createCardManager(game: Game) {
       return (
         <CardComponent
             flipState={cardUI.flipState}
-            elevated={cardUI.peeking || cardUI.flipState === FlipState.FlippingUpToVertical}
+            elevated={
+                cardUI.peeking
+                    || cardUI.flipState === FlipState.FlippingUpToVertical
+                    || cardUI.elevated
+            }
             animations={animations}
             offset={cardUI.offset}>
           <CardFaceComponent
