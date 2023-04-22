@@ -5,6 +5,7 @@ $tableWidth: calc(tableWidth * 1vmin);
 @value tableHeight: 200;
 $tableHeight: calc(tableHeight * 1vmin);
 
+@value bookWidth: pageWidth;
 $bookWidth: constants.$pageWidth;
 @value bookHeight: pageHeight;
 $bookHeight: constants.$pageHeight;
@@ -17,6 +18,9 @@ $handSlotWidth: 80vmin;
 @value handSlotWidth: 80;
 $handSlotHeight: constants.$cardHeight;
 @value handSlotHeight: cardHeight;
+
+@value overlayZ: 27;
+$overlayZ: calc(overlayZ * 1vmin); 
 
 $tableColor: #763F13;
 $tableColorDark: #221100;
@@ -116,7 +120,7 @@ $tableColorDark: #221100;
   left: calc($tableWidth/2 - $bookWidth/2);
   width: calc($bookWidth);
   height: constants.$cardHeight;
-  transform: translateZ(calc(constants.$cardHeight * 3)) rotateX(constants.$tableTiltCorrectionAngle);
+  transform: translateZ(calc($overlayZ)) rotateX(constants.$tableTiltCorrectionAngle);
   transform-origin: top;
 }
 

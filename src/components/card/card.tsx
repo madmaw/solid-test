@@ -7,7 +7,7 @@ export type CardProps = ParentProps<{
   flipState: FlipState,
   elevated: boolean,
   animations: AnimationManager<Animations>,
-  offset: { dx: string, dy: string, dz: string, easing: Easing } | undefined,
+  offset: { dx: string, dy: string, dz: string, easing: Easing, additionalTransform?: string } | undefined,
 }>;
 
 export function CardComponent(props: CardProps) {
@@ -23,11 +23,13 @@ export function CardComponent(props: CardProps) {
       <div 
           classList={{
             [styles.translate]: true,
+            [styles.instant]: props.offset?.easing === Easing.Instant,
             [styles.gentle]: props.offset?.easing === Easing.Gentle,
             [styles.violent]: props.offset?.easing === Easing.Violent,
           }}
           style={props.offset && {
-            transform: `translate3d(${props.offset.dx}, ${props.offset.dy}, ${props.offset.dz})`
+            transform: 
+                `translate3d(${props.offset.dx}, ${props.offset.dy}, ${props.offset.dz}) ${props.offset.additionalTransform ?? ''}`
           }}
           onTransitionEnd={props.animations.createTransitionEndEventListener(
             cardRef,

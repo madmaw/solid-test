@@ -5,11 +5,14 @@ import styles from './table.module.scss';
 import { batch } from "solid-js";
 
 const bookTop = parseInt(styles.bookTop);
+const bookWidth = parseInt(styles.bookWidth);
 const bookHeight = parseInt(styles.bookHeight);
 const tableWidth = parseInt(styles.tableWidth);
 const handSlotTop = parseInt(styles.handSlotTop);
 const handSlotWidth = parseInt(styles.handSlotWidth);
 const cardWidth = parseInt(styles.cardWidth);
+const cardHeight = parseInt(styles.cardHeight);
+const overlayZ = parseInt(styles.overlayZ);
 
 export const enum View {
   TopDown = 0,
@@ -52,16 +55,23 @@ export class TableController {
     });
   }
 
-  getCardSlotTablePosition(slotIndex: number): [number, number, number] {
+  getPlayerCardSlotTablePosition(slotIndex: number): [number, number, number] {
     // TODO make number of slots based on game instead of hard coded
     const x = (tableWidth - handSlotWidth)/2
-        + slotIndex * (handSlotWidth - cardWidth)/5;
+        + (slotIndex + .5) * handSlotWidth/6 - cardWidth/2;
     const y = bookTop + bookHeight + handSlotTop;
     return [x, y, 0];
   }
 
+  getBookCardSlotTablePosition(slotIndex: number): [number, number, number] {
+    const x = (tableWidth - bookWidth)/2
+        + (slotIndex + .5) * bookWidth/3 - cardWidth/2;
+    const y = bookTop + bookHeight + cardHeight/2;
+    return [x, y, overlayZ];
+  }
+
   getPlayerDeckTablePosition(): [number, number, number] {
-    const x = (tableWidth - handSlotWidth)/2 - cardWidth;
+    const x = (tableWidth - handSlotWidth)/2 - 10;
     const y = bookTop + bookHeight + handSlotTop;
 
     return [x, y, 0];

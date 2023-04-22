@@ -3,6 +3,7 @@ import { LiteralTypeDescriptor, booleanDescriptor } from "model/descriptor/liter
 import { activeRecordDescriptor } from "model/descriptor/record";
 import { Card} from "model/domain";
 import { optionalDescriptor } from "model/descriptor/option";
+import { delay } from "base/delay";
 
 export const enum FlipState {
   Flat = 1,
@@ -15,8 +16,9 @@ export const Offset = -1;
 export type Animations = FlipState | typeof Offset;
 
 export const enum Easing {
-  Gentle = 1,
-  Violent
+  Instant = 1,
+  Gentle,
+  Violent,
 }
 
 export const cardUIDescriptor = activeRecordDescriptor({
@@ -28,6 +30,7 @@ export const cardUIDescriptor = activeRecordDescriptor({
         dy: string,
         dz: string,
         easing: Easing,
+        additionalTransform?: string,
       }>(),
   ),
   elevated: booleanDescriptor,
@@ -69,6 +72,18 @@ export class CardController {
   async moveTo(dx: string, dy: string, dz: string, easing: Easing) {
     this.cardUI.offset = {
       dx, dy, dz, easing,
+    };
+    await this.animations.waitForAnimation(Offset);
+    this.cardUI.offset = undefined;
+  }
+
+  async moveFrom(dx: string, dy: string, dz: string, easing: Easing, additionalTransform?: string) {
+    this.cardUI.offset = {
+      dx, dy, dz, easing: Easing.Instant, additionalTransform,
+    };
+    await delay(0);
+    this.cardUI.offset = {
+      dx: '0', dy: '0', dz: '0', easing: easing,
     };
     await this.animations.waitForAnimation(Offset);
     this.cardUI.offset = undefined;

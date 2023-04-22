@@ -6,7 +6,6 @@ import { createCardSlotManager, createCardSlots } from "components/card_slot/cre
 import { createCardManager } from "components/card/create";
 import { createPageManager } from "components/page/create";
 import { initialGame } from "data/initial";
-import { createSpreadOverlay } from "components/spread/overlay/create";
 import { InteractionManager } from "rules/interaction_manager";
 import { createDragOverlay } from "components/drag/create";
 import { GameManager } from "rules/game_manager";

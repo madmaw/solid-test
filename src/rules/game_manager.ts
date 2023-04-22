@@ -226,7 +226,7 @@ export class GameManager {
               drawnCards.reverse().map(async (card, i) => {
                 const cardSlot = availableSlots[i];
                 const slotIndex = playerHand.indexOf(cardSlot);
-                const cardPosition = this.tableController.getCardSlotTablePosition(slotIndex);
+                const cardPosition = this.tableController.getPlayerCardSlotTablePosition(slotIndex);
                 await this.cardControllerManager.lookupController(card)?.moveTo(
                     ...(cardPosition
                         .map((v, i) => v - deckPosition[i])
@@ -335,30 +335,14 @@ export class GameManager {
     const cardController = this.cardControllerManager.lookupController(card);
     const inPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0; 
     cardController?.setElevated(false);
-    if (inPlayerHand || card !== cardSlot.targetCard) {
-      if (card.visibleFaceIndex > 0) {
-        await cardController?.flip();
-      }
-      
-      // TODO factor in other decks
-      const deckPosition = this.tableController.getPlayerDeckTablePosition();
-      // TODO event cards
-      const slotIndex = this.game.playerHand.indexOf(cardSlot);
-      // TODO factor in whether it's a played or target card
-      const cardPosition = this.tableController.getCardSlotTablePosition(slotIndex);
-      await cardController?.moveTo(
-          ...(cardPosition
-              .map((v, i) => deckPosition[i] - v)
-              .map(v => `${v}vmin`) as [string, string, string]),
-          Easing.Gentle,
-      );
-    } else {
-      await cardController?.flipUpToVertical();
-    }
     const recycleTarget = card.definition.recycleTarget;
     const targetDeck = recycleTarget === RecycleTarget.DiscardDeckTop
         ? discardDeck
         : drawDeck;
+
+    if (card.visibleFaceIndex > 0) {
+      await cardController?.flip();
+    }
   
     if (targetDeck != null) {
       const [getDeck, setDeck] = targetDeck;
@@ -370,6 +354,33 @@ export class GameManager {
               ? Math.floor(Math.random() * (deckLength + 1))
               : deckLength
       setDeck([...deck.slice(0, index), card, ...deck.slice(index)]);
+    }
+    if (cardSlot.targetCard === card) {
+      cardSlot.targetCard = undefined;
+    } else {
+      cardSlot.playedCards = cardSlot.playedCards.filter(c => c !== card);
+    }
+
+    if (inPlayerHand || card !== cardSlot.targetCard) {
+      
+      // TODO factor in other decks
+      const deckPosition = this.tableController.getPlayerDeckTablePosition();
+      // TODO event cards
+      const playerSlotIndex = this.game.playerHand.indexOf(cardSlot);
+      const bookSlotIndex = this.game.book.cardSlots.indexOf(cardSlot);
+      // TODO factor in whether it's a played or target card
+      const cardPosition = playerSlotIndex >= 0
+          ? this.tableController.getPlayerCardSlotTablePosition(playerSlotIndex)
+          : this.tableController.getBookCardSlotTablePosition(bookSlotIndex);
+      await cardController?.moveFrom(
+          ...(cardPosition
+              .map((v, i) =>  v - deckPosition[i])
+              .map(v => `${v}vmin`) as [string, string, string]),
+          Easing.Gentle,
+          playerSlotIndex < 0 ? 'rotateX(-90deg)' : undefined
+      );
+    } else {
+      await cardController?.flipUpToVertical();
     }
   }
 }

@@ -25,6 +25,12 @@ $transitionAnimationViolentDuration: 200ms;
   transition-property: transform;
   transition-timing-function: ease-out;
   transition-duration: $transitionAnimationViolentDuration;
+  transform-origin: top left;
+}
+
+.translate.instant {
+  transition-property: none;
+  transition-duration: unset;
 }
 
 .translate.gentle {
