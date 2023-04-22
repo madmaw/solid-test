@@ -10,7 +10,11 @@ export const initialGame = gameDescriptor.create({
         ...cards,
         ...cards,
       ],
-    }
+    },
+    cardSlots: new Array(3).fill(0).map(() => ({
+      targetCard: undefined,
+      playedCards: [],
+    })),
   },
   playerCharacter: undefined,
   playerHand: new Array(6).fill(0).map(() => ({

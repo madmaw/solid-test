@@ -36,7 +36,7 @@ window.onload = function () {
       case NavigationTargetType.Chapter:
         await tableController.setView(View.Tilted);
         gameManager.createPlayer();
-        return gameManager.nextPage(undefined);
+        return gameManager.nextPage(undefined, undefined);
       default:
         throw new UnreachableError(to);
     }
@@ -57,11 +57,12 @@ window.onload = function () {
     Component: CardSlotsComponent,
   } = createCardSlots(cardSlotManager.FactoryComponent);
 
-  const {
-    Component: SpreadOverlayComponent,
-  } = createSpreadOverlay({
-    CardSlotsComponent,
-  });
+  // const {
+  //   Component: SpreadOverlayComponent,
+  // } = createSpreadOverlay({
+  //   CardSlotsComponent,
+  // });
+
 
   const StatusOverlayComponent = createStatusOverlay()
 
@@ -115,7 +116,7 @@ window.onload = function () {
     return (
       <>
         {
-          game.book.spread && <SpreadOverlayComponent model={game.book.spread}/>
+          game.book.spread && <CardSlotsComponent model={game.book.cardSlots}/>
         }
       </>
     );

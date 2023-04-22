@@ -199,7 +199,6 @@ export const encounterDescriptor = discriminatingUnionDescriptor(
 
 export const bookSpreadRoomDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<BookSpreadType.Room>(),
-  cardSlots: listDescriptor(cardSlotDescriptor),
   encounter: optionalDescriptor(encounterDescriptor),
 });
 
@@ -227,6 +226,7 @@ export const bookDescriptor = activeRecordDescriptor({
   // undefined == closed
   spread: optionalDescriptor(bookSpreadDescriptor),
   chapter: chapterDescriptor,
+  cardSlots: listDescriptor(cardSlotDescriptor),
 });
 
 export const gameDescriptor = activeRecordDescriptor({

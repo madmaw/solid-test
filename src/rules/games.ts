@@ -5,10 +5,7 @@ export function allCardSlots(game: Game): readonly CardSlot[] {
 }
 
 export function pageCardSlots(game: Game): readonly CardSlot[] {
-  const spread = game.book.spread;
-  return spread?.type === BookSpreadType.Room
-      ? spread.cardSlots
-      : [];
+  return game.book.cardSlots;
 }
 
 export type DeckHolder = [() => Deck, (deck: Deck) => void];
