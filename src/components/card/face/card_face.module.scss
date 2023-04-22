@@ -12,9 +12,9 @@
   border-style: solid;  
   box-sizing: border-box;
   color: white;
-  text-shadow: black 0 0 calc(constants.$unit/2);
+  text-shadow: black 0 0 .5vmin;
   border-color: #222;
-  padding: calc(constants.$unit/2) 0;  
+  padding: .5vmin 0;  
 }
 
 .card-face.background.clear {
@@ -68,8 +68,8 @@
 
 svg {
   width: 100%;
-  height: calc(constants.$unit * 2);
+  height: 2vmin;
   stroke: #fff;
   fill: none; 
-  stroke-width: constants.$unit;
+  stroke-width: 1vmin;
 }

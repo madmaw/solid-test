@@ -2,24 +2,21 @@ import { Component } from "solid-js";
 import { TableComponent } from "./table";
 import { Animations, TableController, View, tableUIDescriptor } from "./table_controller";
 import { AnimationManager } from "ui/animation/animation_manager";
-import { InteractionManager } from "rules/interaction_manager";
 
-export function createTable(interactionManager: InteractionManager) {
+export function createTable() {
   const tableUI = tableUIDescriptor.create({
     view: View.TopDownBookCentered,
-  })
+    lookDx: 0,
+    lookDy: 0,
+  });
   const animations = new AnimationManager<Animations>(); 
   const controller = new TableController(tableUI, animations);
-  function onDragCancel() {
-    interactionManager.clearDrag();
-  }
 
   function Component(props: {
     Book: Component,
     Hand: Component,
     Deck: Component,
     SpreadOverlay: Component,
-    DragOverlay: Component,
     StatusOverlay: Component,
   }) {
     return (
@@ -29,11 +26,10 @@ export function createTable(interactionManager: InteractionManager) {
           Deck={props.Deck}
           SpreadOverlay={props.SpreadOverlay}
           StatusOverlay={props.StatusOverlay}
-          DragOverlay={props.DragOverlay}
-          view={tableUI.view} 
+          view={tableUI.view}
+          lookDx={tableUI.lookDx}
+          lookDy={tableUI.lookDy}
           animations={animations}
-          onDragCancel={onDragCancel}
-          dragging={interactionManager.dragging}
       />
     );
   }

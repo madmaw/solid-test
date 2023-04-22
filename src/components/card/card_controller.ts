@@ -3,6 +3,7 @@ import { LiteralTypeDescriptor, booleanDescriptor } from "model/descriptor/liter
 import { activeRecordDescriptor } from "model/descriptor/record";
 import { Card} from "model/domain";
 import { batch } from "solid-js";
+import { optionalDescriptor } from "model/descriptor/option";
 
 export const enum FlipState {
   Flat = 1,
@@ -10,11 +11,16 @@ export const enum FlipState {
   FlippingDownFromVertical,
 }
 
-export type Animations = FlipState;
+export const Offset = -1;
+
+export type Animations = FlipState | typeof Offset;
 
 export const cardUIDescriptor = activeRecordDescriptor({
   flipState: new LiteralTypeDescriptor<FlipState>(),
-  peeking: booleanDescriptor,  
+  peeking: booleanDescriptor,
+  offset: optionalDescriptor(
+      new LiteralTypeDescriptor<{ dx: string, dy: string, dz: string }>(),
+  ),
 });
 
 export type CardUI = typeof cardUIDescriptor.aMutable;
@@ -38,19 +44,33 @@ export class CardController {
       this.cardUI.peeking = peeking;
     });
   }
+  
+  async flipUpToVertical(): Promise<void> {
+    this.cardUI.flipState = FlipState.FlippingUpToVertical;
+    await this.animations.waitForAnimation(FlipState.FlippingUpToVertical);
+  }
+
+  async flipDownFromVertical(): Promise<void> {
+    this.cardUI.flipState = FlipState.FlippingDownFromVertical;
+    await this.animations.waitForAnimation(FlipState.FlippingDownFromVertical);
+    this.cardUI.flipState = FlipState.Flat;
+  }
+
+  async moveTo(dx: string, dy: string, dz: string) {
+    this.cardUI.offset = {
+      dx, dy, dz,
+    }
+    await this.animations.waitForAnimation(Offset);
+    this.cardUI.offset = undefined;
+  }
 
   isPeeking() {
     return this.cardUI.peeking;
   }
 
   private async internalFlip(doFlip: () => void) {
-    this.cardUI.flipState = FlipState.FlippingUpToVertical;
-    await this.animations.waitForAnimation(FlipState.FlippingUpToVertical);
-    batch(() => {
-      doFlip();
-      this.cardUI.flipState = FlipState.FlippingDownFromVertical;
-    });
-    await this.animations.waitForAnimation(FlipState.FlippingDownFromVertical);
-    this.cardUI.flipState = FlipState.Flat;
+    await this.flipUpToVertical();
+    doFlip();
+    await this.flipDownFromVertical();
   }
 }

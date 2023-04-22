@@ -71,6 +71,10 @@ $usedAnimationDuration: 400ms;
   transform: translateY(calc(constants.$cardHeight/-1)) rotateZ(90deg);
 }
 
+.played-cards.used.unrotate {
+  transform: translateY(calc(constants.$cardHeight/-1));
+}
+
 .played-card {
   margin-bottom: calc(-.75 * constants.$cardHeight);
   transition: margin-bottom $usedAnimationDuration ease-in-out;

@@ -3,6 +3,7 @@ import { activeRecordDescriptor } from "model/descriptor/record";
 
 export const cardSlotUIDescriptor = activeRecordDescriptor({
   targetCardHidden: booleanDescriptor,
+  forceUnrotate: booleanDescriptor,
 });
 
 export type CardSlotUI = typeof cardSlotUIDescriptor.aMutable;
@@ -14,5 +15,9 @@ export class CardSlotController {
 
   setTargetCardHidden(hidden: boolean) {
     this.cardSlotUI.targetCardHidden = hidden;
+  }
+
+  setForceUnrotate(forceUnrotate: boolean) {
+    this.cardSlotUI.forceUnrotate = forceUnrotate;
   }
 }

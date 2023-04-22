@@ -72,18 +72,35 @@ window.onload = function () {
     pageComponentManager,
     book: game.book,
   });
-  const encounterBattleManager = createEncounterBattleManger();
-  const gameManager = new GameManager(game, bookController, cardManager, encounterBattleManager);
-  const interactionManger = new InteractionManager(gameManager, cardManager, cardSlotManager);
-  
-  window.addEventListener('pointermove', e => {
-    interactionManger.lastMousePosition = [e.clientX, e.clientY];
-  });
 
   const {
     Component: TableComponent,
     controller: tableController,
-  } = createTable(interactionManger);
+  } = createTable();
+
+  const encounterBattleManager = createEncounterBattleManger();
+  const gameManager = new GameManager(
+      game,
+      tableController,
+      bookController,
+      cardManager,
+      cardSlotManager,
+      encounterBattleManager,
+  );
+  const interactionManger = new InteractionManager(
+      gameManager,
+      cardManager,
+      cardSlotManager,
+  );
+  
+  window.addEventListener('pointermove', e => {
+    interactionManger.lastMousePosition = [e.clientX, e.clientY];
+  });
+  window.addEventListener('mousemove', e => {
+    const dx = (e.clientX - window.innerWidth/2)*2/window.innerWidth;
+    const dy = (e.clientY - window.innerHeight/2)*2/window.innerHeight;
+    tableController.look(Math.pow(dx, 3)/2, Math.pow(dy, 3)/2);
+  });
 
   const {
     Component: PlayerDeck,
@@ -132,14 +149,15 @@ window.onload = function () {
   }
 
   render(() => (
-      <TableComponent
-          Book={Book}
-          Hand={Hand}
-          Deck={PlayerDeck}
-          SpreadOverlay={SpreadOverlay}
-          StatusOverlay={StatusOverlay}
-          DragOverlay={DragOverlay}
-      />
+      <DragOverlay>
+        <TableComponent
+            Book={Book}
+            Hand={Hand}
+            Deck={PlayerDeck}
+            SpreadOverlay={SpreadOverlay}
+            StatusOverlay={StatusOverlay}
+        />
+      </DragOverlay>
   ), app);
 
   // TODO load assets

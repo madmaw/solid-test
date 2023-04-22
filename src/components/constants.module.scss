@@ -1,13 +1,12 @@
-$unit: 1vmin;
-
-$cardWidth: calc($unit * 9);
-$cardHeight: calc($cardWidth * 1.39);
+@value cardWidth: 9;
+$cardWidth: calc(cardWidth * 1vmin);
+@value cardHeight: 12;
+$cardHeight: calc(cardHeight * 1vmin);
 $cardBorderRadius: calc($cardWidth * .1);
 
 @value pageWidth: 50;
-@value pageHeight: 70;
-
 $pageWidth: calc(pageWidth * 1vmin);
+@value pageHeight: 70;
 $pageHeight: calc(pageHeight * 1vmin);
 
 $tableTiltAngle: 60deg;
@@ -16,7 +15,3 @@ $popupDuration: 200ms;
 $popupTimingFunction: cubic-bezier(.47,1.64,.41,.8);
 $popdownDuration: 150ms;
 $popdownTimingFunction: ease-in;
-
-.x {
-  width: pageWidth;
-}

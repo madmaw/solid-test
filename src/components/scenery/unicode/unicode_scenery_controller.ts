@@ -9,5 +9,5 @@ export class UnicodeSceneryController implements SceneryController {
 
   async popdown(): Promise<void> {
     
-  }  
+  }
 }

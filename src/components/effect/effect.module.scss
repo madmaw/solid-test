@@ -1,5 +1,3 @@
-@use 'components/constants.module.scss';
-
 @value stroke: #FFF;
 @value fill: transparent;
 @value fillForce: #773;
@@ -8,12 +6,12 @@
 @value fillMind: #449;
 
 .container {
-  font-size: calc(constants.$unit * 2);
+  font-size: 2vmin;
   text-align: center;
   vertical-align: middle;
   overflow: hidden;
-  width: calc(constants.$unit * 2);
-  height: calc(constants.$unit * 2);
+  width: 2vmin;
+  height: 2vmin;
   opacity: 1;
   transition: filter 1000ms ease-in-out;
 }

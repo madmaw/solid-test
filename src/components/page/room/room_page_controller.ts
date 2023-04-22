@@ -5,8 +5,10 @@ import { maxBy, minBy } from 'base/max_by';
 import { Component } from "solid-js";
 
 export type Scenery = {
-  Component: Component<{ side: PageSide }>,
+  Component: Component<{ x: string }>,
   controller: SceneryController,
+  x: number,
+  y: number,
   popupDelayMillis: number,
 }
 

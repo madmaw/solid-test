@@ -9,11 +9,10 @@ export function TableComponent(props: {
   Deck: Component,
   SpreadOverlay: Component,
   StatusOverlay: Component,
-  DragOverlay: Component,
   view: View,
+  lookDx: number,
+  lookDy: number,
   animations: AnimationManager<Animations>,
-  onDragCancel: () => void,
-  dragging: boolean,
 }) {
   const [tableRef, setTableRef] = createSignal<HTMLDivElement>();
   return (
@@ -21,9 +20,10 @@ export function TableComponent(props: {
       <div
           classList={{
             [styles.room]: true,
-            [styles.dragging]: props.dragging,
           }}
-          onPointerUp={props.onDragCancel}
+          style={props.view === View.Tilted ? {
+            transform: `translate(${props.lookDx * -20}vmin, ${-props.lookDy*20}vmin) rotateX(${-props.lookDy/2}rad)`
+          } : undefined}
       >
         <div
             classList={{
@@ -53,9 +53,6 @@ export function TableComponent(props: {
       </div>
       <div class={styles['status-overlay']}>
         <props.StatusOverlay/>
-      </div>
-      <div class={styles['drag-overlay']}>
-        <props.DragOverlay/>
       </div>
     </div>
   );

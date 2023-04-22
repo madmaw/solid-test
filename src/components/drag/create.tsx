@@ -1,7 +1,7 @@
 import { InteractionManager } from "rules/interaction_manager";
 import { DragOverlay } from "./drag_overlay";
 import { DragOverlayController } from "./drag_overlay_controller";
-import { Component } from "solid-js";
+import { Component, ParentProps } from "solid-js";
 import { Card } from "model/domain";
 
 export function createDragOverlay(
@@ -19,20 +19,21 @@ export function createDragOverlay(
       </>
     );
   }
+  function onDragCancel() {
+    interactionManager.clearDrag();
+  }
 
-  function Component() {
+  function Component(props: ParentProps) {
     return (
-      <>
-        {
-          interactionManager.lastMousePosition && (
-            <DragOverlay
-                cx={interactionManager.lastMousePosition[0]}
-                cy={interactionManager.lastMousePosition[1]}
-                Card={Card}
-            />
-          )
-        }
-      </>
+        <DragOverlay
+            cx={interactionManager.lastMousePosition?.[0]}
+            cy={interactionManager.lastMousePosition?.[1]}
+            Card={Card}
+            dragging={interactionManager.dragging}
+            onDragCancel={onDragCancel}
+        >
+          {props.children}
+        </DragOverlay>
     );
   }
 

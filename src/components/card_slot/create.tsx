@@ -31,6 +31,7 @@ export function createCardSlotManager(
   function createCardSlot(cardSlot: CardSlot) {
     const cardSlotUI = cardSlotUIDescriptor.create({
       targetCardHidden: false,
+      forceUnrotate: false,
     });
     const controller = new CardSlotController(cardSlotUI);
     function internalOnDragStart() {
@@ -58,6 +59,7 @@ export function createCardSlotManager(
               onClick={internalOnClick}
               bordered={game.playerHand.indexOf(cardSlot) >= 0}
               used={cardSlot.targetCard == null && cardSlot.playedCards.length > 0}
+              forceUnrotate={cardSlotUI.forceUnrotate}
           >
             <For each={cardSlot.playedCards}>
               {card => {

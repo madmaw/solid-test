@@ -1,6 +1,7 @@
 @use 'components/constants.module.scss';
 
 $flipAnimationDuration: 200ms;
+$transitionAnimationDuration: 500ms;
 
 .card {
   width: constants.$cardWidth;
@@ -17,6 +18,12 @@ $flipAnimationDuration: 200ms;
 .rotate {
   transform: rotateY(0);
   transition: none;
+}
+
+.translate {
+  transition-duration: $transitionAnimationDuration;
+  transition-property: transform;
+  transition-timing-function: ease-in-out;
 }
 
 .rotate.flippingUpToVertical {

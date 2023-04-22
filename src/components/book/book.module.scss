@@ -1,7 +1,7 @@
 @use 'components/constants.module.scss';
 
-$bookDepth: calc(constants.$unit * 6);
-$pageGap: calc(constants.$unit/2);
+$bookDepth: 10vmin;
+$pageGap: .5vmin;
 $pageColor1: grey;
 $pageColor2: whitesmoke;
 $pageColorSpine: gainsboro;

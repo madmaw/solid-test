@@ -21,6 +21,7 @@ export function CardSlotComponent(props: ParentProps<{
   onDrop: () => void,
   onClick: () => void,
   used: boolean,
+  forceUnrotate: boolean,
 }>) {
   return (
     <div
@@ -39,6 +40,7 @@ export function CardSlotComponent(props: ParentProps<{
       <div classList={{
         [styles['played-cards']]: true,
         [styles.used]: props.used,
+        [styles.unrotate]: props.forceUnrotate,
       }}>
         <For each={children(() => props.children).toArray()}>
           {child => (
