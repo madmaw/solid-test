@@ -17,6 +17,7 @@ export class RigidSceneryController implements SceneryController {
   constructor(
     private readonly animations: AnimationManager<Animations>,
     private readonly ui: RigidSceneryUI,
+    private readonly controller: SceneryController,
   ) {
 
   }
@@ -33,5 +34,9 @@ export class RigidSceneryController implements SceneryController {
       this.ui.up = false;
       await this.animations.waitForAnimation(Animations.Popped);  
     }
+  }
+
+  get dimensions(): readonly [number, number] {
+    return this.controller.dimensions;
   }
 }

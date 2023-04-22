@@ -25,7 +25,7 @@ $tableColorDark: #221100;
 
 .room {
   position: absolute;
-  perspective: 100vmin;
+  perspective: 80vmin;
   perspective-origin: 50% 50%;
   width: 100%;
   height: 100%;
@@ -71,7 +71,6 @@ $tableColorDark: #221100;
 .table.tilted {
   background: linear-gradient($tableColorDark, $tableColor);
   transform:
-      //translate(0, 0)
       rotateX(constants.$tableTiltAngle)
       translate(0, calc($tableHeight - $bookHeight - $bookTop - $handSlotTop * 2))
       translateZ(30vmin)

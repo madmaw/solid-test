@@ -4,14 +4,13 @@ $cardWidth: calc($unit * 9);
 $cardHeight: calc($cardWidth * 1.39);
 $cardBorderRadius: calc($cardWidth * .1);
 
-
 @value pageWidth: 50;
 @value pageHeight: 70;
 
 $pageWidth: calc(pageWidth * 1vmin);
 $pageHeight: calc(pageHeight * 1vmin);
 
-$tableTiltAngle: 55deg;
+$tableTiltAngle: 60deg;
 $tableTiltCorrectionAngle: -80deg;
 $popupDuration: 200ms;
 $popupTimingFunction: cubic-bezier(.47,1.64,.41,.8);

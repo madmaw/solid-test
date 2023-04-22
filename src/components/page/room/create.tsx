@@ -1,15 +1,15 @@
 import { BookSpreadRoom } from "model/domain";
-import { RoomPageController, RoomPageUI, Scenery } from "./room_page_controller";
+import { RoomPageController, RoomPageUI } from "./room_page_controller";
 import { RoomPageComponent } from "./room_page";
 import { PageSide } from "../page_controller";
 import { createRigidScenery } from "components/scenery/rigid/create";
-import { createUnicodeEntity } from "components/entity/unicode/create";
 
-import styles from '../../constants.module.scss';
+import constants from '../../constants.module.scss';
 import { exists } from "base/exists";
+import { createUnicodeScenery } from "components/scenery/unicode/create";
 
-const pageWidth = parseInt(styles.pageWidth);
-const pageHeight = parseInt(styles.pageHeight);
+const pageWidth = parseInt(constants.pageWidth);
+const pageHeight = parseInt(constants.pageHeight);
 
 function createScenery(spread: BookSpreadRoom) {
   const cx = pageWidth;
@@ -18,38 +18,28 @@ function createScenery(spread: BookSpreadRoom) {
 
   const trees = Math.floor(Math.random() * 20) + 20;
 
+  // TODO make this into a factory
   return new Array(trees).fill(0).map(() => {
-    const height = Math.random() * pageHeight/8 + pageHeight/8;
+    const fontSize = Math.random() * pageHeight/8 + pageHeight/8;
     const {
-      Component: Scenery,
+      Component,
       controller,
-    } = createRigidScenery(createUnicodeEntity('🌲', `${height}vmin`));
-    const x = Math.random() * (pageWidth * 2 - height);
+    } = createRigidScenery(createUnicodeScenery('🌲', fontSize));
+    const [width, height] = controller.dimensions;
+    const x = Math.random() * (pageWidth * 2 - width);
     const y = Math.random() * (pageHeight * .8 - height);
     const dx = x - cx;
     const dy = y - cy;
     if (dx * dx + dy * dy < r * r) {
       return;
     }
-
     const popupDelayMillis = (pageHeight - y) * 30;
-    function Component(props: { side: PageSide }) {
-      return (
-        <div
-            style={{
-              width: '100%',
-              top: `${y}vmin`,
-              position: 'absolute',
-              transform: `translateZ(${y/1000}vmin)`
-            }}>
-          <Scenery x={`${x - (props.side === PageSide.Left ? 0 : pageWidth)}vmin`}/>
-        </div>
-      );
-    }
     return {
       Component,
       controller,
       popupDelayMillis,
+      x,
+      y,
     };
   }).filter(exists);
 }
