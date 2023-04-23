@@ -14,7 +14,7 @@ const cardFrontDodge: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
-  cost: [],
+  cost: [DamageDown],
   benefit: [DamageDown],
 };
 const cardTypeDodge: CardDefinition = {

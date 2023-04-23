@@ -19,7 +19,10 @@ $handSlotWidth: 80vmin;
 $handSlotHeight: constants.$cardHeight;
 @value handSlotHeight: cardHeight;
 
-@value overlayZ: 27;
+@value deckTop: 10;
+$deckTop: calc(deckTop * 1vmin);
+
+@value overlayZ: 30;
 $overlayZ: calc(overlayZ * 1vmin); 
 
 $tableColor: #763F13;
@@ -66,8 +69,9 @@ $tableColorDark: #221100;
   background: linear-gradient($tableColorDark, $tableColor);
   transform:
       rotateX(20deg)
-      translate(0, calc($tableHeight - $bookHeight - $bookTop - $handSlotTop));
-      //translateZ(calc(-1 * $tableWidth));
+      translate(0, calc($tableHeight - $bookHeight - $bookTop - $handSlotTop))
+      //translateZ(calc(-1 * $tableWidth))
+      ;
 }
 
 .table.topDownBookCentered {
@@ -108,7 +112,7 @@ $tableColorDark: #221100;
 
 .deck {
   position: absolute;
-  top: calc($bookTop + $bookHeight + $handSlotTop);
+  top: calc($bookTop + $bookHeight + $deckTop);
   left: calc(50% - $handSlotWidth/2 - 10vmin);
   width: constants.$cardWidth;
   height: constants.$cardHeight;

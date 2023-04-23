@@ -64,16 +64,21 @@ export class GameManager {
 
     const originalFace = cardFace(targetCard, false);
     const cardController = this.cardControllerManager.lookupController(targetCard);
+    if (
+        originalFace.type === CardFaceType.ChoiceBack
+            || originalFace.type === CardFaceType.Choice
+    ) {
+      cardController?.setElevated(true);
+      cardSlot.playedCards.forEach(
+          card => this.cardControllerManager.lookupController(card)?.setElevated(true),
+      );
+    }
     if (originalFace.type === CardFaceType.ChoiceBack) {
       await cardController?.flip();
 
       await delay(500);
       // TODO apply effects
     }
-    cardController?.setElevated(true);
-    cardSlot.playedCards.forEach(
-        card => this.cardControllerManager.lookupController(card)?.setElevated(true),
-    );
 
     const battle = gameEncounterBattle(this.game);
     if (battle != null) {
@@ -84,6 +89,7 @@ export class GameManager {
 
     const face = cardFace(targetCard, false);
     if (face.type === CardFaceType.Choice) {
+
       const choice = face.choice;
       switch (choice.type) {
         case ChoiceType.NextChapter:
@@ -142,6 +148,8 @@ export class GameManager {
         if (usage.effect.direction & direction) {
           switch (usage.effect.symbol) {
             case SymbolType.Damage:
+              // give previous time to move back
+              await delay(300);
               await cardController?.moveTo(
                   '0',
                   direction === EffectDirection.Down ? '20vmin' : '-20vmin',

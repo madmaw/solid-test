@@ -17,7 +17,7 @@ export function CardSlotComponent(props: ParentProps<{
   targetCard: JSX.Element,
   targetInteraction: Interaction,
   bordered: boolean,
-  onDragStart: () => void,
+  onDragStart: (x: number, y: number) => void,
   onDrop: () => void,
   onClick: () => void,
   used: boolean,
@@ -33,7 +33,7 @@ export function CardSlotComponent(props: ParentProps<{
             [interactionStyles[props.targetInteraction]]: true,
             [styles.bordered]: props.bordered
           }}
-          onPointerDown={props.onDragStart}
+          onPointerDown={e => props.onDragStart(e.pageX, e.pageY)}
           onClick={props.onClick}>
         {props.targetCard}
       </div>

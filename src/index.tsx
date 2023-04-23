@@ -100,7 +100,9 @@ window.onload = function () {
   );
   
   window.addEventListener('pointermove', e => {
-    interactionManger.lastMousePosition = [e.clientX, e.clientY];
+    if (interactionManger.dragging) {
+      interactionManger.lastMousePosition = [e.clientX, e.clientY];
+    }
   });
   window.addEventListener('mousemove', e => {
     const dx = (e.clientX - window.innerWidth/2)*2/window.innerWidth;

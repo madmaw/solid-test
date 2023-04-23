@@ -34,8 +34,8 @@ export function createCardSlotManager(
       forceUnrotate: false,
     });
     const controller = new CardSlotController(cardSlotUI);
-    function internalOnDragStart() {
-      interactionManager().startDrag(cardSlot);
+    function internalOnDragStart(x: number, y: number) {
+      interactionManager().startDrag(cardSlot, x, y);
     } 
     function internalOnDrop() {
       interactionManager().drop(cardSlot);

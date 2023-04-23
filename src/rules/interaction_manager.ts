@@ -2,11 +2,13 @@ import { UnreachableError } from "base/unreachable_error";
 import { CardController } from "components/card/card_controller";
 import { ControllerManger } from "components/component_manager";
 import { Card, CardFaceType, CardSlot } from "model/domain";
-import { Accessor, Setter, batch, createSignal } from "solid-js";
+import { batch } from "solid-js";
 import { cardFace } from "./cards";
 import { GameManager } from "./game_manager";
 import { CardSlotController } from "components/card_slot/card_slot_controller";
 import { delay } from "base/delay";
+import { activeRecordDescriptor } from "model/descriptor/record";
+import { LiteralTypeDescriptor, booleanDescriptor } from "model/descriptor/literals";
 
 export const enum Interaction {
   None = 1,
@@ -23,13 +25,22 @@ type DragState = [Card, CardSlot] | undefined;
 type MousePosition = [number, number] | undefined;
 type LongPress = CardSlot | undefined;
 
+const interactionUI = activeRecordDescriptor({
+  dragging: booleanDescriptor,
+  dragged: new LiteralTypeDescriptor<DragState>(),
+  mousePosition: new LiteralTypeDescriptor<MousePosition>(),
+  longPress: new LiteralTypeDescriptor<LongPress>(),
+});
+
+type InteractionUI = typeof interactionUI.aMutable;
+
 export class InteractionManager {
-  private readonly dragged: Accessor<DragState>;
-  private readonly setDragged: Setter<DragState>;
-  private readonly mousePosition: Accessor<MousePosition>;
-  private readonly setMousePosition: Setter<MousePosition>;
-  private readonly longPress: Accessor<LongPress>;
-  private readonly setLongPress: Setter<LongPress>;
+  private ui: InteractionUI = interactionUI.create({
+    dragged: undefined,
+    dragging: false,
+    longPress: undefined,
+    mousePosition: undefined,
+  });
   private lastAnimation: Promise<void> = Promise.resolve();
 
   constructor(
@@ -37,37 +48,32 @@ export class InteractionManager {
       private cardManager: ControllerManger<Card, CardController>,
       private cardSlotManager: ControllerManger<CardSlot, CardSlotController>,
   ) {
-    const [dragged, setDragged] = createSignal<DragState>()
-    this.dragged = dragged;
-    this.setDragged = setDragged;
-    const [mousePosition, setMousePosition] = createSignal<MousePosition>();
-    this.mousePosition = mousePosition;
-    this.setMousePosition = setMousePosition;
-    const [longPress, setLongPress] = createSignal<LongPress>();
-    this.longPress = longPress;
-    this.setLongPress = setLongPress;
   }
 
   get dragging() {
-    return this.dragged() != null;
+    return this.ui.dragging;
+  }
+
+  set dragging(dragging: boolean) {
+    this.ui.dragging = dragging;
   }
 
   get lastMousePosition() {
-    return this.mousePosition();
+    return this.ui.mousePosition;
   }
 
   set lastMousePosition(mousePosition: MousePosition) {
-    this.setMousePosition(mousePosition);
+    this.ui.mousePosition = mousePosition;
   }
 
   get draggedCard() {
-    return this.dragged()?.[0];
+    return this.ui.dragged?.[0];
   }
 
   allowedInteraction(
     targetCardSlot: CardSlot | undefined,
   ): Interaction {
-    const dragged = this.dragged();
+    const dragged = this.ui.dragged;
     const targetCard = targetCardSlot?.targetCard;
     if (dragged != null) {
       const [_, draggedCardSlot] = dragged;
@@ -108,7 +114,7 @@ export class InteractionManager {
     });
   }
 
-  startDrag(cardSlot: CardSlot) {
+  startDrag(cardSlot: CardSlot, x: number, y: number) {
     return this.politelyAnimate(async () => {
       const interaction = this.allowedInteraction(cardSlot);
       const targetCard = cardSlot.targetCard;
@@ -116,12 +122,14 @@ export class InteractionManager {
         if (interaction === Interaction.Drag) {
           batch(() => {
             this.cardSlotManager.lookupController(cardSlot)?.setTargetCardHidden(true);
-            this.setDragged([targetCard, cardSlot]);
+            this.ui.dragged = [targetCard, cardSlot];
+            this.ui.mousePosition = [x, y];
+            this.ui.dragging = true;
           });  
         } else if (interaction === Interaction.LongPress) {
-          if (this.longPress() == null) {
+          if (this.ui.longPress == null) {
             await this.cardManager.lookupController(targetCard)?.flipTemporarily(true);
-            this.setLongPress(cardSlot);
+            this.ui.longPress = cardSlot;
           }
         }
       }  
@@ -129,22 +137,24 @@ export class InteractionManager {
   }
 
   clearDrag() {
+    this.ui.dragging = false;
     return this.politelyAnimate(async () => {
-      const dragged = this.dragged();
+      const dragged = this.ui.dragged;
       if (dragged) {
         const [draggedCard, draggedCardSlot] = dragged;
         batch(() => {
           draggedCardSlot.targetCard = draggedCard;
           this.cardSlotManager.lookupController(draggedCardSlot)?.setTargetCardHidden(false);
-          this.setDragged();
+          this.ui.dragged = undefined;
         });  
       }
-      const longPress = this.longPress();
+      const longPress = this.ui.longPress;
       if (longPress) {
         const cardSlot = longPress;
-        this.setLongPress();
+        this.ui.longPress = undefined;
         if (cardSlot.targetCard) {
-          await this.cardManager.lookupController(cardSlot.targetCard)?.flipTemporarily(false);
+          const cardController = this.cardManager.lookupController(cardSlot.targetCard);
+          await cardController?.flipTemporarily(false);
         }            
       }  
     });
@@ -152,7 +162,7 @@ export class InteractionManager {
 
   drop(targetCardSlot: CardSlot) {
     return this.politelyAnimate(async () => {
-      const dragged = this.dragged();
+      const dragged = this.ui.dragged;
       if (dragged) {
         const [draggedCard, draggedCardSlot] = dragged;
         const interaction = this.allowedInteraction(targetCardSlot);
@@ -163,14 +173,14 @@ export class InteractionManager {
           batch(() => {
             targetCardSlot.playedCards = [...targetCardSlot.playedCards, draggedCard];
             draggedCardSlot.targetCard = undefined;
-            this.setDragged();
+            this.ui.dragged = undefined;
           });
 
           await this.gameManager.normalizeBoard();
         } else {
           batch(() =>{
             draggedCardSlot.targetCard = draggedCard;
-            this.setDragged();
+            this.ui.dragged = undefined;
           });
         }
         this.cardSlotManager.lookupController(draggedCardSlot)?.setTargetCardHidden(false);

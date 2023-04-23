@@ -8,6 +8,7 @@ const bookTop = parseInt(styles.bookTop);
 const bookWidth = parseInt(styles.bookWidth);
 const bookHeight = parseInt(styles.bookHeight);
 const tableWidth = parseInt(styles.tableWidth);
+const deckTop = parseInt(styles.deckTop);
 const handSlotTop = parseInt(styles.handSlotTop);
 const handSlotWidth = parseInt(styles.handSlotWidth);
 const cardWidth = parseInt(styles.cardWidth);
@@ -72,7 +73,7 @@ export class TableController {
 
   getPlayerDeckTablePosition(): [number, number, number] {
     const x = (tableWidth - handSlotWidth)/2 - 10;
-    const y = bookTop + bookHeight + handSlotTop;
+    const y = bookTop + bookHeight + deckTop;
 
     return [x, y, 0];
   }
