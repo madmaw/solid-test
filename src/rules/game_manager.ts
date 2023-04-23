@@ -44,7 +44,8 @@ import { EntityController } from "components/entity/entity_controller";
 import { TableController } from "components/table/table_controller";
 import { CardSlotController } from "components/card_slot/card_slot_controller";
 import { NavigationTarget, NavigationTargetType } from "components/navigation_target";
-import { chapter } from "data/ruins/chapter";
+import { chapter as chapterRuins } from "data/ruins/chapter";
+import { chapter as chapterForest } from 'data/forest/chapter';
 import { arrayRandomize } from "base/arrays";
 
 export class GameManager {
@@ -242,9 +243,9 @@ export class GameManager {
   }
 
   async createChapter(chapterIndex: number) {
-    // TODO multiple chapters
+    const chapters = [chapterForest, chapterRuins];
     batch(() => {
-      this.game.book.chapter = chapterDescriptor.create(chapter);
+      this.game.book.chapter = chapterDescriptor.create(chapters[chapterIndex % chapters.length]);
       this.game.book.chapter.deck = arrayRandomize(this.game.book.chapter.deck);
     });
   }

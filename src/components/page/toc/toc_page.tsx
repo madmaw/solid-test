@@ -25,7 +25,6 @@ function ToCEntryComponent(props: PageToCProps & {
   );
 }
 
-
 function ToCPageRightComponent(props: PageToCProps) {
   return (
     <div class={styles.toc}>

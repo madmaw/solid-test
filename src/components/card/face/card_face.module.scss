@@ -39,6 +39,14 @@
   background-color: #353;
 }
 
+.container.background.forest {
+  background-color: #353;
+}
+
+.container.background.darkened {
+  background-color: #131;
+}
+
 .symbol {
   position: absolute;
   width: 100%;
@@ -90,6 +98,10 @@
 
 .card-face.foreground.fountain::before {
   content: '⛲';
+}
+
+.card-face.foreground.tree::before {
+  content: '🌳';
 }
 
 .flip {

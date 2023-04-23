@@ -1,4 +1,4 @@
-import { DamageDown, DamageUp } from "data/effects";
+import { DamageDown, DamageUp, FireUp, Force } from "data/effects";
 import {
   CardBackgroundType,
   CardFaceType,
@@ -14,26 +14,26 @@ import {
   CardDefinition,
 } from "model/domain";
 
-const cardBackJammedDoor: CardBackChoice = {
-  name: 'jammed door',
+const cardBackDarkenedPath: CardBackChoice = {
+  name: 'darkened path',
   type: CardFaceType.ChoiceBack,
-  background: CardBackgroundType.Door,
+  background: CardBackgroundType.DarkenedForestPath,
   foreground: undefined,
   symbol: undefined,
-  cost: [DamageUp],
+  cost: [FireUp],
 };
-const cardBackDoor: CardBackChoice = {
-  name: 'door',
+const cardBackPath: CardBackChoice = {
+  name: 'path',
   type: CardFaceType.ChoiceBack,
-  background: CardBackgroundType.Door,
+  background: CardBackgroundType.ForestPath,
   foreground: undefined,
   symbol: undefined,
   cost: [],
 };
-const cardFrontEmpty: CardFrontChoice = {
-  name: 'empty passage',
+const cardFrontPath: CardFrontChoice = {
+  name: 'small clearing',
   type: CardFaceType.Choice,
-  background: CardBackgroundType.Passageway,
+  background: CardBackgroundType.ForestPath,
   foreground: undefined,
   symbol: undefined,
   choice: {
@@ -46,7 +46,7 @@ const cardFrontEmpty: CardFrontChoice = {
 const cardFrontRat: CardFrontChoice = {
   name: 'a big rat',
   type: CardFaceType.Choice,
-  background: CardBackgroundType.Passageway,
+  background: CardBackgroundType.ForestPath,
   foreground: CardForegroundType.Rat,
   symbol: undefined,
   choice: {
@@ -59,30 +59,30 @@ const cardFrontRat: CardFrontChoice = {
   cost: [],
   benefit: [],
 };
-const cardFrontTrapped: CardFrontChoice = {
-  name: 'trapped hallway',
+const cardFrontBrambles: CardFrontChoice = {
+  name: 'thicket',
   type: CardFaceType.Choice,
-  background: CardBackgroundType.Passageway,
+  background: CardBackgroundType.ForestPath,
   foreground: CardForegroundType.Trap,
   symbol: undefined,
   choice: {
     type: ChoiceType.NextPage,
     encounter: undefined,
   },
-  cost: [DamageDown],
+  cost: [Force],
   benefit: [],
 };
-const cardFrontFountain: CardFrontChoice = {
-  name: 'fountain',
+const cardFrontMagicTree: CardFrontChoice = {
+  name: 'magic tree',
   type: CardFaceType.Choice,
-  background: CardBackgroundType.Passageway,
-  foreground: CardForegroundType.Fountain,
+  background: CardBackgroundType.ForestPath,
+  foreground: CardForegroundType.MagicTree,
   symbol: undefined,
   choice: {
     type: ChoiceType.NextPage,
     encounter: {
       type: EncounterType.Event,
-      event: EventType.Fountain,
+      event: EventType.MagicTree,
     },
   },
   cost: [],
@@ -90,14 +90,14 @@ const cardFrontFountain: CardFrontChoice = {
 };
 
 export const cards = [
-  cardBackDoor,
-  cardBackJammedDoor,
+  cardBackDarkenedPath,
+  cardBackPath,
 ].flatMap(back => {
   return [
-    cardFrontEmpty,
+    cardFrontPath,
     cardFrontRat,
-    cardFrontTrapped,
-    cardFrontFountain,
+    cardFrontBrambles,
+    cardFrontMagicTree,
   ].map<CardDefinition>(front => {
     return {
       recycleTarget: RecycleTarget.DiscardDeckTop,

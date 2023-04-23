@@ -26,8 +26,11 @@ export function CardFaceComponent(props: CardFaceProps & {
         [styles.crosshatched]: props.face.background === CardBackgroundType.Crosshatched,
         [styles.door]: props.face.background === CardBackgroundType.Door,
         [styles.passageway]: props.face.background === CardBackgroundType.Passageway,
+        [styles.forest]: props.face.background === CardBackgroundType.ForestPath,
+        [styles.darkened]: props.face.background === CardBackgroundType.DarkenedForestPath,
         [styles.finesse]: props.face.symbol === SymbolType.Finesse,
         [styles.force]: props.face.symbol === SymbolType.Force,
+        [styles.mind]: props.face.symbol === SymbolType.Mind,
       }}>
         {props.face.symbol != null && (
             <div class={styles.symbol}>
@@ -45,6 +48,7 @@ export function CardFaceComponent(props: CardFaceProps & {
           [styles.rat]: props.face.foreground === CardForegroundType.Rat,
           [styles.trap]: props.face.foreground === CardForegroundType.Trap,
           [styles.fountain]: props.face.foreground === CardForegroundType.Fountain,
+          [styles.tree]: props.face.foreground === CardForegroundType.MagicTree,
         }}>
           {props.face.type === CardFaceType.ChoiceBack
               || props.face.type === CardFaceType.ResourceBack

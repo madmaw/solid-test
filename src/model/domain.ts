@@ -42,6 +42,8 @@ export const enum CardBackgroundType {
   Crosshatched = 1,
   Clear,
   Door,
+  ForestPath,
+  DarkenedForestPath,
   Passageway,
 }
 
@@ -49,6 +51,7 @@ export const enum CardForegroundType {
   Rat = 1,
   Trap,
   Fountain,
+  MagicTree,
 }
 
 export const enum CardFaceType {
@@ -79,6 +82,7 @@ export const enum MonsterType {
 
 export const enum EventType {
   Fountain = 1,
+  MagicTree,
 }
 
 export type EncounterBattleDefinition = {
