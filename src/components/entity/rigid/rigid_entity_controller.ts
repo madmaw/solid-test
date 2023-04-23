@@ -13,6 +13,7 @@ export const enum Animations {
   Special,
   TakeDamage,
   Die,
+  Block,
 };
 
 export const rigidEntityUI = activeRecordDescriptor({

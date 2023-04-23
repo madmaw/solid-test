@@ -92,3 +92,43 @@
     transform: translateY(100%) rotate(180deg);
   }
 }
+
+.entity.block {
+  animation-name: blockAnimation;
+  animation-direction: alternate;
+  animation-timing-function: ease-out;
+  animation-iteration-count: 2;
+  animation-duration: 300ms;
+}
+
+@keyframes blockAnimation {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(.8) rotate(10deg);
+  }
+}
+
+.entity.special {
+  animation-name: specialAnimation;
+  animation-direction: alternate;
+  animation-timing-function: ease-out;
+  animation-iteration-count: 2;
+  animation-duration: 300ms;
+}
+
+@keyframes specialAnimation {
+  from {
+    transform: translateY(0);
+  }
+
+  20% {
+    transform: translateY(0) scaleY(.9);
+  }
+
+  to {
+    transform: translateY(-3vmin) scaleY(1.1);
+  }
+}

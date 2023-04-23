@@ -16,7 +16,7 @@ const cardFrontKick: CardFrontResource = {
   background: CardBackgroundType.Clear,
   foreground: undefined,
   symbol: SymbolType.Force,
-  cost: [Force],
+  cost: [],
   benefit: [DamageUp],
 };
 const cardTypeKick: CardDefinition = {

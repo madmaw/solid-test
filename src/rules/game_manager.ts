@@ -169,6 +169,18 @@ export class GameManager {
               );
               to.health--;
               break;
+            case SymbolType.Healing:
+              if (to.health < to.maxHealth) {
+                await delay(300);
+                await cardController?.moveTo(
+                    '0',
+                    direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                    '1vmin',
+                    Easing.Gentle,
+                );
+                to.health = to.health + 1;  
+              }
+              break;
             case SymbolType.Finesse:
             case SymbolType.Force:
             case SymbolType.Mind:
