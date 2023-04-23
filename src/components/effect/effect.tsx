@@ -1,28 +1,21 @@
 import { Effect, EffectDirection, SymbolType } from "model/domain";
 import styles from './effect.module.scss';
-import { Component } from "solid-js";
-import { SymbolDamageComponent, SymbolFinesseComponent, SymbolForceComponent, SymbolMindComponent } from "./symbol/symbols";
-import { Dynamic } from "solid-js/web";
+import {
+  SymbolComponent,
+} from "components/symbol/symbol";
 
-const ResourceSymbols: Record<SymbolType, Component<{ used: boolean }>> = {
-  [SymbolType.Force]: props => <SymbolForceComponent
-      fill={props.used ? styles.fill : styles.fillForce}
-      stroke={styles.stroke}/>,
-  [SymbolType.Finesse]: props => <SymbolFinesseComponent
-      fill={props.used ? styles.fill : styles.fillFinesse}
-      stroke={styles.stroke}/>,
-  [SymbolType.Mind]: props => <SymbolMindComponent
-      fill={props.used ? styles.fill : styles.fillMind}
-      stroke={styles.stroke}/>,
-  [SymbolType.Magic]: () => <>{'R'}</>,
-  [SymbolType.Damage]: props => <SymbolDamageComponent
-      fill={props.used ? styles.fill : styles.fillDamage}
-      stroke={styles.stroke}/>,
-  [SymbolType.Age]: () => <>{'⌛'}</>,
-  [SymbolType.Fire]: () => <>{'M'}</>,
-  [SymbolType.Draw]: () => <>{'G'}</>,
-  [SymbolType.Poison]: () => <>{'☠'}</>,
-  [SymbolType.Healing]: () => <>{'♥'}</>
+const resourceColors: Record<SymbolType, string> = {
+  [SymbolType.Force]: styles.fillForce,
+  [SymbolType.Finesse]: styles.fillFinesse,
+  [SymbolType.Mind]: styles.fillMind,
+  [SymbolType.Magic]: styles.fill,
+  [SymbolType.Damage]: styles.fillDamage,
+  [SymbolType.Age]: styles.fill,
+  [SymbolType.Fire]: styles.fill,
+  [SymbolType.Draw]: styles.fill,
+  [SymbolType.Poison]: styles.fill,
+  [SymbolType.Healing]: styles.fill,
+
 };
 
 export function EffectComponent(props: {
@@ -37,9 +30,10 @@ export function EffectComponent(props: {
       [styles.unused]: !props.used,
       [styles.warning]: props.warning,
     }}>
-      <Dynamic
-          component={ResourceSymbols[props.effect.symbol]}
-          used={props.used}/>
+      <SymbolComponent
+          type={props.effect.symbol}
+          fill={props.used ? styles.fill : resourceColors[props.effect.symbol]}
+          stroke={styles.stroke}/>
     </div>
   );
 }

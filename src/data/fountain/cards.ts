@@ -6,6 +6,7 @@ const cardBackFountainDrink: CardBackChoice = {
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,
+  symbol: undefined,
   cost: [Mind],
 };
 const cardBackFountainDrink2: CardBackChoice = {
@@ -13,6 +14,7 @@ const cardBackFountainDrink2: CardBackChoice = {
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,
+  symbol: undefined,
   cost: [Magic],
 };
 const cardBackFountainIgnore: CardBackChoice = {
@@ -20,6 +22,7 @@ const cardBackFountainIgnore: CardBackChoice = {
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,
+  symbol: undefined,
   cost: [],
 };
 
@@ -31,6 +34,7 @@ export const cardFrontFountainWater: CardFrontChoice = {
   },
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Fountain,
+  symbol: undefined,
   cost: [],
   benefit: [],
 };
@@ -42,6 +46,7 @@ export const cardFrontFountainPoison: CardFrontChoice = {
   },
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Fountain,
+  symbol: undefined,
   cost: [PoisonDown],
   benefit: [],
 };
@@ -53,6 +58,7 @@ export const cardFrontFountainHealing: CardFrontChoice = {
   },
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Fountain,
+  symbol: undefined,
   cost: [Healing],
   benefit: [],
 };
@@ -64,6 +70,7 @@ export const cardFrontFountainYouth: CardFrontChoice = {
   },
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Fountain,
+  symbol: undefined,
   cost: [AgeDown],
   benefit: [],
 };
@@ -75,6 +82,7 @@ export const cardFrontFountainIgnore: CardFrontChoice = {
   },
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Fountain,
+  symbol: undefined,
   cost: [],
   benefit: [],
 };
@@ -92,7 +100,6 @@ export const cards = [
     return {
       faces: [cardBack, cardFace],
       recycleTarget: RecycleTarget.DiscardDeckTop,
-      symbol: undefined,
     };
   });
 }).map(definition => {
@@ -106,7 +113,6 @@ export const cardIgnore = cardDescriptor.freeze({
   definition: {
     faces: [cardBackFountainIgnore, cardFrontFountainIgnore],
     recycleTarget: RecycleTarget.DiscardDeckTop,
-    symbol: undefined,
   },
   visibleFaceIndex: 0,
 });

@@ -15,6 +15,7 @@ const cardBackSlash: CardBackResource = {
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
+  symbol: undefined,
   cost: [Force, Finesse],
 };
 const cardFrontSlash: CardFrontResource = {
@@ -23,12 +24,12 @@ const cardFrontSlash: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
+  symbol: SymbolType.Finesse,
   cost: [],
   benefit: [DamageUp, DamageUp],
 };
 const cardTypeSlash: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
-  symbol: SymbolType.Finesse,
   faces: [cardBackSlash, cardFrontSlash],
 };
 export const cardSlash = cardDescriptor.freeze({

@@ -15,6 +15,7 @@ const cardBackAgility: CardBackResource = {
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
+  symbol: undefined,
   cost: [],
 };
 const cardFrontAgility: CardFrontResource = {
@@ -23,12 +24,12 @@ const cardFrontAgility: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
+  symbol: SymbolType.Finesse,
   cost: [],
   benefit: [Finesse],
 };
 const cardTypeAgility: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
-  symbol: SymbolType.Finesse,
   faces: [cardBackAgility, cardFrontAgility],
 };
 

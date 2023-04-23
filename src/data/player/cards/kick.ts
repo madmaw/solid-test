@@ -5,6 +5,7 @@ const cardBackKick: CardBackResource = {
   name: 'kick',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
+  symbol: undefined,
   foreground: undefined,
   cost: [Force],
 };
@@ -14,12 +15,12 @@ const cardFrontKick: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
+  symbol: SymbolType.Force,
   cost: [Force],
   benefit: [DamageUp],
 };
 const cardTypeKick: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
-  symbol: SymbolType.Force,
   faces: [cardBackKick, cardFrontKick],
 };
 export const cardKick = cardDescriptor.freeze({

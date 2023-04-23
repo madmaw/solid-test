@@ -6,6 +6,7 @@ const cardBackJammedDoor: CardBackChoice = {
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
   foreground: undefined,
+  symbol: undefined,
   cost: [DamageUp],
 };
 const cardBackDoor: CardBackChoice = {
@@ -13,6 +14,7 @@ const cardBackDoor: CardBackChoice = {
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
   foreground: undefined,
+  symbol: undefined,
   cost: [],
 };
 const cardFrontEmpty: CardFrontChoice = {
@@ -20,6 +22,7 @@ const cardFrontEmpty: CardFrontChoice = {
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: undefined,
+  symbol: undefined,
   choice: {
     type: ChoiceType.NextPage,
     encounter: undefined,
@@ -32,6 +35,7 @@ const cardFrontRat: CardFrontChoice = {
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: CardForegroundType.Rat,
+  symbol: undefined,
   choice: {
     type: ChoiceType.NextPage,
     encounter: {
@@ -47,6 +51,7 @@ const cardFrontTrapped: CardFrontChoice = {
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: CardForegroundType.Trap,
+  symbol: undefined,
   choice: {
     type: ChoiceType.NextPage,
     encounter: undefined,
@@ -59,6 +64,7 @@ const cardFrontFountain: CardFrontChoice = {
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: CardForegroundType.Fountain,
+  symbol: undefined,
   choice: {
     type: ChoiceType.NextPage,
     encounter: {
@@ -83,7 +89,6 @@ export const cards = [
     return {
       recycleTarget: RecycleTarget.DiscardDeckTop,
       faces: [back, front],
-      symbol: undefined,
     };
   });
 }).map<CardState>(definition => ({

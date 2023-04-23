@@ -14,6 +14,7 @@ const cardBackSmarts: CardBackResource = {
   name: 'smarts',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
+  symbol: undefined,
   foreground: undefined,
   cost: [],
 };
@@ -23,12 +24,12 @@ const cardFrontSmarts: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
+  symbol: SymbolType.Mind,
   cost: [],
   benefit: [Mind],
 };
 const cardTypeSmarts: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
-  symbol: SymbolType.Mind,
   faces: [cardBackSmarts, cardFrontSmarts],
 };
 

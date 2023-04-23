@@ -6,6 +6,7 @@ const cardBackShield: CardBackResource = {
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
+  symbol: undefined,
   cost: [Force],
 };
 const cardFrontShield: CardFrontResource = {
@@ -14,12 +15,12 @@ const cardFrontShield: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
+  symbol: SymbolType.Force,
   cost: [],
   benefit: [DamageDown],
 };
 const cardTypeShield: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
-  symbol: SymbolType.Force,
   faces: [cardBackShield, cardFrontShield],
 };
 export const cardShield = cardDescriptor.freeze({

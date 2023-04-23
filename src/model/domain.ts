@@ -110,6 +110,7 @@ type CardFaceCommon = {
   readonly background: CardBackgroundType,
   readonly foreground: CardForegroundType | undefined,
   readonly cost: readonly Effect[],
+  readonly symbol: SymbolType | undefined,
 };
 
 export type CardFrontResource = CardFaceCommon & {
@@ -149,7 +150,6 @@ export type CardDefinition = {
   // TODO: not required for room/event cards (maybe?)
   readonly recycleTarget: RecycleTarget,
   readonly faces: readonly CardFace[],
-  readonly symbol: SymbolType | undefined,
 };
 
 export const cardDescriptor = activeRecordDescriptor({

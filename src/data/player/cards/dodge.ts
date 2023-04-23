@@ -6,6 +6,7 @@ const cardBackDodge: CardBackResource = {
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
+  symbol: undefined,
   cost: [Finesse],
 };
 const cardFrontDodge: CardFrontResource = {
@@ -14,12 +15,12 @@ const cardFrontDodge: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
+  symbol: SymbolType.Finesse,
   cost: [],
   benefit: [DamageDown],
 };
 const cardTypeDodge: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
-  symbol: SymbolType.Finesse,
   faces: [cardBackDodge, cardFrontDodge],
 };
 export const cardDodge = cardDescriptor.freeze({

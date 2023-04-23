@@ -6,6 +6,7 @@ const cardBackMight: CardBackResource = {
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
+  symbol: undefined,
   cost: [],
 };
 const cardFrontMight: CardFrontResource = {
@@ -14,12 +15,12 @@ const cardFrontMight: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
+  symbol: SymbolType.Force,
   cost: [],
   benefit: [Force],
 };
 const cardTypeMight: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckTop,
-  symbol: SymbolType.Force,
   faces: [cardBackMight, cardFrontMight],
 };
 
