@@ -4,7 +4,7 @@ import { cardKick } from "./cards/kick";
 import { cardShield } from "./cards/shield";
 import { cardAgility } from "./cards/agilty";
 import { cardDodge } from "./cards/dodge";
-import { cardSmarts } from "./cards/smarts";
+import { cardSlash } from "./cards/sword";
 
 export const defaultPlayerCharacter = entityDescriptor.freeze({
   deck: [
@@ -12,11 +12,11 @@ export const defaultPlayerCharacter = entityDescriptor.freeze({
     cardKick,
     cardShield,
     cardMight,
-    cardMight,
     cardKick,
     cardAgility,
     cardDodge,
-    cardSmarts,
+    cardSlash,    
+    cardMight,
   ],
   health: 3,
   maxHealth: 3,

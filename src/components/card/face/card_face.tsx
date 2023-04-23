@@ -9,6 +9,7 @@ import { CardFaceNameComponent } from "./card_face_name";
 type CardFaceProps = {
   face: CardFace
   definition: CardDefinition,
+  warning: boolean,
 };
 
 export function CardFaceComponent(props: CardFaceProps & {
@@ -33,11 +34,11 @@ export function CardFaceComponent(props: CardFaceProps & {
       {props.face.type === CardFaceType.ChoiceBack
           || props.face.type === CardFaceType.ResourceBack
           ? <FlipArrow/>
-          : <EffectStripComponent effects={props.benefit}/>} 
+          : <EffectStripComponent effects={props.benefit} warnUnused={false}/>} 
       <CardFaceDescriptionComponent>
         <CardFaceNameComponent name={props.face.name}/>
       </CardFaceDescriptionComponent>
-      <EffectStripComponent effects={props.cost}/>
+      <EffectStripComponent effects={props.cost} warnUnused={props.warning}/>
     </div>
   );
 }

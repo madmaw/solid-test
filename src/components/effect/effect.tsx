@@ -26,13 +26,18 @@ const ResourceSymbols: Record<SymbolType, Component<{ used: boolean }>> = {
 export function EffectComponent(props: {
   effect: Effect,
   used: boolean,
+  warning: boolean,
 }) {
   return (
     <div classList={{
       [styles.container]: true,
       [styles.down]: props.effect.direction === EffectDirection.Down,
+      [styles.unused]: !props.used,
+      [styles.warning]: props.warning,
     }}>
-      <Dynamic component={ResourceSymbols[props.effect.symbol]} used={props.used}/>
+      <Dynamic
+          component={ResourceSymbols[props.effect.symbol]}
+          used={props.used}/>
     </div>
   );
 }

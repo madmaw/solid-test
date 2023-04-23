@@ -6,7 +6,7 @@ const cardBackShield: CardBackResource = {
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
-  cost: [Force, Force],
+  cost: [Force],
 };
 const cardFrontShield: CardFrontResource = {
   name: 'shield',
@@ -14,7 +14,7 @@ const cardFrontShield: CardFrontResource = {
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
-  cost: [DamageDown],
+  cost: [],
   benefit: [DamageDown],
 };
 const cardTypeShield: CardDefinition = {

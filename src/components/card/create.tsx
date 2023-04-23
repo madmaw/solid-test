@@ -13,6 +13,7 @@ export function createCardManager(game: Game) {
     const cardUI = cardUIDescriptor.create({
       flipState: FlipState.Flat,
       peeking: false,
+      warning: false,
       offset: undefined,
       elevated: false,
     });
@@ -38,6 +39,7 @@ export function createCardManager(game: Game) {
               definition={card.definition}
               cost={usage().cost}
               benefit={usage().benefit}
+              warning={cardUI.warning}
           />
         </CardComponent>
       );

@@ -1,7 +1,7 @@
+import { arrayRandomize } from "base/arrays";
 import { UnreachableError } from "base/unreachable_error";
 import { defaultRat } from "data/rat/initial";
 import { EncounterDefinition, EncounterState, EncounterType, EntityState, MonsterType } from "model/domain";
-import { randomizeDeck } from "./games";
 
 function hydrateMonster(monster: MonsterType): EntityState {
   switch (monster) {
@@ -16,7 +16,7 @@ export function hydrateEncounter(encounter: EncounterDefinition): EncounterState
   switch (encounter.type) {
     case EncounterType.Battle:
       const monster = hydrateMonster(encounter.monster);
-      const deck = randomizeDeck(monster.deck);
+      const deck = arrayRandomize(monster.deck);
       return {
         type: encounter.type,
         monsterType: encounter.monster,

@@ -42,6 +42,7 @@ import { TableController } from "components/table/table_controller";
 import { CardSlotController } from "components/card_slot/card_slot_controller";
 import { NavigationTarget, NavigationTargetType } from "components/navigation_target";
 import { chapter } from "data/ruins/chapter";
+import { arrayRandomize } from "base/arrays";
 
 export class GameManager {
   constructor(
@@ -167,6 +168,7 @@ export class GameManager {
   async maybeCreatePlayer() {
     if (this.game.playerCharacter == null) {
       this.game.playerCharacter = entityDescriptor.create(defaultPlayerCharacter);
+      this.game.playerCharacter.deck = arrayRandomize(this.game.playerCharacter.deck);
     }
   }
 

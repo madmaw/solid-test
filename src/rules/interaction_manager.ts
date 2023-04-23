@@ -119,16 +119,18 @@ export class InteractionManager {
       const interaction = this.allowedInteraction(cardSlot);
       const targetCard = cardSlot.targetCard;
       if (targetCard != null) {
+        const cardController = this.cardManager.lookupController(targetCard);
         if (interaction === Interaction.Drag) {
           batch(() => {
             this.cardSlotManager.lookupController(cardSlot)?.setTargetCardHidden(true);
             this.ui.dragged = [targetCard, cardSlot];
             this.ui.mousePosition = [x, y];
             this.ui.dragging = true;
+            cardController?.setWarning(true);
           });  
         } else if (interaction === Interaction.LongPress) {
           if (this.ui.longPress == null) {
-            await this.cardManager.lookupController(targetCard)?.flipTemporarily(true);
+            await cardController?.flipTemporarily(true);
             this.ui.longPress = cardSlot;
           }
         }
@@ -145,6 +147,7 @@ export class InteractionManager {
         batch(() => {
           draggedCardSlot.targetCard = draggedCard;
           this.cardSlotManager.lookupController(draggedCardSlot)?.setTargetCardHidden(false);
+          this.cardManager.lookupController(draggedCard)?.setWarning(false);
           this.ui.dragged = undefined;
         });  
       }
@@ -184,6 +187,7 @@ export class InteractionManager {
           });
         }
         this.cardSlotManager.lookupController(draggedCardSlot)?.setTargetCardHidden(false);
+        this.cardManager.lookupController(draggedCard)?.setWarning(false);
       }
     });
   }

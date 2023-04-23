@@ -1,4 +1,4 @@
-import { BookSpreadType, CardSlot, Deck, DeckState, EncounterBattle, EncounterType, Game } from "model/domain";
+import { BookSpreadType, CardSlot, Deck, EncounterBattle, EncounterType, Game } from "model/domain";
 
 export function allCardSlots(game: Game): readonly CardSlot[] {
   return [...game.playerHand, ...pageCardSlots(game)]
@@ -34,15 +34,6 @@ export function playerDeck(game: Game): DeckHolder | undefined {
     () => playerCharacter.deck,
     deck => playerCharacter.deck = deck,
   ];
-}
-
-export function randomizeDeck(deck: DeckState): DeckState {
-  const mutableDeck = [...deck];
-  for (let i=0; i<mutableDeck.length; i++) {
-    const [card] = mutableDeck.splice(Math.floor(Math.random() * mutableDeck.length), 1);
-    mutableDeck.push(card);
-  }
-  return mutableDeck;
 }
 
 export function gameEncounterBattle(game: Game): EncounterBattle | undefined {

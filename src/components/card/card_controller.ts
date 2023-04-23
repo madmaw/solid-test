@@ -24,6 +24,7 @@ export const enum Easing {
 export const cardUIDescriptor = activeRecordDescriptor({
   flipState: new LiteralTypeDescriptor<FlipState>(),
   peeking: booleanDescriptor,
+  warning: booleanDescriptor,
   offset: optionalDescriptor(
       new LiteralTypeDescriptor<{
         dx: string,
@@ -91,6 +92,10 @@ export class CardController {
 
   setElevated(elevated: boolean) {
     this.cardUI.elevated = elevated;
+  }
+
+  setWarning(warning: boolean) {
+    this.cardUI.warning = warning;
   }
 
   isPeeking() {
