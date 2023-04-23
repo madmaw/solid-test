@@ -1,0 +1,12 @@
+@use 'components/constants.module.scss';
+
+.container {
+  position: absolute;
+  bottom: 15%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: bottom center;
+  transform: rotateX(constants.$tableTiltCorrectionAngle);
+}

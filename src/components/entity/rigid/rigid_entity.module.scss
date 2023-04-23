@@ -31,9 +31,13 @@
 
 .entity.appear {
   animation-name: appearAnimation;
-  animation-fill-mode: forwards;
+  animation-fill-mode: both;
   animation-timing-function: ease-out;
   animation-duration: 200ms;
+}
+
+.entity.appear.reverse {
+  animation-direction: reverse;
 }
 
 @keyframes appearAnimation {

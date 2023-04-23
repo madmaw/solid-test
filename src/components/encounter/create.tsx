@@ -10,7 +10,7 @@ type EncounterProps<T extends Encounter = Encounter> = {
 
 export function createEncounter(
   battleComponentManager: ComponentManager<EncounterBattle, EntityController>,
-  eventComponentManager: ComponentManager<EncounterEvent, {}>,
+  eventComponentManager: ComponentManager<EncounterEvent, EntityController>,
 ) {
   const encounterComponents: { [K in EncounterType]: Component<EncounterProps>} = {
     [EncounterType.Battle]: function (props: EncounterProps) {
@@ -23,11 +23,13 @@ export function createEncounter(
     },
   }
   
-  return function (props: EncounterProps) {
+  function Component(props: EncounterProps) {
     return (
       <Dynamic
           component={encounterComponents[props.model.type]}
           model={props.model}/>
     )
-  }  
+  }
+
+  return Component;
 }

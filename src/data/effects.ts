@@ -49,3 +49,18 @@ export const AgeDown: Effect = {
   direction: EffectDirection.Down,
   symbol: SymbolType.Age,
 };
+
+export const Healing: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.Healing,
+};
+
+export const PoisonUp: Effect = {
+  direction: EffectDirection.Up,
+  symbol: SymbolType.Poison,
+};
+
+export const PoisonDown: Effect = {
+  direction: EffectDirection.Down,
+  symbol: SymbolType.Poison,
+};

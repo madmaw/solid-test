@@ -1,4 +1,4 @@
-import { BookSpreadType, CardSlot, Deck, EncounterBattle, EncounterType, Game } from "model/domain";
+import { BookSpreadType, CardSlot, Deck, EncounterBattle, EncounterEvent, EncounterType, Game } from "model/domain";
 
 export function allCardSlots(game: Game): readonly CardSlot[] {
   return [...game.playerHand, ...pageCardSlots(game)]
@@ -13,11 +13,18 @@ export type DeckHolder = [() => Deck, (deck: Deck) => void];
 export function pageDeck(game: Game): DeckHolder {
   const spread = game.book.spread;
   if (spread?.type === BookSpreadType.Room) {
-    if (spread.encounter?.type === EncounterType.Battle) {
-      const monster = spread.encounter.monster;
+    const encounter = spread.encounter;
+    if (encounter?.type === EncounterType.Battle) {
+      const monster = encounter.monster;
       return [
         () => monster.deck,
         deck => monster.deck = deck,
+      ];
+    }
+    if (encounter?.type === EncounterType.Event) {
+      return [
+        () => encounter.deck,
+        deck => encounter.deck = deck,
       ];
     }
   }
@@ -40,6 +47,16 @@ export function gameEncounterBattle(game: Game): EncounterBattle | undefined {
   const spread = game.book.spread;
   if (spread?.type === BookSpreadType.Room) {
     if (spread.encounter?.type === EncounterType.Battle) {
+      return spread.encounter;
+    }
+  }
+  return
+}
+
+export function gameEncounterEvent(game: Game): EncounterEvent | undefined {
+  const spread = game.book.spread;
+  if (spread?.type === BookSpreadType.Room) {
+    if (spread.encounter?.type === EncounterType.Event) {
       return spread.encounter;
     }
   }

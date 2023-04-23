@@ -9,6 +9,8 @@ import {
   EffectDirection,
   EncounterBattle,
   EncounterDefinition,
+  EncounterEvent,
+  EncounterType,
   Entity,
   Game,
   RecycleTarget,
@@ -27,6 +29,7 @@ import {
   DeckHolder,
   allCardSlots,
   gameEncounterBattle,
+  gameEncounterEvent,
   pageCardSlots,
   pageDeck,
   playerDeck,
@@ -53,6 +56,7 @@ export class GameManager {
     private readonly cardControllerManager: ControllerManger<Card, CardController>,
     private readonly cardSlotControllerManager: ControllerManger<CardSlot, CardSlotController>,
     private readonly battleEncounterControllerManager: ControllerManger<EncounterBattle, EntityController>, 
+    private readonly eventEncounterControllerManager: ControllerManger<EncounterEvent, EntityController>, 
   ) {
     
   }
@@ -174,7 +178,10 @@ export class GameManager {
 
   async createChapter(chapterIndex: number) {
     // TODO multiple chapters
-    this.game.book.chapter = chapterDescriptor.create(chapter);
+    batch(() => {
+      this.game.book.chapter = chapterDescriptor.create(chapter);
+      this.game.book.chapter.deck = arrayRandomize(this.game.book.chapter.deck);
+    });
   }
 
   async nextPage(
@@ -192,11 +199,18 @@ export class GameManager {
     await this.bookController.showSpread(spread);
     await finishEndTurn();
     const battleEncounter = gameEncounterBattle(this.game);
+    const eventEncounter = gameEncounterEvent(this.game);
     if (battleEncounter != null) {
       await this.battleEncounterControllerManager
           .lookupController(battleEncounter)
           ?.appear();
     }
+    if (eventEncounter != null) {
+      await this.eventEncounterControllerManager
+          .lookupController(eventEncounter)
+          ?.appear();
+    }
+    
     await this.startTurn();
   }
 
@@ -286,7 +300,13 @@ export class GameManager {
     const battle = gameEncounterBattle(this.game);
     let monsterDead = battle != null && battle.monster.health <= 0;
     if (monsterDead && battle) {
-      await this.battleEncounterControllerManager.lookupController(battle)?.die();
+      await this.battleEncounterControllerManager
+          .lookupController(battle)?.die();
+    }
+    const event = gameEncounterEvent(this.game);
+    if (event != null) {
+      await this.eventEncounterControllerManager
+          .lookupController(event)?.disappear();
     }
     // place all loose cards back in the deck
     const pageDeckHolder = pageDeck(this.game);
@@ -339,6 +359,11 @@ export class GameManager {
       if (spread?.type === BookSpreadType.Room) {
         spread.encounter = undefined;
       }
+    }
+    if (this.game.book.spread?.type === BookSpreadType.Room
+          && this.game.book.spread.encounter?.type === EncounterType.Event
+    ) {
+      this.game.book.spread.encounter = undefined;  
     }
     if (playerDead) {
       await this.playerDeath();

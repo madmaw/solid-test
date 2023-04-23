@@ -8,6 +8,7 @@ import { batch } from "solid-js";
 
 export const enum Animations {
   Appear = 1,
+  Disappear,
   Attack,
   Special,
   TakeDamage,
@@ -51,6 +52,18 @@ export class RigidEntityController implements EntityController {
       );  
     });
     this.rigidEntityUI.activeAnimation = undefined;
+  }
+
+  async disappear() {
+    await this.performAnimation(
+      Animations.Disappear,
+      () => this.dynamicEntityController?.disappear(),
+    );
+    batch(() =>{
+      this.rigidEntityUI.hidden = true;
+      this.rigidEntityUI.activeAnimation = undefined;  
+    });
+
   }
 
   async die() {

@@ -21,6 +21,10 @@ export const enum SymbolType {
   Age,
   // draw a card/put a card back
   Draw,
+  // heal
+  Healing,
+  // poison
+  Poison,
 }
 
 export const enum EffectDirection {
@@ -191,6 +195,7 @@ export const encounterBattleDescriptor = activeRecordDescriptor({
 export const encounterEventDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<EncounterType.Event>(),
   eventType: new LiteralTypeDescriptor<EventType>(),
+  deck: deckDescriptor,
 });
 
 export const encounterDescriptor = discriminatingUnionDescriptor(

@@ -14,6 +14,7 @@ export function RigidEntityComponent(props: ParentProps<{
   const animationName = () => {
     switch (props.activeAnimation) {
       case Animations.Appear:
+      case Animations.Disappear:
         return styles.appearAnimation;
       case Animations.Attack:
         return styles.attackAnimation;
@@ -35,7 +36,9 @@ export function RigidEntityComponent(props: ParentProps<{
           [styles.entity]: true,
           [styles.hidden]: props.hidden,
           [styles.idle]: props.activeAnimation == null,
-          [styles.appear]: props.activeAnimation === Animations.Appear,
+          [styles.appear]: props.activeAnimation === Animations.Appear
+              || props.activeAnimation === Animations.Disappear,
+          [styles.reverse]: props.activeAnimation === Animations.Disappear,
           [styles.attack]: props.activeAnimation === Animations.Attack,
           [styles.die]: props.activeAnimation === Animations.Die,
         }}

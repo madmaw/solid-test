@@ -18,9 +18,11 @@ const ResourceSymbols: Record<SymbolType, Component<{ used: boolean }>> = {
   [SymbolType.Damage]: props => <SymbolDamageComponent
       fill={props.used ? styles.fill : styles.fillDamage}
       stroke={styles.stroke}/>,
-  [SymbolType.Age]: () => <>{'Q'}</>,
+  [SymbolType.Age]: () => <>{'⌛'}</>,
   [SymbolType.Fire]: () => <>{'M'}</>,
   [SymbolType.Draw]: () => <>{'G'}</>,
+  [SymbolType.Poison]: () => <>{'☠'}</>,
+  [SymbolType.Healing]: () => <>{'♥'}</>
 };
 
 export function EffectComponent(props: {

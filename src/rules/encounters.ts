@@ -1,6 +1,7 @@
 import { arrayRandomize } from "base/arrays";
 import { UnreachableError } from "base/unreachable_error";
 import { defaultRat } from "data/rat/initial";
+import { cards as fountainCards, cardIgnore as fountainIgnore } from "data/fountain/cards";
 import { EncounterDefinition, EncounterState, EncounterType, EntityState, MonsterType } from "model/domain";
 
 function hydrateMonster(monster: MonsterType): EntityState {
@@ -29,6 +30,7 @@ export function hydrateEncounter(encounter: EncounterDefinition): EncounterState
       return {
         type: EncounterType.Event,
         eventType: encounter.event,
+        deck: arrayRandomize(fountainCards).slice(0, 2).concat([fountainIgnore]),
       };
     default:
       throw new UnreachableError(encounter);

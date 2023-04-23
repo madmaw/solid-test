@@ -12,11 +12,13 @@ import { GameManager } from "rules/game_manager";
 import { createDeck } from "components/deck/create";
 import { createStatusOverlay } from "components/status/create";
 import { createEncounterBattleManger } from "components/encounter/battle/create";
-import { gameEncounterBattle } from "rules/games";
+import { gameEncounterBattle, gameEncounterEvent } from "rules/games";
 import { createMemo } from "solid-js";
 import { BookSpreadType, bookSpreadDeathDescriptor, bookSpreadTableOfContentsDescriptor } from "model/domain";
 import { NavigationTarget, NavigationTargetType } from "components/navigation_target";
 import { UnreachableError } from "base/unreachable_error";
+import { createEncounterEventManger } from "components/encounter/event/create";
+import { createEncounter } from "components/encounter/create";
 
 window.onload = function () {
   const app = document.getElementById('app')!;
@@ -84,6 +86,8 @@ window.onload = function () {
   } = createTable();
 
   const encounterBattleManager = createEncounterBattleManger();
+  const encounterEventManager = createEncounterEventManger();
+  const Encounter = createEncounter(encounterBattleManager, encounterEventManager);
   const gameManager = new GameManager(
       game,
       navigation,
@@ -92,6 +96,7 @@ window.onload = function () {
       cardManager,
       cardSlotManager,
       encounterBattleManager,
+      encounterEventManager,
   );
   const interactionManger = new InteractionManager(
       gameManager,
@@ -135,11 +140,10 @@ window.onload = function () {
   );
 
   function Book() {
-    const battle = createMemo(() => gameEncounterBattle(game));
+    const encounter = createMemo(() => gameEncounterBattle(game) || gameEncounterEvent(game));
     return (
       <BookImpl>
-        {battle() && <encounterBattleManager.FactoryComponent
-            model={battle()!}/>}
+        {encounter() && <Encounter model={encounter()!}/>}
       </BookImpl>
     );
   }
