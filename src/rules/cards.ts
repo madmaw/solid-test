@@ -1,4 +1,4 @@
-import { Card, CardFaceType, CardSlot, Effect, Game } from "model/domain";
+import { Card, CardFace, CardFaceType, CardSlot, Effect, Game } from "model/domain";
 import { allCardSlots } from "./games";
 import { UnreachableError } from "base/unreachable_error";
 import { ControllerManger } from "components/component_manager";
@@ -19,11 +19,10 @@ export type EffectUsages = {
   benefit: readonly EffectUsage[],
 };
 
-export function calculateCardEffects(card: Card, cardControllerManger: ControllerManger<Card, CardController> | undefined): {
+export function calculateCardEffects(face: CardFace): {
   cost: readonly Effect[],
   benefit: readonly Effect[],
 } {
-  const face = cardFace(card, !!cardControllerManger?.lookupController(card)?.isPeeking());
   switch (face.type) {
     case CardFaceType.Resource:
       return {
@@ -53,19 +52,20 @@ export function calculateCardEffects(card: Card, cardControllerManger: Controlle
 export function calculateCardEffectUsages(game: Game, card: Card, cardControllerManger: ControllerManger<Card, CardController> | undefined): EffectUsages {
 
   const cardSlots = allCardSlots(game);
-
+  const face = cardFace(card, !!cardControllerManger?.lookupController(card)?.isPeeking());
   // find the slot
   const cardSlot = cardSlots.find(cardSlot => {
     return cardSlot.targetCard === card
         || cardSlot.playedCards.some(c => c === card);
   });
+  const targetCard = cardSlot?.targetCard;
 
   // if the card isn't in a slot return the values are unused
-  if (cardSlot == null || cardSlot.targetCard == null) {
+  if (cardSlot == null || targetCard == null) {
     const {
       cost,
       benefit
-    } = calculateCardEffects(card, cardControllerManger);
+    } = calculateCardEffects(face);
   
     return {
       cost: cost.map(effect => ({
@@ -79,12 +79,13 @@ export function calculateCardEffectUsages(game: Game, card: Card, cardController
     };
   }
 
-  if (card === cardSlot.targetCard) {
+  if (card === targetCard) {
     // it's the target card
-    return calculateTargetCardEffectUsages(cardSlot, cardControllerManger);
+    return calculateTargetCardEffectUsages(face, cardSlot, cardControllerManger);
   } else {
     // it's a played card
-    const { cost: targetCardCost } = calculateCardEffects(cardSlot.targetCard, undefined);
+    const targetFace = cardFace(targetCard, !!cardControllerManger?.lookupController(targetCard)?.isPeeking());
+    const { cost: targetCardCost } = calculateCardEffects(targetFace);
     const remainingCosts = targetCardCost.reduce((acc, effect) => {
       const count = acc.get(effect) || 0;
       acc.set(effect, count + 1);
@@ -92,7 +93,8 @@ export function calculateCardEffectUsages(game: Game, card: Card, cardController
     }, new Map<Effect, number>);
     // iterate through until we find our card
     for(const playedCard of cardSlot.playedCards) {
-      const { cost: playedCardCost, benefit: playedCardBenefit } = calculateCardEffects(playedCard, undefined);
+      const playedFace = cardFace(playedCard, false);
+      const { cost: playedCardCost, benefit: playedCardBenefit } = calculateCardEffects(playedFace);
       const playedCardBenefitUsages = playedCardBenefit.map(effect => {
         const remainingCost = remainingCosts.get(effect) || 0;
         remainingCosts.set(effect, remainingCost - 1);
@@ -121,16 +123,15 @@ export function calculateCardEffectUsages(game: Game, card: Card, cardController
   };
 }
 
-export function calculateTargetCardEffectUsages(cardSlot: CardSlot, cardControllerManger: ControllerManger<Card, CardController> | undefined): EffectUsages {
-  const playedCardEffectTotals = calculatePlayedCardEffectTotals(cardSlot, cardControllerManger);
-  const targetCard = cardSlot.targetCard;
-  if (targetCard == null) {
-    return {
-      cost: [],
-      benefit: [],
-    };
-  }
-  const { cost, benefit } = calculateCardEffects(targetCard, cardControllerManger);
+export function calculateTargetCardEffectUsages(
+    targetCardFace: CardFace,
+    cardSlot: CardSlot,
+    cardControllerManger: ControllerManger<Card, CardController> | undefined,
+): EffectUsages {
+  const playedCardEffectTotals = calculatePlayedCardEffectTotals(
+      cardSlot, cardControllerManger
+  );
+  const { cost, benefit } = calculateCardEffects(targetCardFace);
   const costUsages = cost.map<EffectUsage>(effect => {
     const total = playedCardEffectTotals.get(effect) || 0;
     playedCardEffectTotals.set(effect, total - 1);

@@ -125,7 +125,8 @@ export class GameManager {
     if (targetCard == null || playerCharacter == null) {
       return;
     }
-    const cardUsages = calculateTargetCardEffectUsages(cardSlot, undefined);
+    const targetFace = cardFace(targetCard, false);
+    const cardUsages = calculateTargetCardEffectUsages(targetFace, cardSlot, undefined);
     await this.applyUsages(targetCard, cardUsages.cost, EffectDirection.Down, playerCharacter);
     // is there a monster, and is the slot in the monsters hand?
     const battle = gameEncounterBattle(this.game);
@@ -146,6 +147,10 @@ export class GameManager {
       direction: EffectDirection.Up | EffectDirection.Down,
       to: Entity,
   ) {
+    const playerCharacter = this.game.playerCharacter;
+    if (playerCharacter == null) {
+      return;
+    }
     const cardController = this.cardControllerManager.lookupController(card);
     for(const usage of usages) {
       if (!usage.used) {
@@ -153,6 +158,7 @@ export class GameManager {
         if (usage.effect.direction & direction) {
           switch (usage.effect.symbol) {
             case SymbolType.Damage:
+            case SymbolType.Poison:
               // give previous time to move back
               await delay(300);
               await cardController?.moveTo(
@@ -163,10 +169,57 @@ export class GameManager {
               );
               to.health--;
               break;
+            case SymbolType.Finesse:
+            case SymbolType.Force:
+            case SymbolType.Mind:
+              // attack the cards
+              if (to !== playerCharacter) {
+                return;
+              }
+              const cardSlots = this.game.playerHand;
+              // find the best card to remove
+              const cardAndCardSlot = cardSlots.reduce<[Card, CardSlot] | undefined>(
+                (acc, cardSlot) => {
+                  const targetCard = cardSlot.targetCard;
+                  if (targetCard != null) {
+                    const playedCard = cardSlot.playedCards
+                        .find(card => cardFace(card, false).symbol === usage.effect.symbol);
+                    const card = playedCard
+                        || (cardFace(targetCard, false).symbol === usage.effect.symbol
+                            ? targetCard
+                            : undefined
+                        );
+                    return card != null ? [card, cardSlot] : acc;
+                  }
+                  return acc;
+                },
+                undefined,
+              );
+              if (cardAndCardSlot) {
+                const [card, cardSlot] = cardAndCardSlot;
+                await delay(300);
+                // TODO aim for the card
+                await cardController?.moveTo(
+                    '0',
+                    direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                    '1vmin',
+                    Easing.Violent,
+                );
+                await this.returnCardToDeck(
+                    card,
+                    cardSlot,
+                    [
+                      () => playerCharacter.deck,
+                      deck => playerCharacter.deck = deck,
+                    ]
+                );
+              }
+              break;
           }
         }
       }
     }
+    await this.normalizeBoard();
   }
 
   async maybeCreatePlayer() {
@@ -383,14 +436,16 @@ export class GameManager {
     if (targetCard == null) {
       return false;
     }
-    const targetFace = cardFace(
-        targetCard,
-        !!this.cardControllerManager.lookupController(targetCard)?.isPeeking(),
-    );
-    if (targetFace.type !== CardFaceType.ChoiceBack && targetFace.type !== CardFaceType.ResourceBack) {
-      return false;
-    }
-    return calculateTargetCardEffectUsages(cardSlot, this.cardControllerManager).cost.every(c => c.used);
+    const targetFace = cardFace(targetCard, false);
+    const paymentFace = targetCard.definition.faces[0];
+    const isFlipped = targetCard.visibleFaceIndex > 0;
+    const isFullyUsed = calculateTargetCardEffectUsages(
+      paymentFace,
+        cardSlot,
+        this.cardControllerManager
+    ).cost.every(c => c.used);
+    return !isFullyUsed && isFlipped && targetFace.type !== CardFaceType.Choice
+        || isFullyUsed && !isFlipped;
   }
 
   private async returnCardToDeck(
