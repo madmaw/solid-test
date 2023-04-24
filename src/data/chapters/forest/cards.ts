@@ -104,6 +104,23 @@ const cardFrontMagicTree: CardFrontChoice = {
   cost: [],
   benefit: [],
 };
+const cardFrontMushroom: CardFrontChoice = {
+  name: 'mushroom',
+  description: 'You see a mushroom circle.',
+  type: CardFaceType.Choice,
+  background: CardBackgroundType.ForestPath,
+  foreground: CardForegroundType.Mushroom,
+  symbol: undefined,
+  choice: {
+    type: ChoiceType.NextPage,
+    encounter: {
+      type: EncounterType.Event,
+      event: EventType.Mushroom,
+    },
+  },
+  cost: [],
+  benefit: [],
+};
 
 export const cards = [
   cardBackOvergrownPath,
@@ -122,6 +139,9 @@ export const cards = [
   });
 }).concat([{
   faces: [cardBackDarkenedPath, cardFrontMagicTree],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
+}, {
+  faces: [cardBackOvergrownPath, cardFrontMushroom],
   recycleTarget: RecycleTarget.DiscardDeckTop,
 }]).map<CardState>(definition => ({
   definition,

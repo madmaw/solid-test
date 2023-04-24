@@ -116,6 +116,10 @@
   content: '🐌';
 }
 
+.card-face.foreground.mushroom::before {
+  content: '🍄';
+}
+
 .flip {
   width: 100%;
   fill: none; 

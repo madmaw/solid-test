@@ -16,7 +16,6 @@ import {
   RecycleTarget,
   SymbolType,
   bookSpreadRoomDescriptor,
-  cardDescriptor,
   chapterDescriptor,
   entityDescriptor,
 } from "model/domain";
@@ -45,8 +44,9 @@ import { EntityController } from "components/entity/entity_controller";
 import { TableController } from "components/table/table_controller";
 import { CardSlotController } from "components/card_slot/card_slot_controller";
 import { NavigationTarget, NavigationTargetType } from "components/navigation_target";
-import { chapter as chapterRuins } from "data/chapters/ruins/chapter";
+import { chapter as chapterPrelude } from "data/chapters/prelude/chapter";
 import { chapter as chapterForest } from 'data/chapters/forest/chapter';
+import { chapter as chapterRuins } from "data/chapters/ruins/chapter";
 import { arrayRandomize } from "base/arrays";
 import { Speaker } from "ui/speaker/speaker";
 import { exists } from "base/exists";
@@ -267,7 +267,7 @@ export class GameManager {
   }
 
   async createChapter(chapterIndex: number) {
-    const chapters = [chapterForest, chapterRuins];
+    const chapters = [chapterPrelude, chapterForest, chapterRuins];
     batch(() => {
       this.game.book.chapter = chapterDescriptor.create(chapters[chapterIndex % chapters.length]);
       this.game.book.chapter.deck = arrayRandomize(this.game.book.chapter.deck);
@@ -338,7 +338,7 @@ export class GameManager {
   private async startTurn(draw = 3) {
     const cardSlots = pageCardSlots(this.game);
     const [pageDeckGetter, pageDeckSetter] = pageDeck(this.game);
-    if (this.game.book.chapter.pagesRemaining <= 0) {
+    if (this.game.book.chapter.pagesRemaining < 0) {
       // create the end boss
       const card = this.game.book.chapter.finalCard;
       cardSlots[Math.floor(cardSlots.length/2)].targetCard = card;

@@ -60,7 +60,6 @@ $tableColorDark: #221100;
   height: $tableHeight;
   transform-origin: calc($tableWidth/2) $tableHeight;
   transition: transform 1s ease-in-out;
-  pointer-events: all;
   bottom: 0;
   left: calc((100vw - $tableWidth)/2);
 }
@@ -108,6 +107,7 @@ $tableColorDark: #221100;
   left: calc((100% - $handSlotWidth) / 2);
   width: $handSlotWidth;
   height: $handSlotHeight;
+  pointer-events: all;
 }
 
 .deck {
@@ -126,6 +126,7 @@ $tableColorDark: #221100;
   height: constants.$cardHeight;
   transform: translateZ(calc($overlayZ)) rotateX(constants.$tableTiltCorrectionAngle);
   transform-origin: top;
+  pointer-events: all;
 }
 
 .drag-overlay, .status-overlay {

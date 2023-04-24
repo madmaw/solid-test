@@ -55,6 +55,7 @@ export const enum CardForegroundType {
   Trap,
   Fountain,
   MagicTree,
+  Mushroom,
 }
 
 export const enum CardFaceType {
@@ -83,11 +84,13 @@ export const enum MonsterType {
   BigRat = 1,
   Snail,
   Troll,
+  Rooster,
 };
 
 export const enum EventType {
   Fountain = 1,
   MagicTree,
+  Mushroom,
 }
 
 export type EncounterBattleDefinition = {
@@ -234,7 +237,8 @@ export const bookSpreadDescriptor = discriminatingUnionDescriptor(
 );
 
 export const enum ChapterType {
-  Forest = 1,
+  Prelude = 1,
+  Forest,
   Ruins,
   Tower,
 }

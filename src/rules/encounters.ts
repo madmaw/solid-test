@@ -4,8 +4,10 @@ import { defaultRat } from "data/monsters/rat/initial";
 import { defaultTroll } from "data/monsters/troll/initial";
 import { cards as fountainCards, cardIgnore as fountainIgnore } from "data/events/fountain/cards";
 import { cards as magicTreeCards } from 'data/events/magic_tree/cards';
+import { cards as mushroomCards, cardIgnore as mushroomIgnore } from 'data/events/mushroom/cards';
 import { EncounterDefinition, EncounterState, EncounterType, EntityState, EventType, MonsterType } from "model/domain";
 import { defaultSnail } from "data/monsters/snail/initial";
+import { defaultRooster } from "data/monsters/rooster/initial";
 
 function hydrateMonster(monster: MonsterType): EntityState {
   switch (monster) {
@@ -15,6 +17,8 @@ function hydrateMonster(monster: MonsterType): EntityState {
       return defaultTroll;
     case MonsterType.Snail:
       return defaultSnail;
+    case MonsterType.Rooster:
+      return defaultRooster;
     default:
       throw new UnreachableError(monster);
   }
@@ -46,6 +50,12 @@ export function hydrateEncounter(encounter: EncounterDefinition): EncounterState
             type: EncounterType.Event,
             eventType: encounter.event,
             deck: arrayRandomize(magicTreeCards).slice(0, 3),
+          };
+        case EventType.Mushroom:
+          return {
+            type: EncounterType.Event,
+            eventType: encounter.event,
+            deck: arrayRandomize(mushroomCards).slice(0, 2).concat([mushroomIgnore]),
           };
         default:
           throw new UnreachableError(encounter.event);

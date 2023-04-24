@@ -1,5 +1,5 @@
 import { entityDescriptor } from "model/domain";
-import { cards } from "../rat/cards";
+import { cards } from "../rooster/cards";
 
 export const defaultRooster = entityDescriptor.freeze({
   deck: cards,

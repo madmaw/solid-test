@@ -1,5 +1,21 @@
-import { AgeDown, DamageDown, DamageUp, Finesse, FireUp, Force, Healing, Magic, Mind, PoisonDown } from "data/effects";
-import { CardBackChoice, CardBackgroundType, CardDefinition, CardFaceType, CardForegroundType, CardFrontChoice, ChoiceType, RecycleTarget, cardDescriptor } from "model/domain";
+import {
+  AgeDown,
+  Healing,
+  Magic,
+  Mind,
+  PoisonDown,
+} from "data/effects";
+import {
+  CardBackChoice,
+  CardBackgroundType,
+  CardDefinition,
+  CardFaceType,
+  CardForegroundType,
+  CardFrontChoice,
+  ChoiceType,
+  RecycleTarget,
+  cardDescriptor,
+} from "model/domain";
 
 const cardBackFountainDrink: CardBackChoice = {
   name: 'drink',
@@ -44,7 +60,7 @@ export const cardFrontFountainWater: CardFrontChoice = {
 };
 export const cardFrontFountainPoison: CardFrontChoice = {
   name: 'poison',
-  description: 'The clear water tastes incredibly foul.',
+  description: 'The murky water tastes incredibly foul.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -70,7 +86,7 @@ export const cardFrontFountainHealing: CardFrontChoice = {
 };
 export const cardFrontFountainYouth: CardFrontChoice = {
   name: 'youth',
-  description: 'You feel youthful.',
+  description: 'The water slakes a thirst you, up until this moment, were totally unaware of .',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
