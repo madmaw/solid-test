@@ -49,6 +49,9 @@ export function CardFaceComponent(props: CardFaceProps & {
           [styles.trap]: props.face.foreground === CardForegroundType.Trap,
           [styles.fountain]: props.face.foreground === CardForegroundType.Fountain,
           [styles.tree]: props.face.foreground === CardForegroundType.MagicTree,
+          [styles.snail]: props.face.foreground === CardForegroundType.Snail,
+          [styles.troll]: props.face.foreground === CardForegroundType.Troll,
+          [styles.rooster]: props.face.foreground === CardForegroundType.Rooster,
         }}>
           {props.face.type === CardFaceType.ChoiceBack
               || props.face.type === CardFaceType.ResourceBack

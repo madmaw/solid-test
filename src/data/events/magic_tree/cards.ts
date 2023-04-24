@@ -36,7 +36,7 @@ const cardBackMagicTreeShakeTree: CardBackChoice = {
 };
 const cardBackMagicTreeGatherFruit: CardBackChoice = {
   name: 'gather fruit',
-  description: 'You espy something unspoiled on the ground.',
+  description: 'You espy unspoiled fruit resting upon the ground.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.MagicTree,

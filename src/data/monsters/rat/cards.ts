@@ -1,4 +1,4 @@
-import { DamageDown, DamageUp, Finesse, FireUp, Force, Mind } from "data/effects";
+import { DamageDown, DamageUp, Finesse, Force, Mind } from "data/effects";
 import { CardBackChoice, CardBackgroundType, CardDefinition, CardFaceType, CardForegroundType, CardFrontChoice, ChoiceType, RecycleTarget, SymbolType, cardDescriptor } from "model/domain";
 
 const cardBackRatBeligerence: CardBackChoice = {

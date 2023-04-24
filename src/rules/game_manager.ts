@@ -16,6 +16,7 @@ import {
   RecycleTarget,
   SymbolType,
   bookSpreadRoomDescriptor,
+  cardDescriptor,
   chapterDescriptor,
   entityDescriptor,
 } from "model/domain";
@@ -44,8 +45,8 @@ import { EntityController } from "components/entity/entity_controller";
 import { TableController } from "components/table/table_controller";
 import { CardSlotController } from "components/card_slot/card_slot_controller";
 import { NavigationTarget, NavigationTargetType } from "components/navigation_target";
-import { chapter as chapterRuins } from "data/ruins/chapter";
-import { chapter as chapterForest } from 'data/forest/chapter';
+import { chapter as chapterRuins } from "data/chapters/ruins/chapter";
+import { chapter as chapterForest } from 'data/chapters/forest/chapter';
 import { arrayRandomize } from "base/arrays";
 import { Speaker } from "ui/speaker/speaker";
 import { exists } from "base/exists";
@@ -105,8 +106,8 @@ export class GameManager {
       const choice = face.choice;
       switch (choice.type) {
         case ChoiceType.NextChapter:
-          // TODO
-          return this.nextPage(undefined, cardSlot);
+          this.createChapter(choice.targetChapterIndex);
+          return this.nextPage(choice.encounter, cardSlot);
         case ChoiceType.NextPage:
           return this.nextPage(choice.encounter, cardSlot);
         case ChoiceType.NextTurn:
@@ -281,6 +282,7 @@ export class GameManager {
     if (playerDead) {
       return finishEndTurn();
     }
+    this.game.book.chapter.pagesRemaining--;
     const spread = bookSpreadRoomDescriptor.create({
       type: BookSpreadType.Room,
       encounter: encounter && hydrateEncounter(encounter),
@@ -336,24 +338,29 @@ export class GameManager {
   private async startTurn(draw = 3) {
     const cardSlots = pageCardSlots(this.game);
     const [pageDeckGetter, pageDeckSetter] = pageDeck(this.game);
-    await Promise.all(cardSlots.map(async cardSlot => {
-      const deck = pageDeckGetter();
-      if (deck.length > 0) {
-        const card = deck[deck.length - 1];
-        if (card != null) {
-          cardSlot.targetCard = card;
-          pageDeckSetter(deck.slice(0, -1));
-          const cardController = this.cardControllerManager.lookupController(card);
-          // it's no rendered yet, so this should put it at 90 degrees
-          cardController?.flipUpToVertical();
-          // force a render
-          await delay(0);
-          // animate
-          await cardController?.flipDownFromVertical();
+    if (this.game.book.chapter.pagesRemaining <= 0) {
+      // create the end boss
+      const card = this.game.book.chapter.finalCard;
+      cardSlots[Math.floor(cardSlots.length/2)].targetCard = card;
+    } else {
+      await Promise.all(cardSlots.map(async cardSlot => {
+        const deck = pageDeckGetter();
+        if (deck.length > 0) {
+          const card = deck[deck.length - 1];
+          if (card != null) {
+            cardSlot.targetCard = card;
+            pageDeckSetter(deck.slice(0, -1));
+            const cardController = this.cardControllerManager.lookupController(card);
+            // it's no rendered yet, so this should put it at 90 degrees
+            cardController?.flipUpToVertical();
+            // force a render
+            await delay(0);
+            // animate
+            await cardController?.flipDownFromVertical();
+          }
         }
-      }
-    }));
-
+      }));  
+    }
     const playerHand = this.game.playerHand;
     if (playerHand != null) {
       const availableSlots = playerHand.filter(

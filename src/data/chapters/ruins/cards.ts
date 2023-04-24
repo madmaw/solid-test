@@ -12,11 +12,12 @@ import {
   CardBackChoice,
   CardFrontChoice,
   CardDefinition,
+  cardDescriptor,
 } from "model/domain";
 
 const cardBackJammedDoor: CardBackChoice = {
   name: 'jammed door',
-  description: 'Grudgingly, the door opens',
+  description: 'Grudgingly, the door opens.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
   foreground: undefined,
@@ -34,7 +35,7 @@ const cardBackDoor: CardBackChoice = {
 };
 const cardFrontEmpty: CardFrontChoice = {
   name: 'empty passage',
-  description: 'A whole log of nothing.',
+  description: 'A crumbling walkway.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: undefined,
@@ -47,8 +48,8 @@ const cardFrontEmpty: CardFrontChoice = {
   benefit: [],
 };
 const cardFrontRat: CardFrontChoice = {
-  name: 'a big rat',
-  description: 'The rat looks at you belligerently.',
+  name: 'rodent of unusual size',
+  description: 'The creature hisses at you belligerently.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: CardForegroundType.Rat,
@@ -79,7 +80,7 @@ const cardFrontTrapped: CardFrontChoice = {
 };
 const cardFrontFountain: CardFrontChoice = {
   name: 'fountain',
-  description: undefined,
+  description: 'You are attracted to the noise of bubbling water. A pristine fountain stands amongst the ruins.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: CardForegroundType.Fountain,
@@ -103,14 +104,54 @@ export const cards = [
     cardFrontEmpty,
     cardFrontRat,
     cardFrontTrapped,
-    cardFrontFountain,
   ].map<CardDefinition>(front => {
     return {
-      recycleTarget: RecycleTarget.DiscardDeckTop,
+      recycleTarget: RecycleTarget.DrawDeckRandom,
       faces: [back, front],
     };
   });
-}).map<CardState>(definition => ({
+}).concat([{
+  faces: [cardBackJammedDoor, cardFrontFountain],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
+}]).map<CardState>(definition => ({
   definition,
   visibleFaceIndex: 0,
 }));
+
+const cardBackFinal: CardBackChoice = {
+  name: 'crumbling bridge',
+  description: 'With some trepidation you cross the bridge.',
+  type: CardFaceType.ChoiceBack,
+  background: CardBackgroundType.Door,
+  foreground: undefined,
+  symbol: undefined,
+  cost: [],
+};
+
+const cardFrontFinal: CardFrontChoice = {
+  name: 'lion',
+  description: 'A lion lies guarding the castle gate. It slowly gets up and pads toward you.',
+  type: CardFaceType.Choice,
+  background: CardBackgroundType.Passageway,
+  foreground: undefined,
+  symbol: undefined,
+  choice: {
+    type: ChoiceType.NextChapter,
+    encounter: {
+      type: EncounterType.Battle,
+      // TODO something better
+      monster: MonsterType.BigRat,
+    },
+    targetChapterIndex: 2,
+  },
+  cost: [],
+  benefit: [],
+};
+
+export const finalCard = cardDescriptor.freeze({
+  definition: {
+    faces: [cardBackFinal, cardFrontFinal],
+    recycleTarget: RecycleTarget.DiscardDeckTop,
+  },
+  visibleFaceIndex: 0,
+});

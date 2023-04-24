@@ -49,6 +49,9 @@ export const enum CardBackgroundType {
 
 export const enum CardForegroundType {
   Rat = 1,
+  Troll,
+  Snail,
+  Rooster,
   Trap,
   Fountain,
   MagicTree,
@@ -78,6 +81,8 @@ export const enum EncounterType {
 
 export const enum MonsterType {
   BigRat = 1,
+  Snail,
+  Troll,
 };
 
 export const enum EventType {
@@ -104,6 +109,8 @@ export type ChoiceNextPage = {
 
 export type ChoiceNextChapter = {
   readonly type: ChoiceType.NextChapter,
+  readonly encounter: EncounterDefinition | undefined,
+  readonly targetChapterIndex: number,
 };
 
 export type Choice = ChoiceNextTurn | ChoiceNextPage | ChoiceNextChapter;
@@ -235,6 +242,8 @@ export const enum ChapterType {
 export const chapterDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<ChapterType>(),
   deck: deckDescriptor,
+  pagesRemaining: numberDescriptor,
+  finalCard: cardDescriptor,
 });
 
 export const bookDescriptor = activeRecordDescriptor({

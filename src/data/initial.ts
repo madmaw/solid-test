@@ -1,5 +1,5 @@
 import { gameDescriptor } from "model/domain";
-import { chapter } from './ruins/chapter';
+import { chapter } from './chapters/ruins/chapter';
 
 export const initialGame = gameDescriptor.create({
   book: {

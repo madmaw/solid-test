@@ -104,6 +104,18 @@
   content: '🌳';
 }
 
+.card-face.foreground.rooster::before {
+  content: '🐓';
+}
+
+.card-face.foreground.troll::before {
+  content: '🧌';
+}
+
+.card-face.foreground.snail::before {
+  content: '🐌';
+}
+
 .flip {
   width: 100%;
   fill: none; 

@@ -12,16 +12,26 @@ import {
   CardBackChoice,
   CardFrontChoice,
   CardDefinition,
+  cardDescriptor,
 } from "model/domain";
 
 const cardBackDarkenedPath: CardBackChoice = {
-  name: 'darkened path',
-  description: 'You can see clearly now.',
+  name: 'shadowed path',
+  description: 'The path reveals itself.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.DarkenedForestPath,
   foreground: undefined,
   symbol: undefined,
   cost: [FireUp],
+};
+const cardBackOvergrownPath: CardBackChoice = {
+  name: 'overgrown path',
+  description: 'You clear the branches.',
+  type: CardFaceType.ChoiceBack,
+  background: CardBackgroundType.DarkenedForestPath,
+  foreground: undefined,
+  symbol: undefined,
+  cost: [Force],
 };
 const cardBackPath: CardBackChoice = {
   name: 'path',
@@ -47,17 +57,17 @@ const cardFrontPath: CardFrontChoice = {
   benefit: [],
 };
 const cardFrontRat: CardFrontChoice = {
-  name: 'a big rat',
-  description: 'The rat chitters excitedly.',
+  name: 'a big snail',
+  description: 'The snail inches toward you.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
-  foreground: CardForegroundType.Rat,
+  foreground: CardForegroundType.Snail,
   symbol: undefined,
   choice: {
     type: ChoiceType.NextPage,
     encounter: {
       type: EncounterType.Battle,
-      monster: MonsterType.BigRat,
+      monster: MonsterType.Snail,
     },
   },
   cost: [],
@@ -96,6 +106,7 @@ const cardFrontMagicTree: CardFrontChoice = {
 };
 
 export const cards = [
+  cardBackOvergrownPath,
   cardBackDarkenedPath,
   cardBackPath,
 ].flatMap(back => {
@@ -103,14 +114,54 @@ export const cards = [
     cardFrontPath,
     cardFrontRat,
     cardFrontBrambles,
-    cardFrontMagicTree,
   ].map<CardDefinition>(front => {
     return {
-      recycleTarget: RecycleTarget.DiscardDeckTop,
+      recycleTarget: RecycleTarget.DrawDeckRandom,
       faces: [back, front],
     };
   });
-}).map<CardState>(definition => ({
+}).concat([{
+  faces: [cardBackDarkenedPath, cardFrontMagicTree],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
+}]).map<CardState>(definition => ({
   definition,
   visibleFaceIndex: 0,
 }));
+
+const cardBackFinal: CardBackChoice = {
+  name: 'cobbled road',
+  description: 'You stumble out of the forest, blinking in the sunlight.',
+  type: CardFaceType.ChoiceBack,
+  background: CardBackgroundType.DarkenedForestPath,
+  foreground: undefined,
+  symbol: undefined,
+  cost: [],
+};
+
+const cardFrontFinal: CardFrontChoice = {
+  name: 'troll',
+  description: 'A vulgar oaf blocks your way. He looks at you, licking his lips.',
+  type: CardFaceType.Choice,
+  background: CardBackgroundType.ForestPath,
+  foreground: undefined,
+  symbol: undefined,
+  choice: {
+    type: ChoiceType.NextChapter,
+    encounter: {
+      type: EncounterType.Battle,
+      monster: MonsterType.Troll,
+    },
+    targetChapterIndex: 1,
+  },
+  cost: [],
+  benefit: [],
+};
+
+export const finalCard = cardDescriptor.freeze({
+  definition: {
+    faces: [cardBackFinal, cardFrontFinal],
+    recycleTarget: RecycleTarget.DiscardDeckTop,
+  },
+  visibleFaceIndex: 0,
+});
+

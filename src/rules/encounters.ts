@@ -1,14 +1,20 @@
 import { arrayRandomize } from "base/arrays";
 import { UnreachableError } from "base/unreachable_error";
-import { defaultRat } from "data/rat/initial";
-import { cards as fountainCards, cardIgnore as fountainIgnore } from "data/fountain/cards";
-import { cards as magicTreeCards } from 'data/magic_tree/cards';
+import { defaultRat } from "data/monsters/rat/initial";
+import { defaultTroll } from "data/monsters/troll/initial";
+import { cards as fountainCards, cardIgnore as fountainIgnore } from "data/events/fountain/cards";
+import { cards as magicTreeCards } from 'data/events/magic_tree/cards';
 import { EncounterDefinition, EncounterState, EncounterType, EntityState, EventType, MonsterType } from "model/domain";
+import { defaultSnail } from "data/monsters/snail/initial";
 
 function hydrateMonster(monster: MonsterType): EntityState {
   switch (monster) {
     case MonsterType.BigRat:
       return defaultRat;
+    case MonsterType.Troll:
+      return defaultTroll;
+    case MonsterType.Snail:
+      return defaultSnail;
     default:
       throw new UnreachableError(monster);
   }

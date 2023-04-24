@@ -1,10 +1,11 @@
 import { ChapterType, chapterDescriptor } from "model/domain";
-import { cards } from "./cards";
+import { cards, finalCard } from "./cards";
 
 export const chapter = chapterDescriptor.freeze({
   type: ChapterType.Forest,
   deck: [
     ...cards,
-    ...cards,
   ],
+  pagesRemaining: 10,
+  finalCard,
 });
