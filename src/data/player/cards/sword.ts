@@ -12,6 +12,7 @@ import {
 
 const cardBackSlash: CardBackResource = {
   name: 'slash',
+  description: 'You become aware of the heft of your sword.',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
@@ -20,7 +21,7 @@ const cardBackSlash: CardBackResource = {
 };
 const cardFrontSlash: CardFrontResource = {
   name: 'slash',
-  description: 'You swing the old blade.',
+  description: 'You swing the sturdy blade.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,

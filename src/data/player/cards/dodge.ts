@@ -3,6 +3,7 @@ import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, Car
 
 const cardBackDodge: CardBackResource = {
   name: 'dodge',
+  description: 'You crouch in readiness.',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,

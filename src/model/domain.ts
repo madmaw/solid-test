@@ -111,6 +111,7 @@ export type Choice = ChoiceNextTurn | ChoiceNextPage | ChoiceNextChapter;
 
 type CardFaceCommon = {
   readonly name: string,
+  readonly description: string | undefined,
   readonly background: CardBackgroundType,
   readonly foreground: CardForegroundType | undefined,
   readonly cost: readonly Effect[],
@@ -118,7 +119,6 @@ type CardFaceCommon = {
 };
 
 export type CardFrontResource = CardFaceCommon & {
-  readonly description: string,
   readonly type: CardFaceType.Resource,
   readonly benefit: readonly Effect[],
 };

@@ -12,6 +12,7 @@ import {
 
 const cardBackSmarts: CardBackResource = {
   name: 'smarts',
+  description: undefined,
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   symbol: undefined,

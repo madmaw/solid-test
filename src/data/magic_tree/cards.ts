@@ -18,6 +18,7 @@ import {
 
 const cardBackMagicTreePickFruit: CardBackChoice = {
   name: 'pick fruit',
+  description: 'You climb the tree and dislodge a juicy piece of fruit.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.MagicTree,
@@ -26,6 +27,7 @@ const cardBackMagicTreePickFruit: CardBackChoice = {
 };
 const cardBackMagicTreeShakeTree: CardBackChoice = {
   name: 'shake tree',
+  description: 'You shake the tree until something falls down.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.MagicTree,
@@ -34,6 +36,7 @@ const cardBackMagicTreeShakeTree: CardBackChoice = {
 };
 const cardBackMagicTreeGatherFruit: CardBackChoice = {
   name: 'gather fruit',
+  description: 'You espy something unspoiled on the ground.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.MagicTree,
@@ -43,6 +46,7 @@ const cardBackMagicTreeGatherFruit: CardBackChoice = {
 
 export const cardFrontMagicTreeGoldenApple: CardFrontChoice = {
   name: 'golden apple',
+  description: 'The flavour is strange, yet familiar.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -55,6 +59,7 @@ export const cardFrontMagicTreeGoldenApple: CardFrontChoice = {
 };
 export const cardFrontMagicTreeGreenApple: CardFrontChoice = {
   name: 'green apple',
+  description: 'Surprisingly disappointing.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -67,6 +72,7 @@ export const cardFrontMagicTreeGreenApple: CardFrontChoice = {
 };
 export const cardFrontMagicTreeRedApple: CardFrontChoice = {
   name: 'red apple',
+  description: 'You feel satisfied.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,

@@ -3,6 +3,7 @@ import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, Car
 
 const cardBackKick: CardBackResource = {
   name: 'kick',
+  description: 'You prepare to strike.',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   symbol: undefined,
@@ -11,7 +12,7 @@ const cardBackKick: CardBackResource = {
 };
 const cardFrontKick: CardFrontResource = {
   name: 'kick',
-  description: 'A swift kick.',
+  description: 'You deliver a swift kick.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,

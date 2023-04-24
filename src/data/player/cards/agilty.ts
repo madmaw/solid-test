@@ -13,6 +13,7 @@ import {
 const cardBackAgility: CardBackResource = {
   name: 'agility',
   type: CardFaceType.ResourceBack,
+  description: undefined,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
   symbol: undefined,

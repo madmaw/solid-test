@@ -19,8 +19,20 @@ import { NavigationTarget, NavigationTargetType } from "components/navigation_ta
 import { UnreachableError } from "base/unreachable_error";
 import { createEncounterEventManger } from "components/encounter/event/create";
 import { createEncounter } from "components/encounter/create";
+import { RenderingSpeaker } from "ui/speaker/rendering_speaker";
+import { SpeechSynthesisWordSplitter } from "ui/speaker/speech_synthesis_word_splitter";
+import { DelayWordSplitter } from "ui/speaker/delay_word_splitter";
+import { PoliteSpeaker } from "ui/speaker/polite_speaker";
 
 window.onload = function () {
+
+  const wordSplitter = new SpeechSynthesisWordSplitter(
+      window.speechSynthesis,
+      new DelayWordSplitter(),
+  );
+  const renderingSpeaker = new RenderingSpeaker(wordSplitter);
+  const speaker = new PoliteSpeaker(renderingSpeaker);
+
   const app = document.getElementById('app')!;
   const game = initialGame;
   const cardManager = createCardManager(game);
@@ -63,13 +75,6 @@ window.onload = function () {
     Component: CardSlotsComponent,
   } = createCardSlots(cardSlotManager.FactoryComponent);
 
-  // const {
-  //   Component: SpreadOverlayComponent,
-  // } = createSpreadOverlay({
-  //   CardSlotsComponent,
-  // });
-
-
   const StatusOverlayComponent = createStatusOverlay()
 
   const {
@@ -89,6 +94,7 @@ window.onload = function () {
   const encounterEventManager = createEncounterEventManger();
   const Encounter = createEncounter(encounterBattleManager, encounterEventManager);
   const gameManager = new GameManager(
+      speaker,
       game,
       navigation,
       tableController,
@@ -154,7 +160,9 @@ window.onload = function () {
       <>
         {
           game.playerCharacter
-              && <StatusOverlayComponent playerCharacter={game.playerCharacter}/>
+              && <StatusOverlayComponent
+                      playerCharacter={game.playerCharacter}
+                      speaker={renderingSpeaker}/>
         }
       </>
     );

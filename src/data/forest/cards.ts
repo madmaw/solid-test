@@ -16,6 +16,7 @@ import {
 
 const cardBackDarkenedPath: CardBackChoice = {
   name: 'darkened path',
+  description: 'You can see clearly now.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.DarkenedForestPath,
   foreground: undefined,
@@ -24,6 +25,7 @@ const cardBackDarkenedPath: CardBackChoice = {
 };
 const cardBackPath: CardBackChoice = {
   name: 'path',
+  description: undefined,
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.ForestPath,
   foreground: undefined,
@@ -32,6 +34,7 @@ const cardBackPath: CardBackChoice = {
 };
 const cardFrontPath: CardFrontChoice = {
   name: 'small clearing',
+  description: 'This way looks safe.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
   foreground: undefined,
@@ -45,6 +48,7 @@ const cardFrontPath: CardFrontChoice = {
 };
 const cardFrontRat: CardFrontChoice = {
   name: 'a big rat',
+  description: 'The rat chitters excitedly.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
   foreground: CardForegroundType.Rat,
@@ -61,6 +65,7 @@ const cardFrontRat: CardFrontChoice = {
 };
 const cardFrontBrambles: CardFrontChoice = {
   name: 'thicket',
+  description: 'The thorns pull at your clothes.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
   foreground: CardForegroundType.Trap,
@@ -74,6 +79,7 @@ const cardFrontBrambles: CardFrontChoice = {
 };
 const cardFrontMagicTree: CardFrontChoice = {
   name: 'magic tree',
+  description: 'There\'s something unusual about this tree.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
   foreground: CardForegroundType.MagicTree,

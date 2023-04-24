@@ -4,17 +4,19 @@ $padding: calc(2vmin);
 
 .overlay {
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
   width: 100%;
   height: 100%;
 }
 
 .status-bar {
-  position: absolute;
   display: flex;
+  flex: 0;
   flex-direction: row;
-  width: 100%;
-  top: 0;
-  padding: padding;
+  padding: $padding;
   box-sizing: border-box;
 }
 
@@ -26,3 +28,9 @@ $padding: calc(2vmin);
   justify-content: start;
 }
 
+.narration {
+  flex: 0;
+  padding: 0 $padding;
+  box-sizing: border-box;
+  text-align: center;
+}

@@ -3,6 +3,7 @@ import { CardBackChoice, CardBackgroundType, CardDefinition, CardFaceType, CardF
 
 const cardBackRatBeligerence: CardBackChoice = {
   name: 'cornered',
+  description: undefined,
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Rat,
@@ -11,6 +12,7 @@ const cardBackRatBeligerence: CardBackChoice = {
 };
 const cardBackRatFurtiveMovement: CardBackChoice = {
   name: 'rodent cunning',
+  description: 'You predict where the rat is going and intercept.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Rat,
@@ -19,6 +21,7 @@ const cardBackRatFurtiveMovement: CardBackChoice = {
 };
 const cardBackRatScurrying: CardBackChoice = {
   name: 'scurrying',
+  description: 'The rat is fast, but you are faster.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Rat,
@@ -28,6 +31,7 @@ const cardBackRatScurrying: CardBackChoice = {
 
 export const cardFrontRatBite: CardFrontChoice = {
   name: 'bite',
+  description: 'The rat bares its teeth.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -40,6 +44,7 @@ export const cardFrontRatBite: CardFrontChoice = {
 };
 export const cardFrontRatScreech: CardFrontChoice = {
   name: 'screech',
+  description: 'It makes a terrifying noise.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -52,6 +57,7 @@ export const cardFrontRatScreech: CardFrontChoice = {
 };
 export const cardFrontRatCower: CardFrontChoice = {
   name: 'cower',
+  description: 'The rat backs away in fear.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,

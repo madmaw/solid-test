@@ -3,6 +3,7 @@ import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, Car
 
 const cardBackShield: CardBackResource = {
   name: 'shield',
+  description: 'You grip your shield tightly.',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
@@ -11,7 +12,7 @@ const cardBackShield: CardBackResource = {
 };
 const cardFrontShield: CardFrontResource = {
   name: 'shield',
-  description: 'You cower behind your shield',
+  description: 'You raise your shield.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,

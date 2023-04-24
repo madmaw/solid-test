@@ -1,0 +1,12 @@
+.word {
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
+  color: #fff;
+  font-size: 4vmin;
+}
+
+.word.visible {
+  opacity: 1;
+}

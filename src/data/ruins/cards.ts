@@ -16,6 +16,7 @@ import {
 
 const cardBackJammedDoor: CardBackChoice = {
   name: 'jammed door',
+  description: 'Grudgingly, the door opens',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
   foreground: undefined,
@@ -24,6 +25,7 @@ const cardBackJammedDoor: CardBackChoice = {
 };
 const cardBackDoor: CardBackChoice = {
   name: 'door',
+  description: undefined,
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Door,
   foreground: undefined,
@@ -32,6 +34,7 @@ const cardBackDoor: CardBackChoice = {
 };
 const cardFrontEmpty: CardFrontChoice = {
   name: 'empty passage',
+  description: 'A whole log of nothing.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: undefined,
@@ -45,6 +48,7 @@ const cardFrontEmpty: CardFrontChoice = {
 };
 const cardFrontRat: CardFrontChoice = {
   name: 'a big rat',
+  description: 'The rat looks at you belligerently.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: CardForegroundType.Rat,
@@ -61,6 +65,7 @@ const cardFrontRat: CardFrontChoice = {
 };
 const cardFrontTrapped: CardFrontChoice = {
   name: 'trapped hallway',
+  description: 'An arrow flies out of a hidden recess.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: CardForegroundType.Trap,
@@ -74,6 +79,7 @@ const cardFrontTrapped: CardFrontChoice = {
 };
 const cardFrontFountain: CardFrontChoice = {
   name: 'fountain',
+  description: undefined,
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: CardForegroundType.Fountain,

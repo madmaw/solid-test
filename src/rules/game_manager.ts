@@ -47,9 +47,12 @@ import { NavigationTarget, NavigationTargetType } from "components/navigation_ta
 import { chapter as chapterRuins } from "data/ruins/chapter";
 import { chapter as chapterForest } from 'data/forest/chapter';
 import { arrayRandomize } from "base/arrays";
+import { Speaker } from "ui/speaker/speaker";
+import { exists } from "base/exists";
 
 export class GameManager {
   constructor(
+    private readonly speaker: Speaker,
     private readonly game: Game,
     private readonly navigation: (to: NavigationTarget) => Promise<void>,
     private readonly tableController: TableController,
@@ -64,7 +67,7 @@ export class GameManager {
 
   async chooseTargetCard(cardSlot: CardSlot) {
     const targetCard = cardSlot.targetCard;
-    if (targetCard == null) {
+    if (targetCard == null || this.game.playerHand.indexOf(cardSlot) >= 0) {
       return;
     }
 
@@ -86,14 +89,17 @@ export class GameManager {
       // TODO apply effects
     }
 
+    const face = cardFace(targetCard, false);
+    if (face.description) {
+      this.speaker.say(face.description)
+    }
+
     const battle = gameEncounterBattle(this.game);
     if (battle != null) {
-      const face = cardFace(targetCard, false);
       await this.battleEncounterControllerManager.lookupController(battle)?.perform(face);
     }
     await this.applyCardEffects(cardSlot);
 
-    const face = cardFace(targetCard, false);
     if (face.type === CardFaceType.Choice) {
 
       const choice = face.choice;
@@ -152,86 +158,103 @@ export class GameManager {
     if (playerCharacter == null) {
       return;
     }
-    const cardController = this.cardControllerManager.lookupController(card);
-    for(const usage of usages) {
-      if (!usage.used) {
-        // direction can be used as a bitwise flag
-        if (usage.effect.direction & direction) {
-          switch (usage.effect.symbol) {
-            case SymbolType.Damage:
-            case SymbolType.Poison:
-              // give previous time to move back
-              await delay(300);
-              await cardController?.moveTo(
-                  '0',
-                  direction === EffectDirection.Down ? '20vmin' : '-20vmin',
-                  '1vmin',
-                  Easing.Violent,
-              );
-              to.health--;
-              break;
-            case SymbolType.Healing:
-              if (to.health < to.maxHealth) {
-                await delay(300);
-                await cardController?.moveTo(
-                    '0',
-                    direction === EffectDirection.Down ? '20vmin' : '-20vmin',
-                    '1vmin',
-                    Easing.Gentle,
-                );
-                to.health = to.health + 1;  
-              }
-              break;
-            case SymbolType.Finesse:
-            case SymbolType.Force:
-            case SymbolType.Mind:
-              // attack the cards
-              if (to !== playerCharacter) {
-                return;
-              }
-              const cardSlots = this.game.playerHand;
-              // find the best card to remove
-              const cardAndCardSlot = cardSlots.reduce<[Card, CardSlot] | undefined>(
-                (acc, cardSlot) => {
-                  const targetCard = cardSlot.targetCard;
-                  if (targetCard != null) {
-                    const playedCard = cardSlot.playedCards
-                        .find(card => cardFace(card, false).symbol === usage.effect.symbol);
-                    const card = playedCard
-                        || (cardFace(targetCard, false).symbol === usage.effect.symbol
-                            ? targetCard
-                            : undefined
-                        );
-                    return card != null ? [card, cardSlot] : acc;
+    const face = cardFace(card, false);
+    await Promise.all([
+      (async () => {
+        if (face.description
+            && usages.some(
+                ({ used, effect: { direction: effectDirection } }) => (
+                    !used && (effectDirection & direction) 
+                        || used && !(effectDirection & direction)
+                )
+            )
+        ) {
+          await this.speaker.say(face.description);
+        }  
+      })(),
+      (async () => {
+        const cardController = this.cardControllerManager.lookupController(card);
+        for(const usage of usages) {
+          if (!usage.used) {
+            // direction can be used as a bitwise flag
+            if (usage.effect.direction & direction) {
+              switch (usage.effect.symbol) {
+                case SymbolType.Damage:
+                case SymbolType.Poison:
+                  // give previous time to move back
+                  await delay(300);
+                  await cardController?.moveTo(
+                      '0',
+                      direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                      '1vmin',
+                      Easing.Violent,
+                  );
+                  to.health--;
+                  break;
+                case SymbolType.Healing:
+                  if (to.health < to.maxHealth) {
+                    await delay(300);
+                    await cardController?.moveTo(
+                        '0',
+                        direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                        '1vmin',
+                        Easing.Gentle,
+                    );
+                    to.health = to.health + 1;  
                   }
-                  return acc;
-                },
-                undefined,
-              );
-              if (cardAndCardSlot) {
-                const [card, cardSlot] = cardAndCardSlot;
-                await delay(300);
-                // TODO aim for the card
-                await cardController?.moveTo(
-                    '0',
-                    direction === EffectDirection.Down ? '20vmin' : '-20vmin',
-                    '1vmin',
-                    Easing.Violent,
-                );
-                await this.returnCardToDeck(
-                    card,
-                    cardSlot,
-                    [
-                      () => playerCharacter.deck,
-                      deck => playerCharacter.deck = deck,
-                    ]
-                );
+                  break;
+                case SymbolType.Finesse:
+                case SymbolType.Force:
+                case SymbolType.Mind:
+                  // attack the cards
+                  if (to !== playerCharacter) {
+                    return;
+                  }
+                  const cardSlots = this.game.playerHand;
+                  // find the best card to remove
+                  const cardAndCardSlot = cardSlots.reduce<[Card, CardSlot] | undefined>(
+                    (acc, cardSlot) => {
+                      const targetCard = cardSlot.targetCard;
+                      if (targetCard != null) {
+                        const playedCard = cardSlot.playedCards
+                            .find(card => cardFace(card, false).symbol === usage.effect.symbol);
+                        const card = playedCard
+                            || (cardFace(targetCard, false).symbol === usage.effect.symbol
+                                ? targetCard
+                                : undefined
+                            );
+                        return card != null ? [card, cardSlot] : acc;
+                      }
+                      return acc;
+                    },
+                    undefined,
+                  );
+                  if (cardAndCardSlot) {
+                    const [card, cardSlot] = cardAndCardSlot;
+                    await delay(300);
+                    // TODO aim for the card
+                    await cardController?.moveTo(
+                        '0',
+                        direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                        '1vmin',
+                        Easing.Violent,
+                    );
+                    await this.returnCardToDeck(
+                        card,
+                        cardSlot,
+                        [
+                          () => playerCharacter.deck,
+                          deck => playerCharacter.deck = deck,
+                        ]
+                    );
+                  }
+                  break;
               }
-              break;
+            }
           }
         }
-      }
-    }
+      })(),
+    ]);
     await this.normalizeBoard();
   }
 
@@ -284,6 +307,18 @@ export class GameManager {
     const cardSlots = allCardSlots(this.game);
     const flippableCardSlots = cardSlots
         .filter(cardSlot => this.isAutoFlippable(cardSlot));
+    // find a phrase to say
+    const description = flippableCardSlots.map(cardSlot => {
+      const targetCard = cardSlot.targetCard;
+      if (targetCard == null || targetCard.visibleFaceIndex > 0) {
+        return;
+      }
+      const targetFace = cardFace(targetCard, false);
+      return targetFace.description;
+    }).filter(exists)[0];
+    if (description != null) {
+      this.speaker.say(description);
+    }
     // flip any paid for cards
     await Promise.all(flippableCardSlots.map(async cardSlot => {
       const targetCard = cardSlot.targetCard;

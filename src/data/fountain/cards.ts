@@ -3,6 +3,7 @@ import { CardBackChoice, CardBackgroundType, CardDefinition, CardFaceType, CardF
 
 const cardBackFountainDrink: CardBackChoice = {
   name: 'drink',
+  description: 'You recall something important.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,
@@ -11,6 +12,7 @@ const cardBackFountainDrink: CardBackChoice = {
 };
 const cardBackFountainDrink2: CardBackChoice = {
   name: 'drink',
+  description: 'The magic enchoes in the fountain.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,
@@ -19,6 +21,7 @@ const cardBackFountainDrink2: CardBackChoice = {
 };
 const cardBackFountainIgnore: CardBackChoice = {
   name: 'ignore',
+  description: undefined,
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,
@@ -28,6 +31,7 @@ const cardBackFountainIgnore: CardBackChoice = {
 
 export const cardFrontFountainWater: CardFrontChoice = {
   name: 'water',
+  description: 'There\'s nothing special about this fountain.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -40,6 +44,7 @@ export const cardFrontFountainWater: CardFrontChoice = {
 };
 export const cardFrontFountainPoison: CardFrontChoice = {
   name: 'poison',
+  description: 'The clear water tastes incredibly foul.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -52,6 +57,7 @@ export const cardFrontFountainPoison: CardFrontChoice = {
 };
 export const cardFrontFountainHealing: CardFrontChoice = {
   name: 'healing',
+  description: 'You feel restored.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -64,6 +70,7 @@ export const cardFrontFountainHealing: CardFrontChoice = {
 };
 export const cardFrontFountainYouth: CardFrontChoice = {
   name: 'youth',
+  description: 'You feel youthful.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -76,6 +83,7 @@ export const cardFrontFountainYouth: CardFrontChoice = {
 };
 export const cardFrontFountainIgnore: CardFrontChoice = {
   name: 'ignore',
+  description: 'Best left alone.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
