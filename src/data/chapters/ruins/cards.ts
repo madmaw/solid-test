@@ -127,16 +127,19 @@ export const cards = [
     cardFrontTrapped,
   ].map<CardDefinition>(front => {
     return {
-      recycleTarget: RecycleTarget.DrawDeckRandom,
+      recycleTarget: RecycleTarget.Draw,
+      recyclePosition: undefined,
       faces: [back, front],
     };
   });
 }).concat([{
   faces: [cardBackJammedDoor, cardFrontFountain],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
 }, {
   faces: [cardBackLockedDoor, cardFrontShrine],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
 }]).map<CardState>(definition => ({
   ...definition,
   visibleFaceIndex: 0,
@@ -173,8 +176,8 @@ const cardFrontFinal: CardFrontChoice = {
 };
 
 export const finalCard = cardDescriptor.freeze({
-  
   faces: [cardBackFinal, cardFrontFinal],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
   visibleFaceIndex: 0,
 });

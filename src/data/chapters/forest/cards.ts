@@ -1,4 +1,4 @@
-import { Perception, Force } from "data/effects";
+import { Perception, Force, Finesse } from "data/effects";
 import { cardFrontShrine } from "data/events/shrine/cards";
 import {
   CardBackgroundType,
@@ -76,7 +76,7 @@ const cardFrontRat: CardFrontChoice = {
 };
 const cardFrontBrambles: CardFrontChoice = {
   name: 'thicket',
-  description: 'The thorns pull at your clothes.',
+  description: 'The thorns entangle you.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
   foreground: CardForegroundType.Trap,
@@ -85,7 +85,7 @@ const cardFrontBrambles: CardFrontChoice = {
     type: ChoiceType.NextPage,
     encounter: undefined,
   },
-  cost: [Force],
+  cost: [Force, Finesse],
   benefit: [],
 };
 const cardFrontMagicTree: CardFrontChoice = {
@@ -107,7 +107,7 @@ const cardFrontMagicTree: CardFrontChoice = {
 };
 const cardFrontMushroom: CardFrontChoice = {
   name: 'mushroom',
-  description: 'You see a mushroom circle.',
+  description: 'A circle of mushrooms.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
   foreground: CardForegroundType.Mushroom,
@@ -136,25 +136,29 @@ export const cards = [
     cardFrontBrambles,
   ].map<CardDefinition>(front => {
     return {
-      recycleTarget: RecycleTarget.DrawDeckRandom,
+      recycleTarget: RecycleTarget.Draw,
+      recyclePosition: undefined,
       faces: [back, front],
     };
   });
 }).concat([{
   faces: [cardBackDarkenedPath, cardFrontMagicTree],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
 }, {
   faces: [cardBackOvergrownPath, cardFrontMushroom],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
 }, {
   faces: [cardBackOvergrownPath, cardFrontShrine],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
 }, {
   faces: [cardBackDarkenedPath, cardFrontShrine],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
 }]).map<CardState>(definition => ({
-  faces: definition.faces,
-  recycleTarget: definition.recycleTarget,
+  ...definition,
   visibleFaceIndex: 0,
 }));
 
@@ -189,7 +193,8 @@ const cardFrontFinal: CardFrontChoice = {
 
 export const finalCard = cardDescriptor.freeze({
   faces: [cardBackFinal, cardFrontFinal],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
   visibleFaceIndex: 0,
 });
 

@@ -21,7 +21,8 @@ const cardFrontKick: CardFrontResource = {
   benefit: [DamageUp],
 };
 export const cardDefinitionKick: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 4,
   faces: [cardBackKick, cardFrontKick],
 };
 export const cardKick = cardDescriptor.freeze({

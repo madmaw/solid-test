@@ -11,6 +11,7 @@ type CardFaceProps = {
   face: CardFace
   warning: boolean,
   choice: boolean,
+  recyclePosition: number | undefined,
 };
 
 export function CardFaceComponent(props: CardFaceProps & {
@@ -63,6 +64,11 @@ export function CardFaceComponent(props: CardFaceProps & {
             <CardFaceNameComponent name={props.face.name}/>
           </CardFaceDescriptionComponent>
           <EffectStripComponent usages={props.cost} warnUnused={props.warning}/>
+          {props.face.type === CardFaceType.Resource && props.recyclePosition != null && (
+            <div class={styles['recycle-position']}>
+              {props.recyclePosition}
+            </div>
+          )}
         </div>
       </div>
   );

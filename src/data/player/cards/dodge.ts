@@ -21,7 +21,8 @@ const cardFrontDodge: CardFrontResource = {
   benefit: [DamageDown],
 };
 export const cardDefinitionDodge: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 5,
   faces: [cardBackDodge, cardFrontDodge],
 };
 export const cardDodge = cardDescriptor.freeze({

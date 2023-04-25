@@ -30,7 +30,8 @@ const cardFrontMindLazy: CardFrontResource = {
   benefit: [Mind],
 };
 export const cardDefinitionMindLazy: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 9,
   faces: [cardBackMindLazy, cardFrontMindLazy],
 };
 
@@ -59,7 +60,8 @@ const cardFrontMindEager: CardFrontResource = {
   benefit: [Mind],
 };
 export const cardDefinitionMindEager: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckTop,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 1,
   faces: [cardBackMindEager, cardFrontMindEager],
 };
 

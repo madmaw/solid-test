@@ -40,6 +40,7 @@ export function createCardManager(game: Game) {
               benefit={usage().benefit}
               warning={cardUI.warning}
               choice={game.book.cardSlots.some(cardSlot => cardSlot.targetCard === card)}
+              recyclePosition={card.recyclePosition}
           />
         </CardComponent>
       );

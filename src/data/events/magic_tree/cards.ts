@@ -97,7 +97,8 @@ export const cards = [
   ].map<CardDefinition>(cardFace => {
     return {
       faces: [cardBack, cardFace],
-      recycleTarget: RecycleTarget.DiscardDeckTop,
+      recycleTarget: RecycleTarget.Discard,
+      recyclePosition: undefined,
     };
   });
 }).map(definition => {

@@ -157,7 +157,8 @@ export const cardFrontMushroomMind: CardFrontChoice = {
         cost: [],
         benefit:[Perception]
       }],
-      recycleTarget: RecycleTarget.DrawDeckTop,
+      recycleTarget: RecycleTarget.Draw,
+      recyclePosition: 1,
     }]
   }],
   benefit: [],
@@ -246,7 +247,8 @@ export const cards = [
   ].map<CardDefinition>(cardFace => {
     return {
       faces: [cardBack, cardFace],
-      recycleTarget: RecycleTarget.DiscardDeckTop,
+      recycleTarget: RecycleTarget.Discard,
+      recyclePosition: undefined,
     };
   });
 }).map(definition => {
@@ -258,6 +260,7 @@ export const cards = [
 
 export const cardIgnore = cardDescriptor.freeze({
   faces: [cardBackMushroomIgnore, cardFrontMushroomIgnore],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
   visibleFaceIndex: 0,
 });

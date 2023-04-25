@@ -21,7 +21,8 @@ const cardFrontBlock: CardFrontResource = {
   benefit: [DamageDown, DamageDown, Force],
 };
 export const cardDefinitionBlock: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckRandom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 5,
   faces: [cardBackBlock, cardFrontBlock],
 };
 export const cardBlock = cardDescriptor.freeze({
@@ -49,7 +50,8 @@ const cardFrontDeflect: CardFrontResource = {
   benefit: [DamageDown],
 };
 export const cardDefinitionDeflect: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckRandom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 3,
   faces: [cardBackDeflect, cardFrontDeflect],
 };
 export const cardDeflect = cardDescriptor.freeze({

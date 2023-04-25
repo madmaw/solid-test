@@ -173,6 +173,6 @@ export function sortCardsByRecycling(cards: readonly Card[]): readonly Card[] {
   const randomizedCards = arrayRandomize(cards);
   return [...randomizedCards].sort((c1, c2) => {
     // reverse, decks are drawn from the back
-    return c2.recycleTarget - c1.recycleTarget;
+    return (c2.recyclePosition || 9) - (c1.recyclePosition || 9);
   });
 }

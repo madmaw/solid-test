@@ -269,7 +269,9 @@ export class GameManager {
                         [
                           () => playerCharacter.deck,
                           deck => playerCharacter.deck = deck,
-                        ]
+                        ],
+                        undefined,
+                        true,
                     );
                   }
                   break;
@@ -582,16 +584,17 @@ export class GameManager {
     cardSlot: CardSlot,
     drawDeck: DeckHolder,
     discardDeck?: DeckHolder,
+    endOfDeck?: boolean,
   ) {
     const cardController = this.cardControllerManager.lookupController(card);
     const inPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0; 
     cardController?.setElevated(false);
     const recycleTarget = card.recycleTarget;
-    const targetDeck = card.recycleTarget !== RecycleTarget.Destroy ?
-        recycleTarget === RecycleTarget.DiscardDeckTop
+    const targetDeck = card.recycleTarget === RecycleTarget.Destroy 
+        ? undefined
+        : recycleTarget === RecycleTarget.Discard
             ? discardDeck
-            : drawDeck
-        : undefined;
+            : drawDeck;
 
     const animateReturnToDeck = (inPlayerHand || card !== cardSlot.targetCard)
         && targetDeck != null;
@@ -608,11 +611,11 @@ export class GameManager {
       const [getDeck, setDeck] = targetDeck;
       const deck = getDeck();
       const deckLength = deck.length;
-      const index = recycleTarget === RecycleTarget.DrawDeckBottom
-          ? 0
-          : recycleTarget === RecycleTarget.DrawDeckRandom
-              ? Math.floor(Math.random() * (deckLength + 1))
-              : deckLength
+      const index = endOfDeck
+          ? deckLength
+          : card.recyclePosition 
+              ? Math.min(deckLength - card.recyclePosition - 1, deckLength)
+              : Math.floor(Math.random() * deckLength);
       setDeck([...deck.slice(0, index), card, ...deck.slice(index)]);
     }
     if (cardSlot.targetCard === card) {

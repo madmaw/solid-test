@@ -30,7 +30,8 @@ const cardFrontSlash: CardFrontResource = {
   benefit: [DamageUp, DamageUp],
 };
 export const cardDefinitionSlash: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckRandom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 5,
   faces: [cardBackSlash, cardFrontSlash],
 };
 export const cardSlash = cardDescriptor.freeze({
@@ -58,7 +59,8 @@ const cardFrontRiposte: CardFrontResource = {
   benefit: [DamageDown, DamageUp],
 };
 export const cardDefinitionRiposte: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 5,
   faces: [cardBackRiposte, cardFrontRiposte],
 };
 export const cardRiposte = cardDescriptor.freeze({
@@ -86,7 +88,8 @@ const cardFrontQuickThrust: CardFrontResource = {
   benefit: [DamageUp],
 };
 export const cardDefinitionQuckThrust: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 4,
   faces: [cardBackQuickThrust, cardFrontQuickThrust],
 };
 export const cardQuickThrust = cardDescriptor.freeze({
@@ -114,7 +117,8 @@ const cardFrontClumsyThrust: CardFrontResource = {
   benefit: [DamageUp],
 };
 export const cardDefinitionClumsyThrust: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckTop,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 2,
   faces: [cardBackClumsyThrust, cardFrontClumsyThrust],
 };
 export const cardClumsyThrust = cardDescriptor.freeze({

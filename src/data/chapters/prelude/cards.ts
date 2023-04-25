@@ -18,7 +18,9 @@ import {
   SymbolType,
   cardDescriptor,
 } from "model/domain";
-import { cardDefinitionFinesseMartialTraining } from "data/player/cards/finesse";
+import { cardDefinitionFinesseEager, cardDefinitionFinesseMartialTraining } from "data/player/cards/finesse";
+import { GainMaxHealth, Healing } from "data/effects";
+import { cardDefinitionDodge } from "data/player/cards/dodge";
 
 const cardBackAttributes: CardBackChoice = {
   name: 'attributes',
@@ -59,12 +61,12 @@ export const cardFrontAttributesWarrior: CardFrontChoice = {
       cardDefinitionBlock,
       cardDefinitionDeflect,
     ],
-  }],
+  }, GainMaxHealth, Healing],
   benefit: [],
 };
 export const cardFrontAttributesFinesse: CardFrontChoice = {
   name: 'cloak and dagger',
-  description: 'You choose the path of finesse.',
+  description: 'You choose the path of the thief.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextPage,
@@ -73,12 +75,21 @@ export const cardFrontAttributesFinesse: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: undefined,
   symbol: undefined,
-  cost: [],
+  cost: [{
+    symbol: SymbolType.GainCards,
+    direction: EffectDirection.Down,
+    cards: [
+      cardDefinitionFinesseEager,
+      cardDefinitionFinesseEager,
+      cardDefinitionDodge,
+      cardDefinitionDodge,
+    ],
+  }],
   benefit: [],
 };
 export const cardFrontAttributesMind: CardFrontChoice = {
   name: 'book and staff',
-  description: 'You choose the path of magic.',
+  description: 'You choose the path of the scholar.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextPage,
@@ -101,23 +112,23 @@ export const cards = [
   ].map<CardDefinition>(cardFace => {
     return {
       faces: [cardBack, cardFace],
-      recycleTarget: RecycleTarget.DiscardDeckTop,
+      recycleTarget: RecycleTarget.Discard,
+      recyclePosition: undefined,
     };
   });
 }).map(definition => {
   return cardDescriptor.freeze({
-    faces: definition.faces,
-    recycleTarget: definition.recycleTarget,
+    ...definition,
     visibleFaceIndex: 0,
   });
 });
 
 const cardBackFinal: CardBackChoice = {
   name: 'threshold guardian',
-  description: 'You\'ve always hated this bird. The feeling is reciprocated.',
+  description: 'The rooster stands in your way. You know this bird, it will not back down.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.ForestPath,
-  foreground: undefined,
+  foreground: CardForegroundType.Rooster,
   symbol: undefined,
   cost: [],
 };
@@ -127,7 +138,7 @@ const cardFrontFinal: CardFrontChoice = {
   description: 'The rooster eyes you with pure malice.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
-  foreground: undefined,
+  foreground: CardForegroundType.Rooster,
   symbol: undefined,
   choice: {
     type: ChoiceType.NextChapter,
@@ -143,7 +154,8 @@ const cardFrontFinal: CardFrontChoice = {
 
 export const finalCard = cardDescriptor.freeze({
   faces: [cardBackFinal, cardFrontFinal],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
   visibleFaceIndex: 0,
 });
 

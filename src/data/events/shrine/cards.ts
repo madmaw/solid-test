@@ -85,7 +85,8 @@ export const cards = [
   ].map<CardDefinition>(cardFace => {
     return {
       faces: [cardBack, cardFace],
-      recycleTarget: RecycleTarget.DiscardDeckTop,
+      recycleTarget: RecycleTarget.Discard,
+      recyclePosition: undefined,
     };
   });
 }).map(definition => {
@@ -120,7 +121,8 @@ export const cardFrontShrineIgnore: CardFrontChoice = {
 
 export const cardIgnore = cardDescriptor.freeze({
   faces: [cardBackShrineIgnore, cardFrontShrineIgnore],
-  recycleTarget: RecycleTarget.DiscardDeckTop,
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
   visibleFaceIndex: 0,
 });
 

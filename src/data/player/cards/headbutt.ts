@@ -21,7 +21,8 @@ const cardFrontHeadbutt: CardFrontResource = {
   benefit: [DamageUp],
 };
 export const cardDefinitionHeadbutt: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 9,
   faces: [cardBackHeadbutt, cardFrontHeadbutt],
 };
 export const cardHeadbutt = cardDescriptor.freeze({

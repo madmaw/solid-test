@@ -21,7 +21,8 @@ const cardFrontForceEager: CardFrontResource = {
   benefit: [Force],
 };
 export const cardDefinitionForceEager: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckTop,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 1,
   faces: [cardBackForceEager, cardFrontForceEager],
 };
 
@@ -50,7 +51,8 @@ const cardFrontForceRandom: CardFrontResource = {
   benefit: [Force],
 };
 export const cardDefinitionForceRandom: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckRandom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 5,
   faces: [cardBackForceRandom, cardFrontForceRandom],
 };
 
@@ -79,7 +81,8 @@ const cardFrontForceLazy: CardFrontResource = {
   benefit: [Force],
 };
 export const cardDefinitionForceLazy: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 9,
   faces: [cardBackForceLazy, cardFrontForceLazy],
 };
 
@@ -109,7 +112,8 @@ const cardFrontForceLazy2x: CardFrontResource = {
   benefit: [Force, Force],
 };
 export const cardDefinitionForceLazy2x: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 9,
   faces: [cardBackForceLazy2x, cardFrontForceLazy2x],
 };
 

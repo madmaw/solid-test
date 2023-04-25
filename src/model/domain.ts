@@ -177,20 +177,20 @@ export type CardFace =
 
 export const enum RecycleTarget {
   Destroy = 1,
-  DrawDeckTop,
-  DrawDeckRandom,
-  DrawDeckBottom,
-  DiscardDeckTop,
+  Draw,
+  Discard,
 }
 
 export type CardDefinition = {
   readonly recycleTarget: RecycleTarget,
+  readonly recyclePosition: number | undefined,
   readonly faces: readonly CardFace[],
 };
 
 export const cardDescriptor = activeRecordDescriptor({
   faces: new LiteralTypeDescriptor<readonly CardFace[]>(),
   recycleTarget: new LiteralTypeDescriptor<RecycleTarget>(),
+  recyclePosition: optionalDescriptor(numberDescriptor),
   visibleFaceIndex: numberDescriptor,
 });
 

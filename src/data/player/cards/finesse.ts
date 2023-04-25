@@ -30,7 +30,8 @@ const cardFrontFinesseLazy: CardFrontResource = {
   benefit: [Finesse],
 };
 export const cardDefinitionFinesseLazy: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 9,
   faces: [cardBackFinesseLazy, cardFrontFinesseLazy],
 };
 
@@ -59,7 +60,8 @@ const cardFrontFinesseEager: CardFrontResource = {
   benefit: [Finesse],
 };
 export const cardDefinitionFinesseEager: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckTop,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 1,
   faces: [cardBackFinesseEager, cardFrontFinesseEager],
 };
 
@@ -88,6 +90,7 @@ const cardFrontFinesseMartialTraining: CardFrontResource = {
   benefit: [Finesse, Force],
 };
 export const cardDefinitionFinesseMartialTraining: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckRandom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 3,
   faces: [cardBackFinesseMartialTraining, cardFrontFinesseMartialTraining],
 };

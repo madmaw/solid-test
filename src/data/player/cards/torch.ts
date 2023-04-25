@@ -21,7 +21,8 @@ const cardFrontTorch: CardFrontResource = {
   benefit: [DamageUp, Perception],
 };
 export const cardDefinitionTorch: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckBottom,
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 9,
   faces: [cardBackTorch, cardFrontTorch],
 };
 export const cardKick = cardDescriptor.freeze({
