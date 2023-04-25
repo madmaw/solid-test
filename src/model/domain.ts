@@ -221,6 +221,7 @@ export const entityDescriptor = activeRecordDescriptor({
   health: numberDescriptor,
   maxHealth: numberDescriptor,
   deck: deckDescriptor,
+  age: numberDescriptor,
 });
 
 export const encounterBattleDescriptor = activeRecordDescriptor({

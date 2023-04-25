@@ -1,7 +1,17 @@
 import { cardDefinitionHeadbutt } from "data/player/cards/headbutt";
-import { cardDefinitionForceEager, cardDefinitionForceLazy2x, cardDefinitionForceRandom } from "data/player/cards/force";
+import {
+  cardDefinitionForce1,
+  cardDefinitionForce3,
+  cardDefinitionForce5,
+  cardDefinitionForceLazy2x,
+} from "data/player/cards/force";
 import { cardDefinitionBlock, cardDefinitionDeflect } from "data/player/cards/shield";
-import { cardDefinitionClumsyThrust, cardDefinitionQuckThrust, cardDefinitionRiposte, cardDefinitionSlash } from "data/player/cards/sword";
+import {
+  cardDefinitionClumsyThrust,
+  cardDefinitionQuckThrust,
+  cardDefinitionRiposte,
+  cardDefinitionSlash,
+} from "data/player/cards/sword";
 import { cardDefinitionTorch } from "data/player/cards/torch";
 import {
   CardBackChoice,
@@ -48,9 +58,10 @@ export const cardFrontAttributesWarrior: CardFrontChoice = {
     direction: EffectDirection.Down,
     cards: [
       cardDefinitionFinesseMartialTraining,
-      cardDefinitionForceEager,
-      cardDefinitionForceEager,
-      cardDefinitionForceRandom,
+      cardDefinitionForce1,
+      cardDefinitionForce1,
+      cardDefinitionForce3,
+      cardDefinitionForce5,
       cardDefinitionForceLazy2x,
       cardDefinitionHeadbutt,
       cardDefinitionSlash,

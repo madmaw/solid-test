@@ -3,6 +3,7 @@ import styles from './status_overlay.module.scss';
 
 export function StatusOverlayComponent(props: {
   health: JSXElement,
+  age: JSXElement,
   narration: JSXElement,
 }) {
   return (
@@ -10,6 +11,9 @@ export function StatusOverlayComponent(props: {
       <div class={styles['status-bar']}>
         <div class={styles['health-container']}>
           {props.health}
+        </div>
+        <div class={styles['age-container']}>
+          {props.age}
         </div>
       </div>
       <div class={styles.narration}>

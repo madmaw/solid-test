@@ -142,6 +142,10 @@ export const cards = [
     };
   });
 }).concat([{
+  faces: [cardBackOvergrownPath, cardFrontMagicTree],
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
+}, {
   faces: [cardBackDarkenedPath, cardFrontMagicTree],
   recycleTarget: RecycleTarget.Discard,
   recyclePosition: undefined,
@@ -150,11 +154,23 @@ export const cards = [
   recycleTarget: RecycleTarget.Discard,
   recyclePosition: undefined,
 }, {
+  faces: [cardBackDarkenedPath, cardFrontMushroom],
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
+}, {
+  faces: [cardBackPath, cardFrontMushroom],
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
+}, {
   faces: [cardBackOvergrownPath, cardFrontShrine],
   recycleTarget: RecycleTarget.Discard,
   recyclePosition: undefined,
 }, {
   faces: [cardBackDarkenedPath, cardFrontShrine],
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
+}, {
+  faces: [cardBackPath, cardFrontShrine],
   recycleTarget: RecycleTarget.Discard,
   recyclePosition: undefined,
 }]).map<CardState>(definition => ({

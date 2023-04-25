@@ -1,9 +1,10 @@
 import { Entity } from "model/domain";
 import { StatusOverlayComponent } from "./status_overlay";
-import { EntityHealth } from "components/entity/health/entity_health";
+import { EntityHealthComponent } from "components/entity/health/entity_health";
 import { NarrationComponent } from "components/narration/narration";
 import { RenderingSpeaker } from "ui/speaker/rendering_speaker";
 import { createMemo } from "solid-js";
+import { EntityAgeComponent } from "components/entity/age/entity_age";
 
 export function createStatusOverlay() {
   return function(props: {
@@ -11,9 +12,12 @@ export function createStatusOverlay() {
     speaker: RenderingSpeaker,
   }) {
     const health = (
-        <EntityHealth
+        <EntityHealthComponent
             health={props.playerCharacter.health}
             maxHealth={props.playerCharacter.maxHealth}/>
+    );
+    const age = (
+        <EntityAgeComponent age={props.playerCharacter.age}/>
     );
     const words = createMemo(() => {
       return props.speaker.text?.split(' ') || [];
@@ -31,6 +35,7 @@ export function createStatusOverlay() {
     return (
       <StatusOverlayComponent
           health={health}
+          age={age}
           narration={narration}
       />
     );

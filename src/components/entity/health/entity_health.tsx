@@ -1,7 +1,7 @@
 import { Index } from "solid-js";
 import styles from './entity_health.module.scss';
 
-export function EntityHealth(props: {
+export function EntityHealthComponent(props: {
   maxHealth: number,
   health: number,
   small?: boolean,

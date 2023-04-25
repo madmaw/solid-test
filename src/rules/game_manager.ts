@@ -276,7 +276,13 @@ export class GameManager {
                   }
                   break;
                 case SymbolType.Age:
-                  // TODO
+                  await cardController?.moveTo(
+                      '0',
+                      direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                      '1vmin',
+                      Easing.Gentle,
+                  );
+                  to.age -= 7;
                   break;
                 case SymbolType.GainMaxHealth:
                   await cardController?.moveTo(
@@ -355,6 +361,9 @@ export class GameManager {
       selectedCardSlot: CardSlot | undefined,
   ) {
     const { finishEndTurn, playerDead } = await this.endTurn(selectedCardSlot);
+    if (this.game.playerCharacter) {
+      this.game.playerCharacter.age++;
+    }
     if (playerDead) {
       return finishEndTurn();
     }

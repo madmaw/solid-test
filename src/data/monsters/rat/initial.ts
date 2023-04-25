@@ -5,4 +5,5 @@ export const defaultRat = entityDescriptor.freeze({
   deck: cards,
   health: 2,
   maxHealth: 2,
+  age: 2,
 });

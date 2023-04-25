@@ -5,4 +5,5 @@ export const defaultSnail = entityDescriptor.freeze({
   deck: cards,
   health: 1,
   maxHealth: 1,
+  age: 1,
 });

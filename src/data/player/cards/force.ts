@@ -1,5 +1,14 @@
 import { Force } from "data/effects";
-import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, SymbolType, cardDescriptor } from "model/domain";
+import {
+  CardBackResource,
+  CardBackgroundType,
+  CardDefinition,
+  CardFaceType,
+  CardFrontResource,
+  RecycleTarget,
+  SymbolType,
+  cardDescriptor,
+} from "model/domain";
 
 const cardBackForceEager: CardBackResource = {
   name: 'warriors strength',
@@ -20,14 +29,29 @@ const cardFrontForceEager: CardFrontResource = {
   cost: [],
   benefit: [Force],
 };
-export const cardDefinitionForceEager: CardDefinition = {
+export const cardDefinitionForce1: CardDefinition = {
   recycleTarget: RecycleTarget.Draw,
   recyclePosition: 1,
   faces: [cardBackForceEager, cardFrontForceEager],
 };
+export const cardDefinitionForce3: CardDefinition = {
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 3,
+  faces: [cardBackForceEager, cardFrontForceEager],
+};
+export const cardDefinitionForce5: CardDefinition = {
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 5,
+  faces: [cardBackForceEager, cardFrontForceEager],
+};
+export const cardDefinitionForce7: CardDefinition = {
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 7,
+  faces: [cardBackForceEager, cardFrontForceEager],
+};
 
 export const cardForceEager = cardDescriptor.freeze({
-  ...cardDefinitionForceEager,
+  ...cardDefinitionForce1,
   visibleFaceIndex: 0,
 });
 
@@ -113,7 +137,7 @@ const cardFrontForceLazy2x: CardFrontResource = {
 };
 export const cardDefinitionForceLazy2x: CardDefinition = {
   recycleTarget: RecycleTarget.Draw,
-  recyclePosition: 9,
+  recyclePosition: 7,
   faces: [cardBackForceLazy2x, cardFrontForceLazy2x],
 };
 

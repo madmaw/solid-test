@@ -22,7 +22,7 @@ const cardFrontTorch: CardFrontResource = {
 };
 export const cardDefinitionTorch: CardDefinition = {
   recycleTarget: RecycleTarget.Draw,
-  recyclePosition: 9,
+  recyclePosition: 5,
   faces: [cardBackTorch, cardFrontTorch],
 };
 export const cardKick = cardDescriptor.freeze({

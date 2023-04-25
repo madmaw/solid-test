@@ -5,4 +5,5 @@ export const defaultTroll = entityDescriptor.freeze({
   deck: cards,
   health: 4,
   maxHealth: 4,
+  age: 34,
 });

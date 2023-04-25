@@ -28,6 +28,10 @@ $padding: calc(2vmin);
   justify-content: start;
 }
 
+.age-container {
+  flex: 0;
+}
+
 .narration {
   flex: 0;
   padding: 0 $padding;
