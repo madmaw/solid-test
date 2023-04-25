@@ -10,7 +10,7 @@ export function pageCardSlots(game: Game): readonly CardSlot[] {
 
 export type DeckHolder = [() => Deck, (deck: Deck) => void];
 
-export function pageDeck(game: Game): DeckHolder {
+export function pageDeck(game: Game): [() => Deck, (deck: Deck) => void, boolean] {
   const spread = game.book.spread;
   if (spread?.type === BookSpreadType.Room) {
     const encounter = spread.encounter;
@@ -19,12 +19,14 @@ export function pageDeck(game: Game): DeckHolder {
       return [
         () => monster.deck,
         deck => monster.deck = deck,
+        true,
       ];
     }
     if (encounter?.type === EncounterType.Event) {
       return [
         () => encounter.deck,
         deck => encounter.deck = deck,
+        true,
       ];
     }
   }
@@ -32,6 +34,7 @@ export function pageDeck(game: Game): DeckHolder {
   return [
     () => game.book.chapter.deck,
     deck => game.book.chapter.deck = deck,
+    false,
   ];
 }
 

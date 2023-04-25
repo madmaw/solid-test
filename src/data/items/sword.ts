@@ -99,7 +99,7 @@ export const cardQuickThrust = cardDescriptor.freeze({
 
 const cardBackClumsyThrust: CardBackResource = {
   name: 'inelegant thrust',
-  description: 'You attempt to ready your blade.',
+  description: 'Shakily, you ready your blade.',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,

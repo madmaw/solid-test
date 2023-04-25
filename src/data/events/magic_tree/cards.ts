@@ -47,7 +47,7 @@ const cardBackMagicTreeGatherFruit: CardBackChoice = {
 
 export const cardFrontMagicTreeGoldenApple: CardFrontChoice = {
   name: 'golden apple',
-  description: 'The flavour is strange, yet somehow familiar.',
+  description: 'The flavour is strange, yet somehow familiar. You feel the burden of the years lift.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,

@@ -3,7 +3,7 @@ import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, Car
 
 const cardBackTorch: CardBackResource = {
   name: 'torch',
-  description: 'You hold the blazing torch aloft.',
+  description: 'The torch ignites!',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   symbol: undefined,
@@ -12,7 +12,7 @@ const cardBackTorch: CardBackResource = {
 };
 const cardFrontTorch: CardFrontResource = {
   name: 'torch',
-  description: 'Fire fixes everything.',
+  description: 'You beat back beasts and darkness alike.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,
@@ -25,7 +25,7 @@ export const cardDefinitionTorch: CardDefinition = {
   recyclePosition: 5,
   faces: [cardBackTorch, cardFrontTorch],
 };
-export const cardKick = cardDescriptor.freeze({
+export const cardTorch = cardDescriptor.freeze({
   ...cardDefinitionTorch,
   visibleFaceIndex: 0,
 });

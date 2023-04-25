@@ -1,4 +1,4 @@
-import { DamageDown, DamageUp, Finesse, Force, Mind } from "data/effects";
+import { DamageDown, DamageUp, Finesse, Force, Mind, Perception } from "data/effects";
 import {
   CardBackChoice,
   CardBackgroundType,
@@ -41,7 +41,7 @@ export const cardFrontRoosterClaw: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Rooster,
   symbol: SymbolType.Finesse,
-  cost: [DamageDown, Finesse],
+  cost: [DamageDown, Finesse, Perception],
   benefit: [],
 };
 export const cardFrontRoosterCrow: CardFrontChoice = {

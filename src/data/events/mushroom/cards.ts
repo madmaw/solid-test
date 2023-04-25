@@ -2,14 +2,13 @@ import {
   AgeDown,
   AgeUp,
   Finesse,
+  Force,
   GainMaxHealth,
   Magic,
   Mind,
   Perception,
   PoisonDown,
 } from "data/effects";
-import { cardDefinitionFinesseLazy } from "data/player/cards/finesse";
-import { cardDefinitionForceLazy } from "data/player/cards/force";
 import {
   CardBackChoice,
   CardBackgroundType,
@@ -35,7 +34,7 @@ const cardBackMushroomBlue: CardBackChoice = {
 };
 const cardBackMushroomRed: CardBackChoice = {
   name: 'red mushroom',
-  description: 'You inspect the mushroom.',
+  description: 'You gently inspect the mushroom.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Mushroom,
@@ -45,15 +44,6 @@ const cardBackMushroomRed: CardBackChoice = {
 const cardBackMushroomFamiliar: CardBackChoice = {
   name: 'familiar mushroom',
   description: 'You recognise one of the mushrooms.',
-  type: CardFaceType.ChoiceBack,
-  background: CardBackgroundType.Crosshatched,
-  foreground: CardForegroundType.Mushroom,
-  symbol: undefined,
-  cost: [],
-};
-const cardBackMushroomIgnore: CardBackChoice = {
-  name: 'ignore',
-  description: undefined,
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Mushroom,
@@ -87,9 +77,28 @@ export const cardFrontMushroomForce: CardFrontChoice = {
   cost: [{
     symbol: SymbolType.GainCards,
     direction: EffectDirection.Omni,
-    cards: [
-      cardDefinitionForceLazy,
-    ]
+    cards: [{
+      faces: [{
+        name: 'fungal strength',
+        description: 'Your fungal strength bursts forth!',
+        type: CardFaceType.ResourceBack,
+        background: CardBackgroundType.Crosshatched,
+        foreground: CardForegroundType.Mushroom,
+        symbol: SymbolType.Perception,
+        cost: [Finesse],
+      }, {
+        name: 'fungal strength',
+        description: 'I like to think of myself as a fun guy.',
+        type: CardFaceType.Resource,
+        background: CardBackgroundType.Clear,
+        foreground: CardForegroundType.Mushroom,
+        symbol: SymbolType.Perception,
+        cost: [],
+        benefit:[Force, Force, Force]
+      }],
+      recycleTarget: RecycleTarget.Draw,
+      recyclePosition: 5,
+    }],
   }],
   benefit: [],
 };
@@ -103,7 +112,35 @@ export const cardFrontMushroomPoison: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [PoisonDown],
+  cost: [
+    PoisonDown,
+    {
+      symbol: SymbolType.GainCards,
+      direction: EffectDirection.Omni,
+      cards: [{
+        faces: [{
+          name: 'fungal immunity',
+          description: undefined,
+          type: CardFaceType.ResourceBack,
+          background: CardBackgroundType.Crosshatched,
+          foreground: CardForegroundType.Mushroom,
+          symbol: undefined,
+          cost: [],
+        }, {
+          name: 'fungal immunity',
+          description: '.',
+          type: CardFaceType.Resource,
+          background: CardBackgroundType.Clear,
+          foreground: CardForegroundType.Mushroom,
+          symbol: undefined,
+          cost: [],
+          benefit:[PoisonDown]
+        }],
+        recycleTarget: RecycleTarget.Draw,
+        recyclePosition: 5,
+      }],
+    },
+  ],
   benefit: [],
 };
 export const cardFrontMushroomFinesse: CardFrontChoice = {
@@ -119,14 +156,33 @@ export const cardFrontMushroomFinesse: CardFrontChoice = {
   cost: [{
     symbol: SymbolType.GainCards,
     direction: EffectDirection.Omni,
-    cards: [
-      cardDefinitionFinesseLazy,
-    ],
+    cards: [{
+      faces: [{
+        name: 'fugue state',
+        description: undefined,
+        type: CardFaceType.ResourceBack,
+        background: CardBackgroundType.Crosshatched,
+        foreground: CardForegroundType.Mushroom,
+        symbol: undefined,
+        cost: [],
+      }, {
+        name: 'fugue state',
+        description: '.',
+        type: CardFaceType.Resource,
+        background: CardBackgroundType.Clear,
+        foreground: CardForegroundType.Mushroom,
+        symbol: undefined,
+        cost: [Force, Mind],
+        benefit:[Finesse, Finesse]
+      }],
+      recycleTarget: RecycleTarget.Draw,
+      recyclePosition: 5,
+    }],
   }],
   benefit: [],
 };
 export const cardFrontMushroomMind: CardFrontChoice = {
-  name: 'smartshroom',
+  name: 'special mushroom',
   description: 'The mushroom opens your third eye.',
   type: CardFaceType.Choice,
   choice: {
@@ -173,7 +229,32 @@ export const cardFrontMushroomMagic: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [],
+  cost: [{
+    symbol: SymbolType.GainCards,
+    direction: EffectDirection.Omni,
+    cards: [{
+      faces: [{
+        name: 'spore magic',
+        description: undefined,
+        type: CardFaceType.ResourceBack,
+        background: CardBackgroundType.Crosshatched,
+        foreground: CardForegroundType.Mushroom,
+        symbol: SymbolType.Magic,
+        cost: [],
+      }, {
+        name: 'spore magic',
+        description: 'Magic ish magic yeh.',
+        type: CardFaceType.Resource,
+        background: CardBackgroundType.Clear,
+        foreground: CardForegroundType.Mushroom,
+        symbol: SymbolType.Magic,
+        cost: [],
+        benefit:[Magic]
+      }],
+      recycleTarget: RecycleTarget.Draw,
+      recyclePosition: 4,
+    }]
+  }],
   benefit: [],
 };
 export const cardFrontMushroomYouth: CardFrontChoice = {
@@ -215,19 +296,6 @@ export const cardFrontMushroomHealing: CardFrontChoice = {
   cost: [GainMaxHealth],
   benefit: [],
 };
-export const cardFrontMushroomIgnore: CardFrontChoice = {
-  name: 'ignore',
-  description: 'Best left alone.',
-  type: CardFaceType.Choice,
-  choice: {
-    type: ChoiceType.NextTurn,
-  },
-  background: CardBackgroundType.Clear,
-  foreground: CardForegroundType.Mushroom,
-  symbol: undefined,
-  cost: [],
-  benefit: [],
-};
 
 export const cards = [
   cardBackMushroomBlue, 
@@ -257,6 +325,30 @@ export const cards = [
     visibleFaceIndex: 0,
   });
 });
+
+const cardBackMushroomIgnore: CardBackChoice = {
+  name: 'ignore',
+  description: undefined,
+  type: CardFaceType.ChoiceBack,
+  background: CardBackgroundType.Crosshatched,
+  foreground: CardForegroundType.Mushroom,
+  symbol: undefined,
+  cost: [],
+};
+
+export const cardFrontMushroomIgnore: CardFrontChoice = {
+  name: 'ignore',
+  description: 'Best left alone.',
+  type: CardFaceType.Choice,
+  choice: {
+    type: ChoiceType.NextTurn,
+  },
+  background: CardBackgroundType.Clear,
+  foreground: CardForegroundType.Mushroom,
+  symbol: undefined,
+  cost: [],
+  benefit: [],
+};
 
 export const cardIgnore = cardDescriptor.freeze({
   faces: [cardBackMushroomIgnore, cardFrontMushroomIgnore],

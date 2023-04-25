@@ -190,7 +190,7 @@ const cardBackFinal: CardBackChoice = {
 
 const cardFrontFinal: CardFrontChoice = {
   name: 'troll',
-  description: 'A vulgar oaf blocks your way. He looks at you, licking his lips.',
+  description: 'A vulgar oaf blocks your way. He looks at you, licking his lips obscenely.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
   foreground: undefined,

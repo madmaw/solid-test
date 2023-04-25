@@ -1,18 +1,18 @@
-import { cardDefinitionHeadbutt } from "data/player/cards/headbutt";
+import { cardDefinitionHeadbutt } from "data/items/headbutt";
 import {
   cardDefinitionForce1,
   cardDefinitionForce3,
   cardDefinitionForce5,
   cardDefinitionForceLazy2x,
-} from "data/player/cards/force";
-import { cardDefinitionBlock, cardDefinitionDeflect } from "data/player/cards/shield";
+} from "data/items/force";
+import { cardDefinitionBlock, cardDefinitionDeflect } from "data/items/shield";
 import {
   cardDefinitionClumsyThrust,
   cardDefinitionQuckThrust,
   cardDefinitionRiposte,
   cardDefinitionSlash,
-} from "data/player/cards/sword";
-import { cardDefinitionTorch } from "data/player/cards/torch";
+} from "data/items/sword";
+import { cardDefinitionTorch } from "data/items/torch";
 import {
   CardBackChoice,
   CardBackgroundType,
@@ -28,9 +28,9 @@ import {
   SymbolType,
   cardDescriptor,
 } from "model/domain";
-import { cardDefinitionFinesseEager, cardDefinitionFinesseMartialTraining } from "data/player/cards/finesse";
+import { cardDefinitionFinesseEager, cardDefinitionFinesseMartialTraining } from "data/items/finesse";
 import { GainMaxHealth, Healing } from "data/effects";
-import { cardDefinitionDodge } from "data/player/cards/dodge";
+import { cardDefinitionDodge } from "data/items/dodge";
 
 const cardBackAttributes: CardBackChoice = {
   name: 'attributes',

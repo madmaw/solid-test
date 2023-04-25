@@ -113,6 +113,7 @@ export const enum EventType {
   MagicTree,
   Mushroom,
   Shrine,
+  Treasure,
 }
 
 export type EncounterBattleDefinition = {

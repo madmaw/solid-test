@@ -6,6 +6,7 @@ import { cards as fountainCards, cardIgnore as fountainIgnore } from "data/event
 import { cards as magicTreeCards } from 'data/events/magic_tree/cards';
 import { cards as mushroomCards, cardIgnore as mushroomIgnore } from 'data/events/mushroom/cards';
 import { cards as shrineCards, cardIgnore as shrineIgnore } from 'data/events/shrine/cards';
+import { cards as itemCards, ignoreCards } from 'data/items/cards';
 import { EncounterDefinition, EncounterState, EncounterType, EntityState, EventType, MonsterType } from "model/domain";
 import { defaultSnail } from "data/monsters/snail/initial";
 import { defaultRooster } from "data/monsters/rooster/initial";
@@ -63,6 +64,13 @@ export function hydrateEncounter(encounter: EncounterDefinition): EncounterState
             type: EncounterType.Event,
             eventType: encounter.event,
             deck: arrayRandomize(shrineCards).slice(0, 2).concat([shrineIgnore]),
+          };
+        case EventType.Treasure:
+          return {
+            type: EncounterType.Event,
+            eventType: encounter.event,
+            deck: arrayRandomize(itemCards).slice(0, 2)
+                .concat(ignoreCards[Math.floor(Math.random() * ignoreCards.length)]),
           };
         default:
           throw new UnreachableError(encounter.event);

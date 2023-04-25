@@ -420,10 +420,10 @@ export class GameManager {
     }));
   }
 
-  private async startTurn(draw = 3) {
+  private async startTurn(draw = this.game.playerHand.length) {
     const cardSlots = pageCardSlots(this.game);
-    const [pageDeckGetter, pageDeckSetter] = pageDeck(this.game);
-    if (this.game.book.chapter.pagesRemaining < 0) {
+    const [pageDeckGetter, pageDeckSetter, encounterDeck] = pageDeck(this.game);
+    if (this.game.book.chapter.pagesRemaining < 0 && !encounterDeck) {
       // create the end boss
       const card = this.game.book.chapter.finalCard;
       cardSlots[Math.floor(cardSlots.length/2)].targetCard = card;
@@ -502,7 +502,7 @@ export class GameManager {
           .lookupController(event)?.disappear();
     }
     // place all loose cards back in the deck
-    const pageDeckHolder = pageDeck(this.game);
+    const pageDeckHolder: DeckHolder = pageDeck(this.game) as any;
     const playerDeckHolder = playerDeck(this.game);
 
     const processCardSlot = async (cardSlot: CardSlot) => {
@@ -525,6 +525,9 @@ export class GameManager {
             targetCard,
             cardSlot,
             inPlayerHand ? playerDeckHolder : pageDeckHolder,
+            undefined,
+            // unused cards go to the back of the deck
+            inPlayerHand,
         );
         cardSlot.targetCard = undefined;
       }
@@ -621,7 +624,7 @@ export class GameManager {
       const deck = getDeck();
       const deckLength = deck.length;
       const index = endOfDeck
-          ? deckLength
+          ? 0
           : card.recyclePosition 
               ? Math.min(deckLength - card.recyclePosition - 1, deckLength)
               : Math.floor(Math.random() * deckLength);

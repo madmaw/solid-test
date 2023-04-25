@@ -1,9 +1,9 @@
 import { entityDescriptor } from "model/domain";
-import { cardForceRandom } from "./cards/force";
-import { cardFinesseLazy } from "./cards/finesse";
-import { cardDodge } from "./cards/dodge";
-import { cardKick } from "./cards/kick";
-import { cardMindLazy } from "./cards/mind";
+import { cardForceRandom } from "data/items/force";
+import { cardFinesseLazy } from "data/items/finesse";
+import { cardDodge } from "../items/dodge";
+import { cardKick } from "data/items/kick";
+import { cardMindLazy } from "data/items/mind";
 
 export const defaultPlayerCharacter = entityDescriptor.freeze({
   deck: [

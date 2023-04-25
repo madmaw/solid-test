@@ -31,7 +31,7 @@ const cardFrontFinesseLazy: CardFrontResource = {
 };
 export const cardDefinitionFinesseLazy: CardDefinition = {
   recycleTarget: RecycleTarget.Draw,
-  recyclePosition: 9,
+  recyclePosition: 5,
   faces: [cardBackFinesseLazy, cardFrontFinesseLazy],
 };
 
