@@ -59,7 +59,7 @@ export class SpeechSynthesisWordSplitter implements WordSplitter {
     }
     utterance = new SpeechSynthesisUtterance(text);
     utterance.addEventListener('boundary', e => console.log(e));
-    utterance.rate = .9;
+    utterance.rate = 1;
     utterance.pitch = .4;
     utterance.lang = 'en';
     utterance.voice = voice;

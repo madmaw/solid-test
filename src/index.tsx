@@ -27,7 +27,7 @@ import { PoliteSpeaker } from "ui/speaker/polite_speaker";
 window.onload = function () {
   const backgroundMusic = document.getElementById('bgm') as HTMLAudioElement | null;
   backgroundMusic?.pause();
-  
+
   const wordSplitter = new SpeechSynthesisWordSplitter(
       window.speechSynthesis,
       new DelayWordSplitter(),
@@ -73,6 +73,7 @@ window.onload = function () {
 
   const pageComponentManager = createPageManager(
     navigation,
+    game,
   );
 
   const cardSlotManager = createCardSlotManager(

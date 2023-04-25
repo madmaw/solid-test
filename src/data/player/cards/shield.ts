@@ -49,7 +49,7 @@ const cardFrontDeflect: CardFrontResource = {
   benefit: [DamageDown],
 };
 export const cardDefinitionDeflect: CardDefinition = {
-  recycleTarget: RecycleTarget.DrawDeckTop,
+  recycleTarget: RecycleTarget.DrawDeckRandom,
   faces: [cardBackDeflect, cardFrontDeflect],
 };
 export const cardDeflect = cardDescriptor.freeze({

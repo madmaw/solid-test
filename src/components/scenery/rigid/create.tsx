@@ -5,7 +5,8 @@ import { ComponentAndController } from "components/component_manager";
 import { SceneryController } from "../scenery_controller";
 
 export function createRigidScenery(
-    proxied: ComponentAndController<{}, SceneryController>
+    proxied: ComponentAndController<{}, SceneryController>,
+    flipX: boolean,
 ) {
   const ui = rigidSceneryUI.create({
     up: false,
@@ -17,7 +18,8 @@ export function createRigidScenery(
         <RigidSceneryComponent
             animations={animations}
             up={ui.up}
-            x={props.x}>
+            x={props.x}
+            flipX={flipX}>
           <proxied.Component/>
         </RigidSceneryComponent>
     );

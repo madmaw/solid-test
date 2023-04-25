@@ -7,6 +7,7 @@ export function RigidSceneryComponent(props: ParentProps<{
   up: boolean,
   animations: AnimationManager<Animations>,
   x: string,
+  flipX: boolean,
 }>) {
   const [ref, setRef] = createSignal<HTMLDivElement>();
   return (
@@ -19,11 +20,16 @@ export function RigidSceneryComponent(props: ParentProps<{
         }}
         onTransitionEnd={props.animations.createTransitionEndEventListener(ref, () => Animations.Popped)}>
       <div
-        style={{
-          'margin-left': props.x,
-        }}
+          style={{
+            'margin-left': props.x,
+          }}
       >
-        {props.children}
+        <div 
+            classList={{
+            [styles.flip]: props.flipX,
+        }}>
+          {props.children}
+        </div>
       </div>
     </div>
   )

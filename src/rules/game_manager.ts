@@ -587,12 +587,14 @@ export class GameManager {
     const inPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0; 
     cardController?.setElevated(false);
     const recycleTarget = card.recycleTarget;
-    const targetDeck = recycleTarget === RecycleTarget.DiscardDeckTop
-        ? discardDeck
-        : drawDeck;
+    const targetDeck = card.recycleTarget !== RecycleTarget.Destroy ?
+        recycleTarget === RecycleTarget.DiscardDeckTop
+            ? discardDeck
+            : drawDeck
+        : undefined;
 
     const animateReturnToDeck = (inPlayerHand || card !== cardSlot.targetCard)
-        && card.recycleTarget !== RecycleTarget.Destroy;
+        && targetDeck != null;
     if (animateReturnToDeck) {
       if (card.visibleFaceIndex > 0) {
         await cardController?.flip();
@@ -602,8 +604,7 @@ export class GameManager {
       card.visibleFaceIndex = 0;
     }
 
-    if (targetDeck != null) {
-      
+    if (targetDeck != null) {  
       const [getDeck, setDeck] = targetDeck;
       const deck = getDeck();
       const deckLength = deck.length;
@@ -623,7 +624,6 @@ export class GameManager {
     if (animateReturnToDeck) {
       // TODO factor in other decks
       const deckPosition = this.tableController.getPlayerDeckTablePosition();
-      // TODO event cards
       const playerSlotIndex = this.game.playerHand.indexOf(cardSlot);
       const bookSlotIndex = this.game.book.cardSlots.indexOf(cardSlot);
       // TODO factor in whether it's a played or target card

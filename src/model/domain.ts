@@ -246,7 +246,7 @@ export const encounterDescriptor = discriminatingUnionDescriptor(
 
 export const bookSpreadRoomDescriptor = activeRecordDescriptor({
   type: new LiteralTypeDescriptor<BookSpreadType.Room>(),
-  encounter: optionalDescriptor(encounterDescriptor),
+  encounter: optionalDescriptor(encounterDescriptor),  
 });
 
 export const bookSpreadDescriptor = discriminatingUnionDescriptor(

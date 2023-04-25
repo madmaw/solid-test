@@ -19,3 +19,9 @@
   transition-duration: constants.$popdownDuration;
   transition-timing-function: constants.$popdownTimingFunction;
 }
+
+.flip {
+  display: inline-block;
+  transform: scaleX(-1);
+  transform-origin: center;
+}
