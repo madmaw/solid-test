@@ -114,6 +114,24 @@ const cardFrontFountain: CardFrontChoice = {
   cost: [],
   benefit: [],
 };
+const cardFrontTreasure: CardFrontChoice = {
+  name: 'treasure',
+  description: 'The glint of gold.',
+  type: CardFaceType.Choice,
+  background: CardBackgroundType.Passageway,
+  foreground: CardForegroundType.Treasure,
+  symbol: undefined,
+  choice: {
+    type: ChoiceType.NextPage,
+    encounter: {
+      type: EncounterType.Event,
+      event: EventType.Treasure,
+    },
+  },
+  cost: [],
+  benefit: [],
+};
+
 
 export const cards = [
   cardBackDoor,
@@ -125,6 +143,7 @@ export const cards = [
     cardFrontEmpty,
     cardFrontRat,
     cardFrontTrapped,
+    cardFrontTreasure,
   ].map<CardDefinition>(front => {
     return {
       recycleTarget: RecycleTarget.Draw,
@@ -134,6 +153,22 @@ export const cards = [
   });
 }).concat([{
   faces: [cardBackJammedDoor, cardFrontFountain],
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
+}, {
+  faces: [cardBackDarkDoorway, cardFrontFountain],
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
+}, {
+  faces: [cardBackDarkDoorway, cardFrontTreasure],
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
+}, {
+  faces: [cardBackLockedDoor, cardFrontTreasure],
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
+}, {
+  faces: [cardBackDoor, cardFrontTreasure],
   recycleTarget: RecycleTarget.Discard,
   recyclePosition: undefined,
 }, {

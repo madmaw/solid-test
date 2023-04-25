@@ -6,7 +6,6 @@ export const chapter = chapterDescriptor.freeze({
   deck: [
     ...cards,
   ],
-  pagesRemaining: 1,
-  finalCard,
+  pagesRemaining: 2,
+  finalCard: finalCard,
 });
-

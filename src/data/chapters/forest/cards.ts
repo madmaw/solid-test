@@ -122,8 +122,23 @@ const cardFrontMushroom: CardFrontChoice = {
   cost: [],
   benefit: [],
 };
-
-
+const cardFrontTreasure: CardFrontChoice = {
+  name: 'treasure',
+  description: 'The glint of gold.',
+  type: CardFaceType.Choice,
+  background: CardBackgroundType.Passageway,
+  foreground: CardForegroundType.Treasure,
+  symbol: undefined,
+  choice: {
+    type: ChoiceType.NextPage,
+    encounter: {
+      type: EncounterType.Event,
+      event: EventType.Treasure,
+    },
+  },
+  cost: [],
+  benefit: [],
+};
 
 export const cards = [
   cardBackOvergrownPath,
@@ -170,6 +185,10 @@ export const cards = [
   recycleTarget: RecycleTarget.Discard,
   recyclePosition: undefined,
 }, {
+  faces: [cardBackPath, cardFrontTreasure],
+  recycleTarget: RecycleTarget.Discard,
+  recyclePosition: undefined,
+}, {
   faces: [cardBackPath, cardFrontShrine],
   recycleTarget: RecycleTarget.Discard,
   recyclePosition: undefined,
@@ -201,7 +220,7 @@ const cardFrontFinal: CardFrontChoice = {
       type: EncounterType.Battle,
       monster: MonsterType.Troll,
     },
-    targetChapterIndex: 2,
+    targetChapterIndex: 3,
   },
   cost: [],
   benefit: [],

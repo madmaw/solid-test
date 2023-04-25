@@ -50,6 +50,7 @@ import { NavigationTarget, NavigationTargetType } from "components/navigation_ta
 import { chapter as chapterPrelude } from "data/chapters/prelude/chapter";
 import { chapter as chapterForest } from 'data/chapters/forest/chapter';
 import { chapter as chapterRuins } from "data/chapters/ruins/chapter";
+import { chapter as chapterStore } from "data/chapters/store/chapter";
 import { arrayRandomize } from "base/arrays";
 import { Speaker } from "ui/speaker/speaker";
 import { exists } from "base/exists";
@@ -94,18 +95,18 @@ export class GameManager {
     }
 
     const face = cardFace(targetCard, false);
-    if (face.description) {
-      this.speaker.say(face.description)
-    }
-
-    const battle = gameEncounterBattle(this.game);
-    if (battle != null) {
-      await this.battleEncounterControllerManager.lookupController(battle)?.perform(face);
-    }
-    await this.applyCardEffects(cardSlot);
 
     if (face.type === CardFaceType.Choice) {
-
+      if (face.description) {
+        this.speaker.say(face.description)
+      }
+  
+      const battle = gameEncounterBattle(this.game);
+      if (battle != null) {
+        await this.battleEncounterControllerManager.lookupController(battle)?.perform(face);
+      }
+      await this.applyCardEffects(cardSlot);
+  
       const choice = face.choice;
       switch (choice.type) {
         case ChoiceType.NextChapter:
@@ -127,6 +128,9 @@ export class GameManager {
         default:
           throw new UnreachableError(choice);
       }
+    } else if (face.type === CardFaceType.Resource || face.type === CardFaceType.ResourceBack) {
+      await this.returnCardToDeck(targetCard, cardSlot, playerDeck(this.game) as any, undefined, false, true);
+      return this.nextPage(undefined, cardSlot);
     }
   }
 
@@ -282,7 +286,7 @@ export class GameManager {
                       '1vmin',
                       Easing.Gentle,
                   );
-                  to.age -= 7;
+                  to.age -= 2;
                   break;
                 case SymbolType.GainMaxHealth:
                   await cardController?.moveTo(
@@ -349,7 +353,7 @@ export class GameManager {
   }
 
   async createChapter(chapterIndex: number) {
-    const chapters = [chapterPrelude, chapterForest, chapterRuins];
+    const chapters = [chapterPrelude, chapterStore, chapterForest, chapterRuins];
     batch(() => {
       this.game.book.chapter = chapterDescriptor.create(chapters[chapterIndex % chapters.length]);
       this.game.book.chapter.deck = arrayRandomize(this.game.book.chapter.deck);
@@ -582,13 +586,16 @@ export class GameManager {
     const targetFace = cardFace(targetCard, false);
     const paymentFace = targetCard.faces[0];
     const isFlipped = targetCard.visibleFaceIndex > 0;
+    const isInPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0;
     const isFullyUsed = calculateTargetCardEffectUsages(
       paymentFace,
         cardSlot,
         this.cardControllerManager
     ).cost.every(c => c.used);
+    // don't flip back visible choices
     return !isFullyUsed && isFlipped && targetFace.type !== CardFaceType.Choice
-        || isFullyUsed && !isFlipped;
+        // don't flip up treasure resources
+        || isFullyUsed && !isFlipped && (isInPlayerHand || targetFace.type !== CardFaceType.ResourceBack);
   }
 
   private async returnCardToDeck(
@@ -597,6 +604,7 @@ export class GameManager {
     drawDeck: DeckHolder,
     discardDeck?: DeckHolder,
     endOfDeck?: boolean,
+    forceAnimateReturnToDeck?: boolean,
   ) {
     const cardController = this.cardControllerManager.lookupController(card);
     const inPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0; 
@@ -608,7 +616,7 @@ export class GameManager {
             ? discardDeck
             : drawDeck;
 
-    const animateReturnToDeck = (inPlayerHand || card !== cardSlot.targetCard)
+    const animateReturnToDeck = (inPlayerHand || card !== cardSlot.targetCard || forceAnimateReturnToDeck)
         && targetDeck != null;
     if (animateReturnToDeck) {
       if (card.visibleFaceIndex > 0) {

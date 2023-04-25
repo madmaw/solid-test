@@ -267,7 +267,7 @@ export const cardFrontMushroomYouth: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [AgeDown],
+  cost: [AgeDown, AgeDown],
   benefit: [],
 };
 export const cardFrontMushroomMaturity: CardFrontChoice = {

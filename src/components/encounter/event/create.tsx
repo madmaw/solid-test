@@ -7,6 +7,7 @@ import { createMagicTreeEntity } from "components/entity/magic_tree/create";
 import { createMushroomEntity } from "components/entity/mushroom/create";
 import { createShrineEntity } from "components/entity/shrine/create";
 import { createTreasureEntity } from "components/entity/treasure/create";
+import { createShopEntity } from "components/entity/shop/create";
 
 function createEncounterEntity(encounter: EncounterEvent) {
   switch (encounter.eventType) {
@@ -20,6 +21,8 @@ function createEncounterEntity(encounter: EncounterEvent) {
       return createShrineEntity();
     case EventType.Treasure:
       return createTreasureEntity();
+    case EventType.Shop:
+      return createShopEntity();
     default:
       throw new UnreachableError(encounter.eventType);
   }

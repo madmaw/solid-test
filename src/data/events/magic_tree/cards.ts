@@ -55,7 +55,7 @@ export const cardFrontMagicTreeGoldenApple: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.MagicTree,
   symbol: undefined,
-  cost: [AgeDown],
+  cost: [AgeDown, AgeDown, AgeDown],
   benefit: [],
 };
 export const cardFrontMagicTreeGreenApple: CardFrontChoice = {

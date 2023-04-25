@@ -33,7 +33,7 @@ import { GainMaxHealth, Healing } from "data/effects";
 import { cardDefinitionDodge } from "data/items/dodge";
 
 const cardBackAttributes: CardBackChoice = {
-  name: 'attributes',
+  name: 'character select',
   description: undefined,
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
@@ -135,27 +135,27 @@ export const cards = [
 });
 
 const cardBackFinal: CardBackChoice = {
-  name: 'threshold guardian',
-  description: 'The rooster stands in your way. You know this bird, it will not back down.',
+  name: 'training',
+  description: 'A battered tree stump sits in the yard. It bears the scars of many mock battles.',
   type: CardFaceType.ChoiceBack,
-  background: CardBackgroundType.ForestPath,
-  foreground: CardForegroundType.Rooster,
+  background: CardBackgroundType.Crosshatched,
+  foreground: undefined,
   symbol: undefined,
   cost: [],
 };
 
 const cardFrontFinal: CardFrontChoice = {
-  name: 'rooster',
-  description: 'The rooster eyes you with pure malice.',
+  name: 'stump',
+  description: undefined,
   type: CardFaceType.Choice,
-  background: CardBackgroundType.ForestPath,
-  foreground: CardForegroundType.Rooster,
+  background: CardBackgroundType.Clear,
+  foreground: undefined,
   symbol: undefined,
   choice: {
     type: ChoiceType.NextChapter,
     encounter: {
       type: EncounterType.Battle,
-      monster: MonsterType.Rooster,
+      monster: MonsterType.Dummy,
     },
     targetChapterIndex: 1,
   },
@@ -163,10 +163,10 @@ const cardFrontFinal: CardFrontChoice = {
   benefit: [],
 };
 
+
 export const finalCard = cardDescriptor.freeze({
   faces: [cardBackFinal, cardFrontFinal],
   recycleTarget: RecycleTarget.Discard,
   recyclePosition: undefined,
   visibleFaceIndex: 0,
 });
-

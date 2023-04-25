@@ -10,6 +10,7 @@ import { cards as itemCards, ignoreCards } from 'data/items/cards';
 import { EncounterDefinition, EncounterState, EncounterType, EntityState, EventType, MonsterType } from "model/domain";
 import { defaultSnail } from "data/monsters/snail/initial";
 import { defaultRooster } from "data/monsters/rooster/initial";
+import { defaultDummy } from "data/monsters/dummy/initial";
 
 function hydrateMonster(monster: MonsterType): EntityState {
   switch (monster) {
@@ -21,6 +22,8 @@ function hydrateMonster(monster: MonsterType): EntityState {
       return defaultSnail;
     case MonsterType.Rooster:
       return defaultRooster;
+    case MonsterType.Dummy:
+      return defaultDummy;
     default:
       throw new UnreachableError(monster);
   }
@@ -71,6 +74,12 @@ export function hydrateEncounter(encounter: EncounterDefinition): EncounterState
             eventType: encounter.event,
             deck: arrayRandomize(itemCards).slice(0, 2)
                 .concat(ignoreCards[Math.floor(Math.random() * ignoreCards.length)]),
+          };
+        case EventType.Shop:
+          return {
+            type: EncounterType.Event,
+            eventType: encounter.event,
+            deck: arrayRandomize(itemCards).slice(0, 3),
           };
         default:
           throw new UnreachableError(encounter.event);

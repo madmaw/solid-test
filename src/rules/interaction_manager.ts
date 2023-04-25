@@ -1,7 +1,7 @@
 import { UnreachableError } from "base/unreachable_error";
 import { CardController } from "components/card/card_controller";
 import { ControllerManger } from "components/component_manager";
-import { Card, CardFaceType, CardSlot } from "model/domain";
+import { Card, CardFaceType, CardSlot, Game } from "model/domain";
 import { batch } from "solid-js";
 import { cardFace } from "./cards";
 import { GameManager } from "./game_manager";
@@ -44,6 +44,7 @@ export class InteractionManager {
   private lastAnimation: Promise<void> = Promise.resolve();
 
   constructor(
+      private game: Game,
       private gameManager: GameManager,
       private cardManager: ControllerManger<Card, CardController>,
       private cardSlotManager: ControllerManger<CardSlot, CardSlotController>,
@@ -94,6 +95,11 @@ export class InteractionManager {
       targetCard,
       !!this.cardManager.lookupController(targetCard)?.isPeeking()
     );
+
+    if (this.game.book.cardSlots.indexOf(targetCardSlot!) >= 0 ) {
+      return Interaction.Activate;
+    }
+    
     switch (targetFace.type) {
       case CardFaceType.Choice:
         return Interaction.Activate;

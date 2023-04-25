@@ -116,6 +116,7 @@ window.onload = function () {
       encounterEventManager,
   );
   const interactionManger = new InteractionManager(
+      game,
       gameManager,
       cardManager,
       cardSlotManager,

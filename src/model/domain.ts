@@ -77,6 +77,8 @@ export const enum CardForegroundType {
   MagicTree,
   Mushroom,
   Shrine,
+  Treasure,
+  Dummy,
 }
 
 export const enum CardFaceType {
@@ -106,6 +108,7 @@ export const enum MonsterType {
   Snail,
   Troll,
   Rooster,
+  Dummy,
 };
 
 export const enum EventType {
@@ -114,6 +117,7 @@ export const enum EventType {
   Mushroom,
   Shrine,
   Treasure,
+  Shop,
 }
 
 export type EncounterBattleDefinition = {
