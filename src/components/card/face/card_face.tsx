@@ -1,4 +1,4 @@
-import { CardBackgroundType, CardDefinition, CardFace, CardFaceType, CardForegroundType, SymbolType } from "model/domain";
+import { CardBackgroundType, CardFace, CardFaceType, CardForegroundType, SymbolType } from "model/domain";
 import styles from './card_face.module.scss';
 import { EffectUsage } from "rules/cards";
 import { EffectStripComponent } from "components/effect/effect_strip";
@@ -9,8 +9,8 @@ import { SymbolComponent } from "components/symbol/symbol";
 
 type CardFaceProps = {
   face: CardFace
-  definition: CardDefinition,
   warning: boolean,
+  choice: boolean,
 };
 
 export function CardFaceComponent(props: CardFaceProps & {
@@ -20,6 +20,7 @@ export function CardFaceComponent(props: CardFaceProps & {
   return (
       <div classList={{
         [styles.container]: true,
+        [styles.choice]: props.choice,
         // backgrounds
         [styles.background]: true,
         [styles.clear]: props.face.background === CardBackgroundType.Clear,
@@ -57,11 +58,11 @@ export function CardFaceComponent(props: CardFaceProps & {
           {props.face.type === CardFaceType.ChoiceBack
               || props.face.type === CardFaceType.ResourceBack
               ? <FlipArrow/>
-              : <EffectStripComponent effects={props.benefit} warnUnused={false}/>} 
+              : <EffectStripComponent usages={props.benefit} warnUnused={false}/>} 
           <CardFaceDescriptionComponent>
             <CardFaceNameComponent name={props.face.name}/>
           </CardFaceDescriptionComponent>
-          <EffectStripComponent effects={props.cost} warnUnused={props.warning}/>
+          <EffectStripComponent usages={props.cost} warnUnused={props.warning}/>
         </div>
       </div>
   );

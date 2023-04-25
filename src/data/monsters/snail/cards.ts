@@ -35,7 +35,7 @@ export const cardFrontSnailBite: CardFrontChoice = {
 };
 export const cardFrontSnailHide: CardFrontChoice = {
   name: 'hide',
-  description: 'The snail hides within its shell.',
+  description: 'The snail retreats within its shell.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -62,7 +62,7 @@ export const cards = [
   });
 }).map(definition => {
   return cardDescriptor.freeze({
-    definition,
+    ...definition,
     visibleFaceIndex: 0,
   });
 })

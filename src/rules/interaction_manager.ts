@@ -75,12 +75,12 @@ export class InteractionManager {
   ): Interaction {
     const dragged = this.ui.dragged;
     const targetCard = targetCardSlot?.targetCard;
-    if (dragged != null) {
+    if (dragged != null && targetCardSlot != null) {
       const [_, draggedCardSlot] = dragged;
       if (targetCardSlot == draggedCardSlot) {
         return Interaction.Dragging;
       }
-      if (targetCard != null) {
+      if (targetCard != null && targetCardSlot.playedCards.length < 3) {
         // can drop 
         return Interaction.Drop;
       }

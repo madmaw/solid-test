@@ -11,11 +11,16 @@ const resourceColors: Record<SymbolType, string> = {
   [SymbolType.Magic]: styles.fill,
   [SymbolType.Damage]: styles.fillDamage,
   [SymbolType.Age]: styles.fill,
-  [SymbolType.Fire]: styles.fill,
+  [SymbolType.Perception]: styles.fill,
   [SymbolType.Draw]: styles.fill,
   [SymbolType.Poison]: styles.fill,
   [SymbolType.Healing]: styles.fill,
-
+  [SymbolType.GainCards]: styles.fill,
+  [SymbolType.LoseCards]: styles.fill,
+  [SymbolType.GainMaxHealth]: styles.fill,
+  [SymbolType.LoseMaxHealth]: styles.fill,
+  [SymbolType.DoubleCard]: styles.fill,
+  [SymbolType.Duplicate]: styles.fill,
 };
 
 export function EffectComponent(props: {

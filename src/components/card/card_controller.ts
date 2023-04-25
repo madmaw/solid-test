@@ -49,7 +49,7 @@ export class CardController {
 
   async flip(): Promise<void> {
     await this.internalFlip(() => {
-      this.card.visibleFaceIndex = (this.card.visibleFaceIndex + 1) % this.card.definition.faces.length;
+      this.card.visibleFaceIndex = (this.card.visibleFaceIndex + 1) % this.card.faces.length;
     })
   }
 

@@ -26,7 +26,7 @@ function DeathPageRightComponent(props: {
 }
 
 const sideComponents: { [K in PageSide]: Component<PageProps<BookSpreadDeath>>} = {
-  [PageSide.Left]: function (props: PageProps<BookSpreadDeath>) {
+  [PageSide.Left]: function () {
     return <DeathPageLeftComponent/>
   },
   [PageSide.Right]: function (props: PageProps<BookSpreadDeath>) {

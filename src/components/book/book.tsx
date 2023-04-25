@@ -1,4 +1,4 @@
-import { Component, For, JSX, JSXElement, ParentProps, createMemo, createSignal } from 'solid-js';
+import { Component, JSX, JSXElement, ParentProps, createMemo, createSignal } from 'solid-js';
 import styles from './book.module.scss'
 import { AnimationManager } from 'ui/animation/animation_manager';
 import { Animations } from './book_controller';

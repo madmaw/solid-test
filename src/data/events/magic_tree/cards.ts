@@ -2,6 +2,7 @@ import {
   AgeDown,
   Finesse,
   Force, 
+  GainMaxHealth, 
   Healing,
 } from "data/effects";
 import {
@@ -46,7 +47,7 @@ const cardBackMagicTreeGatherFruit: CardBackChoice = {
 
 export const cardFrontMagicTreeGoldenApple: CardFrontChoice = {
   name: 'golden apple',
-  description: 'The flavour is strange, yet familiar.',
+  description: 'The flavour is strange, yet somehow familiar.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -58,7 +59,7 @@ export const cardFrontMagicTreeGoldenApple: CardFrontChoice = {
   benefit: [],
 };
 export const cardFrontMagicTreeGreenApple: CardFrontChoice = {
-  name: 'green apple',
+  name: 'granny smith apple',
   description: 'Surprisingly disappointing.',
   type: CardFaceType.Choice,
   choice: {
@@ -67,11 +68,11 @@ export const cardFrontMagicTreeGreenApple: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.MagicTree,
   symbol: undefined,
-  cost: [],
+  cost: [Healing],
   benefit: [],
 };
 export const cardFrontMagicTreeRedApple: CardFrontChoice = {
-  name: 'red apple',
+  name: 'red delicious apple',
   description: 'You feel satisfied.',
   type: CardFaceType.Choice,
   choice: {
@@ -80,7 +81,7 @@ export const cardFrontMagicTreeRedApple: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Fountain,
   symbol: undefined,
-  cost: [Healing],
+  cost: [GainMaxHealth, Healing],
   benefit: [],
 };
 
@@ -101,7 +102,7 @@ export const cards = [
   });
 }).map(definition => {
   return cardDescriptor.freeze({
-    definition,
+    ...definition,
     visibleFaceIndex: 0,
   });
 });

@@ -2,11 +2,14 @@ import {
   AgeDown,
   AgeUp,
   Finesse,
-  Healing,
+  GainMaxHealth,
   Magic,
   Mind,
+  Perception,
   PoisonDown,
 } from "data/effects";
+import { cardDefinitionFinesseLazy } from "data/player/cards/finesse";
+import { cardDefinitionForceLazy } from "data/player/cards/force";
 import {
   CardBackChoice,
   CardBackgroundType,
@@ -15,7 +18,9 @@ import {
   CardForegroundType,
   CardFrontChoice,
   ChoiceType,
+  EffectDirection,
   RecycleTarget,
+  SymbolType,
   cardDescriptor,
 } from "model/domain";
 
@@ -79,7 +84,13 @@ export const cardFrontMushroomForce: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [],
+  cost: [{
+    symbol: SymbolType.GainCards,
+    direction: EffectDirection.Omni,
+    cards: [
+      cardDefinitionForceLazy,
+    ]
+  }],
   benefit: [],
 };
 export const cardFrontMushroomPoison: CardFrontChoice = {
@@ -105,12 +116,18 @@ export const cardFrontMushroomFinesse: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [],
+  cost: [{
+    symbol: SymbolType.GainCards,
+    direction: EffectDirection.Omni,
+    cards: [
+      cardDefinitionFinesseLazy,
+    ],
+  }],
   benefit: [],
 };
 export const cardFrontMushroomMind: CardFrontChoice = {
   name: 'smartshroom',
-  description: 'You feel smart.',
+  description: 'The mushroom opens your third eye.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -118,12 +135,36 @@ export const cardFrontMushroomMind: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [],
+  cost: [{
+    symbol: SymbolType.GainCards,
+    direction: EffectDirection.Omni,
+    cards: [{
+      faces: [{
+        name: 'third eye',
+        description: undefined,
+        type: CardFaceType.ResourceBack,
+        background: CardBackgroundType.Crosshatched,
+        foreground: CardForegroundType.Mushroom,
+        symbol: SymbolType.Perception,
+        cost: [],
+      }, {
+        name: 'third eye',
+        description: 'You can see everything.',
+        type: CardFaceType.Resource,
+        background: CardBackgroundType.Clear,
+        foreground: CardForegroundType.Mushroom,
+        symbol: SymbolType.Perception,
+        cost: [],
+        benefit:[Perception]
+      }],
+      recycleTarget: RecycleTarget.DrawDeckTop,
+    }]
+  }],
   benefit: [],
 };
 export const cardFrontMushroomMagic: CardFrontChoice = {
   name: 'magic mushroom',
-  description: 'You feel magic.',
+  description: 'You feel absolutely magical.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -160,6 +201,19 @@ export const cardFrontMushroomMaturity: CardFrontChoice = {
   cost: [AgeUp],
   benefit: [],
 };
+export const cardFrontMushroomHealing: CardFrontChoice = {
+  name: 'health mushroom',
+  description: 'You feel alive.',
+  type: CardFaceType.Choice,
+  choice: {
+    type: ChoiceType.NextTurn,
+  },
+  background: CardBackgroundType.Clear,
+  foreground: CardForegroundType.Mushroom,
+  symbol: undefined,
+  cost: [GainMaxHealth],
+  benefit: [],
+};
 export const cardFrontMushroomIgnore: CardFrontChoice = {
   name: 'ignore',
   description: 'Best left alone.',
@@ -188,6 +242,7 @@ export const cards = [
     cardFrontMushroomMind,
     cardFrontMushroomYouth,
     cardFrontMushroomMaturity,
+    cardFrontMushroomHealing,
   ].map<CardDefinition>(cardFace => {
     return {
       faces: [cardBack, cardFace],
@@ -196,15 +251,13 @@ export const cards = [
   });
 }).map(definition => {
   return cardDescriptor.freeze({
-    definition,
+    ...definition,
     visibleFaceIndex: 0,
   });
 });
 
 export const cardIgnore = cardDescriptor.freeze({
-  definition: {
-    faces: [cardBackMushroomIgnore, cardFrontMushroomIgnore],
-    recycleTarget: RecycleTarget.DiscardDeckTop,
-  },
+  faces: [cardBackMushroomIgnore, cardFrontMushroomIgnore],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
   visibleFaceIndex: 0,
 });

@@ -1,4 +1,4 @@
-import { PageController, PageSide } from "../page_controller";
+import { PageController } from "../page_controller";
 import { SceneryController } from "components/scenery/scenery_controller";
 import { delay } from "base/delay";
 import { maxBy, minBy } from 'base/max_by';

@@ -39,17 +39,23 @@ export function SymbolDamageComponent(props: SymbolProps) {
   )
 }
 
-const symbolComponents: Record<SymbolType, Component<SymbolProps>> = {
+const symbolComponents: Record<SymbolType, Component<SymbolProps> | undefined> = {
   [SymbolType.Force]: SymbolForceComponent,
   [SymbolType.Finesse]: SymbolFinesseComponent,
   [SymbolType.Mind]: SymbolMindComponent,
   [SymbolType.Magic]: () => <>{'R'}</>,
   [SymbolType.Damage]: SymbolDamageComponent,
   [SymbolType.Age]: () => <>{'⌛'}</>,
-  [SymbolType.Fire]: () => <>{'M'}</>,
+  [SymbolType.Perception]: () => <>{'👁️'}</>,
   [SymbolType.Draw]: () => <>{'G'}</>,
   [SymbolType.Poison]: () => <>{'☠'}</>,
-  [SymbolType.Healing]: () => <>{'♥'}</>
+  [SymbolType.Healing]: () => <>{'♥'}</>,
+  [SymbolType.GainCards]: undefined,
+  [SymbolType.LoseCards]: undefined,
+  [SymbolType.GainMaxHealth]: () => <>{'+♡'}</>,
+  [SymbolType.LoseMaxHealth]: () => <>{'-♡'}</>,
+  [SymbolType.DoubleCard]: undefined,
+  [SymbolType.Duplicate]: undefined,
 };
 
 

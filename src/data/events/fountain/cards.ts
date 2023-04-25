@@ -35,15 +35,6 @@ const cardBackFountainDrink2: CardBackChoice = {
   symbol: undefined,
   cost: [Magic],
 };
-const cardBackFountainIgnore: CardBackChoice = {
-  name: 'ignore',
-  description: undefined,
-  type: CardFaceType.ChoiceBack,
-  background: CardBackgroundType.Crosshatched,
-  foreground: CardForegroundType.Fountain,
-  symbol: undefined,
-  cost: [],
-};
 
 export const cardFrontFountainWater: CardFrontChoice = {
   name: 'water',
@@ -97,19 +88,6 @@ export const cardFrontFountainYouth: CardFrontChoice = {
   cost: [AgeDown],
   benefit: [],
 };
-export const cardFrontFountainIgnore: CardFrontChoice = {
-  name: 'ignore',
-  description: 'Best left alone.',
-  type: CardFaceType.Choice,
-  choice: {
-    type: ChoiceType.NextTurn,
-  },
-  background: CardBackgroundType.Clear,
-  foreground: CardForegroundType.Fountain,
-  symbol: undefined,
-  cost: [],
-  benefit: [],
-};
 
 export const cards = [
   cardBackFountainDrink, 
@@ -128,15 +106,37 @@ export const cards = [
   });
 }).map(definition => {
   return cardDescriptor.freeze({
-    definition,
+    faces: definition.faces,
+    recycleTarget: definition.recycleTarget,
     visibleFaceIndex: 0,
   });
 });
 
-export const cardIgnore = cardDescriptor.freeze({
-  definition: {
-    faces: [cardBackFountainIgnore, cardFrontFountainIgnore],
-    recycleTarget: RecycleTarget.DiscardDeckTop,
+const cardBackFountainIgnore: CardBackChoice = {
+  name: 'ignore',
+  description: undefined,
+  type: CardFaceType.ChoiceBack,
+  background: CardBackgroundType.Crosshatched,
+  foreground: CardForegroundType.Fountain,
+  symbol: undefined,
+  cost: [],
+};
+export const cardFrontFountainIgnore: CardFrontChoice = {
+  name: 'ignore',
+  description: 'Best left alone.',
+  type: CardFaceType.Choice,
+  choice: {
+    type: ChoiceType.NextTurn,
   },
+  background: CardBackgroundType.Clear,
+  foreground: CardForegroundType.Fountain,
+  symbol: undefined,
+  cost: [],
+  benefit: [],
+};
+
+export const cardIgnore = cardDescriptor.freeze({
+  faces: [cardBackFountainIgnore, cardFrontFountainIgnore],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
   visibleFaceIndex: 0,
 });

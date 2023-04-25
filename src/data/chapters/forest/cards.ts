@@ -1,4 +1,5 @@
-import { DamageDown, DamageUp, FireUp, Force } from "data/effects";
+import { Perception, Force } from "data/effects";
+import { cardFrontShrine } from "data/events/shrine/cards";
 import {
   CardBackgroundType,
   CardFaceType,
@@ -22,7 +23,7 @@ const cardBackDarkenedPath: CardBackChoice = {
   background: CardBackgroundType.DarkenedForestPath,
   foreground: undefined,
   symbol: undefined,
-  cost: [FireUp],
+  cost: [Perception],
 };
 const cardBackOvergrownPath: CardBackChoice = {
   name: 'overgrown path',
@@ -122,6 +123,8 @@ const cardFrontMushroom: CardFrontChoice = {
   benefit: [],
 };
 
+
+
 export const cards = [
   cardBackOvergrownPath,
   cardBackDarkenedPath,
@@ -143,8 +146,15 @@ export const cards = [
 }, {
   faces: [cardBackOvergrownPath, cardFrontMushroom],
   recycleTarget: RecycleTarget.DiscardDeckTop,
+}, {
+  faces: [cardBackOvergrownPath, cardFrontShrine],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
+}, {
+  faces: [cardBackDarkenedPath, cardFrontShrine],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
 }]).map<CardState>(definition => ({
-  definition,
+  faces: definition.faces,
+  recycleTarget: definition.recycleTarget,
   visibleFaceIndex: 0,
 }));
 
@@ -171,17 +181,15 @@ const cardFrontFinal: CardFrontChoice = {
       type: EncounterType.Battle,
       monster: MonsterType.Troll,
     },
-    targetChapterIndex: 1,
+    targetChapterIndex: 2,
   },
   cost: [],
   benefit: [],
 };
 
 export const finalCard = cardDescriptor.freeze({
-  definition: {
-    faces: [cardBackFinal, cardFrontFinal],
-    recycleTarget: RecycleTarget.DiscardDeckTop,
-  },
+  faces: [cardBackFinal, cardFrontFinal],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
   visibleFaceIndex: 0,
 });
 

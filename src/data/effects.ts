@@ -20,6 +20,11 @@ export const Magic: Effect = {
   symbol: SymbolType.Magic,
 };
 
+export const Perception: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.Perception,
+};
+
 export const DamageUp: Effect = {
   direction: EffectDirection.Up,
   symbol: SymbolType.Damage,
@@ -28,16 +33,6 @@ export const DamageUp: Effect = {
 export const DamageDown: Effect = {
   direction: EffectDirection.Down,
   symbol: SymbolType.Damage,
-};
-
-export const FireUp: Effect = {
-  direction: EffectDirection.Up,
-  symbol: SymbolType.Fire,
-};
-
-export const FireDown: Effect = {
-  direction: EffectDirection.Down,
-  symbol: SymbolType.Fire,
 };
 
 export const AgeUp: Effect = {
@@ -63,4 +58,24 @@ export const PoisonUp: Effect = {
 export const PoisonDown: Effect = {
   direction: EffectDirection.Down,
   symbol: SymbolType.Poison,
+};
+
+export const GainMaxHealth: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.GainMaxHealth,
+};
+
+export const LoseMaxHealth: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.LoseMaxHealth,
+};
+
+export const LoseCards: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.LoseCards,
+};
+
+export const DoubleCard: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.DoubleCard,
 };

@@ -13,8 +13,8 @@ export const enum SymbolType {
   Mind,
   // magic resource (fey?)
   Magic,
-  // fire damage/light
-  Fire,
+  // light/perception
+  Perception,
   // take pysical damage/heal
   Damage,
   // get older/younger
@@ -25,6 +25,18 @@ export const enum SymbolType {
   Healing,
   // poison
   Poison,
+  // gain a card
+  GainCards,
+  // lose played card(s)
+  LoseCards,
+  // gain max health
+  GainMaxHealth,
+  // lose max health
+  LoseMaxHealth,
+  // double card effects
+  DoubleCard,
+  // duplicate cards
+  Duplicate,
 }
 
 export const enum EffectDirection {
@@ -33,10 +45,18 @@ export const enum EffectDirection {
   Omni = 3,
 }
 
-export type Effect = {
-  readonly symbol: SymbolType,
+export type SimpleEffect = {
+  readonly symbol: Exclude<SymbolType, SymbolType.GainCards>,
   readonly direction: EffectDirection,
 };
+
+export type GainCardEffect = {
+  readonly symbol: SymbolType.GainCards,
+  readonly direction: EffectDirection,
+  readonly cards: readonly CardDefinition[];
+};
+
+export type Effect = SimpleEffect | GainCardEffect;
 
 export const enum CardBackgroundType {
   Crosshatched = 1,
@@ -56,6 +76,7 @@ export const enum CardForegroundType {
   Fountain,
   MagicTree,
   Mushroom,
+  Shrine,
 }
 
 export const enum CardFaceType {
@@ -91,6 +112,7 @@ export const enum EventType {
   Fountain = 1,
   MagicTree,
   Mushroom,
+  Shrine,
 }
 
 export type EncounterBattleDefinition = {
@@ -154,20 +176,21 @@ export type CardFace =
     | CardBackResource;
 
 export const enum RecycleTarget {
-  DrawDeckTop = 1,
-  DrawDeckBottom,
+  Destroy = 1,
+  DrawDeckTop,
   DrawDeckRandom,
+  DrawDeckBottom,
   DiscardDeckTop,
 }
 
 export type CardDefinition = {
-  // TODO: not required for room/event cards (maybe?)
   readonly recycleTarget: RecycleTarget,
   readonly faces: readonly CardFace[],
 };
 
 export const cardDescriptor = activeRecordDescriptor({
-  definition: new LiteralTypeDescriptor<CardDefinition>(),
+  faces: new LiteralTypeDescriptor<readonly CardFace[]>(),
+  recycleTarget: new LiteralTypeDescriptor<RecycleTarget>(),
   visibleFaceIndex: numberDescriptor,
 });
 

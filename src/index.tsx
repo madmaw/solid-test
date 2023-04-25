@@ -25,13 +25,16 @@ import { DelayWordSplitter } from "ui/speaker/delay_word_splitter";
 import { PoliteSpeaker } from "ui/speaker/polite_speaker";
 
 window.onload = function () {
-
+  const backgroundMusic = document.getElementById('bgm') as HTMLAudioElement | null;
+  backgroundMusic?.pause();
+  
   const wordSplitter = new SpeechSynthesisWordSplitter(
       window.speechSynthesis,
       new DelayWordSplitter(),
   );
   const renderingSpeaker = new RenderingSpeaker(wordSplitter);
   const speaker = new PoliteSpeaker(renderingSpeaker);
+  
 
   const app = document.getElementById('app')!;
   const game = initialGame;
@@ -46,11 +49,18 @@ window.onload = function () {
           unlockedChapters: 0,
         }), true);
       case NavigationTargetType.Chapter:
+        if (backgroundMusic != null && backgroundMusic.paused) {
+          backgroundMusic.volume = .8;
+          backgroundMusic.play();
+        }
         await tableController.setView(View.Tilted);
         gameManager.maybeCreatePlayer();
         gameManager.createChapter(to.chapterIndex);
         return gameManager.nextPage(undefined, undefined);
       case NavigationTargetType.Death:
+        if (backgroundMusic != null && backgroundMusic.paused) {
+          backgroundMusic.pause();
+        }
         await bookController.showSpread(bookSpreadDeathDescriptor.create({
           type: BookSpreadType.Death,
         }));

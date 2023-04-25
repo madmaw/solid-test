@@ -1,4 +1,4 @@
-import { DamageDown, DamageUp, Finesse, Mind } from "data/effects";
+import { DamageDown, DamageUp, Finesse, Force, Mind } from "data/effects";
 import {
   CardBackChoice,
   CardBackgroundType,
@@ -23,7 +23,7 @@ const cardBackRoosterTerritorial: CardBackChoice = {
 };
 const cardBackRoosterIntimidation: CardBackChoice = {
   name: 'intimidation',
-  description: 'You see through the birds bluff.',
+  description: 'You see through the birds bluster.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Rooster,
@@ -59,7 +59,7 @@ export const cardFrontRoosterCrow: CardFrontChoice = {
 };
 export const cardFrontRoosterEvade: CardFrontChoice = {
   name: 'evade',
-  description: 'In a cloud of feathers, the rooster dodges.',
+  description: 'In a cloud of feathers, the rooster forces you to give chase.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -67,7 +67,7 @@ export const cardFrontRoosterEvade: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Rooster,
   symbol: SymbolType.Finesse,
-  cost: [DamageUp],
+  cost: [DamageUp, Force],
   benefit: [],
 };
 
@@ -88,7 +88,7 @@ export const cards = [
   });
 }).map(definition => {
   return cardDescriptor.freeze({
-    definition,
+    ...definition,
     visibleFaceIndex: 0,
   });
 })

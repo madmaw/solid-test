@@ -3,9 +3,10 @@ import { allCardSlots } from "./games";
 import { UnreachableError } from "base/unreachable_error";
 import { ControllerManger } from "components/component_manager";
 import { CardController } from "components/card/card_controller";
+import { arrayRandomize } from "base/arrays";
 
 export function cardFace(card: Card, peeking: boolean) {
-  const faces = card.definition.faces; 
+  const faces = card.faces; 
   return faces[(card.visibleFaceIndex + (peeking ? 1 : 0))%faces.length];
 }
 
@@ -49,15 +50,19 @@ export function calculateCardEffects(face: CardFace): {
   }
 }
 
-export function calculateCardEffectUsages(game: Game, card: Card, cardControllerManger: ControllerManger<Card, CardController> | undefined): EffectUsages {
-
+export function cardSlotForCard(game: Game, card: Card) {
   const cardSlots = allCardSlots(game);
-  const face = cardFace(card, !!cardControllerManger?.lookupController(card)?.isPeeking());
-  // find the slot
-  const cardSlot = cardSlots.find(cardSlot => {
+  return cardSlots.find(cardSlot => {
     return cardSlot.targetCard === card
         || cardSlot.playedCards.some(c => c === card);
   });
+}
+
+export function calculateCardEffectUsages(game: Game, card: Card, cardControllerManger: ControllerManger<Card, CardController> | undefined): EffectUsages {
+
+  const face = cardFace(card, !!cardControllerManger?.lookupController(card)?.isPeeking());
+  // find the slot
+  const cardSlot = cardSlotForCard(game, card);
   const targetCard = cardSlot?.targetCard;
 
   // if the card isn't in a slot return the values are unused
@@ -162,4 +167,12 @@ function calculatePlayedCardEffectTotals(cardSlot: CardSlot, cardControllerMange
     }
     return acc;
   }, new Map<Effect, number>());
+}
+
+export function sortCardsByRecycling(cards: readonly Card[]): readonly Card[] {
+  const randomizedCards = arrayRandomize(cards);
+  return [...randomizedCards].sort((c1, c2) => {
+    // reverse, decks are drawn from the back
+    return c2.recycleTarget - c1.recycleTarget;
+  });
 }

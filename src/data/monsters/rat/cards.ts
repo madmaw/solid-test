@@ -86,7 +86,7 @@ export const cards = [
   });
 }).map(definition => {
   return cardDescriptor.freeze({
-    definition,
+    ...definition,
     visibleFaceIndex: 0,
   });
 })

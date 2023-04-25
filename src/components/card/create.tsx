@@ -36,10 +36,10 @@ export function createCardManager(game: Game) {
             offset={cardUI.offset}>
           <CardFaceComponent
               face={cardFace(card, cardUI.peeking)}
-              definition={card.definition}
               cost={usage().cost}
               benefit={usage().benefit}
               warning={cardUI.warning}
+              choice={game.book.cardSlots.some(cardSlot => cardSlot.targetCard === card)}
           />
         </CardComponent>
       );

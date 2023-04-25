@@ -16,6 +16,7 @@ import {
   RecycleTarget,
   SymbolType,
   bookSpreadRoomDescriptor,
+  cardDescriptor,
   chapterDescriptor,
   entityDescriptor,
 } from "model/domain";
@@ -24,6 +25,8 @@ import {
   calculateCardEffectUsages,
   calculateTargetCardEffectUsages,
   cardFace,
+  cardSlotForCard,
+  sortCardsByRecycling,
 } from "./cards";
 import {
   DeckHolder,
@@ -155,6 +158,7 @@ export class GameManager {
       direction: EffectDirection.Up | EffectDirection.Down,
       to: Entity,
   ) {
+    const cardSlot = cardSlotForCard(this.game, card);
     const playerCharacter = this.game.playerCharacter;
     if (playerCharacter == null) {
       return;
@@ -180,6 +184,23 @@ export class GameManager {
             // direction can be used as a bitwise flag
             if (usage.effect.direction & direction) {
               switch (usage.effect.symbol) {
+                case SymbolType.GainCards:
+                  const newCards = sortCardsByRecycling(usage.effect.cards.map(definition => {
+                    return cardDescriptor.create({
+                      ...definition,
+                      visibleFaceIndex: 0,
+                    })
+                  }));
+                  to.deck = [...newCards, ...to.deck];
+                  break;
+                case SymbolType.LoseCards:
+                  // set all played cards in the slot to destroy
+                  if (cardSlot != null) {
+                    cardSlot.playedCards.forEach(playedCard =>
+                      playedCard.recycleTarget = RecycleTarget.Destroy
+                    );
+                  }
+                  break;
                 case SymbolType.Damage:
                 case SymbolType.Poison:
                   // give previous time to move back
@@ -207,6 +228,8 @@ export class GameManager {
                 case SymbolType.Finesse:
                 case SymbolType.Force:
                 case SymbolType.Mind:
+                case SymbolType.Magic:
+                case SymbolType.Perception:
                   // attack the cards
                   if (to !== playerCharacter) {
                     return;
@@ -216,7 +239,7 @@ export class GameManager {
                   const cardAndCardSlot = cardSlots.reduce<[Card, CardSlot] | undefined>(
                     (acc, cardSlot) => {
                       const targetCard = cardSlot.targetCard;
-                      if (targetCard != null) {
+                      if (targetCard != null && targetCard !== card) {
                         const playedCard = cardSlot.playedCards
                             .find(card => cardFace(card, false).symbol === usage.effect.symbol);
                         const card = playedCard
@@ -250,6 +273,57 @@ export class GameManager {
                     );
                   }
                   break;
+                case SymbolType.Age:
+                  // TODO
+                  break;
+                case SymbolType.GainMaxHealth:
+                  await cardController?.moveTo(
+                      '0',
+                      direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                      '1vmin',
+                      Easing.Gentle,
+                  );
+                  to.maxHealth++;                  
+                  break;
+                case SymbolType.LoseMaxHealth:
+                  await cardController?.moveTo(
+                      '0',
+                      direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                      '1vmin',
+                      Easing.Violent,
+                  );
+                  to.maxHealth--;
+                  if (to.health > to.maxHealth) {
+                    to.health = to.maxHealth;
+                  }
+                  break;
+                case SymbolType.Draw:
+                  // TODO
+                  break;
+                case SymbolType.DoubleCard:
+                  if (cardSlot != null && cardSlot.playedCards.length > 0) {
+                    const upgradeCard = cardSlot.playedCards[Math.floor(Math.random() * cardSlot.playedCards.length)];
+                    upgradeCard.faces = upgradeCard.faces.map(face => ({
+                      ...face,
+                      cost: face.cost.flatMap(c => [c, c]),
+                      benefit: face.type === CardFaceType.Resource
+                          ? face.benefit.flatMap(b => [b, b])
+                          : []
+                    }));
+                  }
+                  break;
+                case SymbolType.Duplicate:
+                  if (cardSlot != null) {
+                    to.deck = [
+                      ...cardSlot.playedCards.map(playedCard => cardDescriptor.create(
+                        cardDescriptor.snapshot(playedCard)
+                      )),
+                      ...to.deck,
+                    ];
+                  }
+                  break;
+                default:
+                  throw new UnreachableError(usage.effect);
               }
             }
           }
@@ -492,7 +566,7 @@ export class GameManager {
       return false;
     }
     const targetFace = cardFace(targetCard, false);
-    const paymentFace = targetCard.definition.faces[0];
+    const paymentFace = targetCard.faces[0];
     const isFlipped = targetCard.visibleFaceIndex > 0;
     const isFullyUsed = calculateTargetCardEffectUsages(
       paymentFace,
@@ -512,12 +586,13 @@ export class GameManager {
     const cardController = this.cardControllerManager.lookupController(card);
     const inPlayerHand = this.game.playerHand.indexOf(cardSlot) >= 0; 
     cardController?.setElevated(false);
-    const recycleTarget = card.definition.recycleTarget;
+    const recycleTarget = card.recycleTarget;
     const targetDeck = recycleTarget === RecycleTarget.DiscardDeckTop
         ? discardDeck
         : drawDeck;
 
-    const animateReturnToDeck = inPlayerHand || card !== cardSlot.targetCard;
+    const animateReturnToDeck = (inPlayerHand || card !== cardSlot.targetCard)
+        && card.recycleTarget !== RecycleTarget.Destroy;
     if (animateReturnToDeck) {
       if (card.visibleFaceIndex > 0) {
         await cardController?.flip();

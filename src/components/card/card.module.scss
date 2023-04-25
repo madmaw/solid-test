@@ -12,10 +12,6 @@ $transitionAnimationViolentDuration: 200ms;
   transition: transform $flipAnimationDuration ease-in-out;
 }
 
-.card * {
-  transform-style: flat;
-}
-
 .card.elevated {
   transform: translateZ(calc(constants.$cardWidth/2));
 }
@@ -67,4 +63,8 @@ $transitionAnimationViolentDuration: 200ms;
 
 .scale.flippingDownFromVertical {
   transform: scaleX(-1);
+}
+
+.scale * {
+  transform-style: flat;
 }

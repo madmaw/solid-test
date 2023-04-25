@@ -27,6 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@parcel/transformer-sass": "^2.8.3",
+    "@parcel/validator-typescript": "^2.8.3",
     "babel-preset-solid": "^1.7.2",
     "concurrently": "^8.0.1",
     "del-cli": "^5.0.0",
@@ -36,6 +37,7 @@
     "postcss": "^8.4.21",
     "postcss-modules": "^4.3.1",
     "typed-scss-modules": "^7.1.0",
+    "typescript": "^5.0.4",
     "values": "^0.2.0"
   },
   "dependencies": {
@@ -49,6 +51,5 @@
     "model": "./src/model",
     "rules": "./src/rules",
     "ui": "./src/ui"
-
   }
 }

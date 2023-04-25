@@ -58,13 +58,4 @@ export class AnimationManager<T> {
       }
     };
   }
-
-  createCutoutPoppedUpOrDownCallback(
-    poppedUpValue: T,
-    poppedDownValue: T = poppedUpValue,
-  ) {
-    return (poppedUp: boolean) => {
-      this.maybeCompleteAnimation(poppedUp ? poppedUpValue : poppedDownValue);
-    };
-  }
 }

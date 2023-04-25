@@ -1,3 +1,8 @@
+import { cardDefinitionHeadbutt } from "data/player/cards/headbutt";
+import { cardDefinitionForceEager, cardDefinitionForceLazy2x, cardDefinitionForceRandom } from "data/player/cards/force";
+import { cardDefinitionBlock, cardDefinitionDeflect } from "data/player/cards/shield";
+import { cardDefinitionClumsyThrust, cardDefinitionQuckThrust, cardDefinitionRiposte, cardDefinitionSlash } from "data/player/cards/sword";
+import { cardDefinitionTorch } from "data/player/cards/torch";
 import {
   CardBackChoice,
   CardBackgroundType,
@@ -6,11 +11,14 @@ import {
   CardForegroundType,
   CardFrontChoice,
   ChoiceType,
+  EffectDirection,
   EncounterType,
   MonsterType,
   RecycleTarget,
+  SymbolType,
   cardDescriptor,
 } from "model/domain";
+import { cardDefinitionFinesseMartialTraining } from "data/player/cards/finesse";
 
 const cardBackAttributes: CardBackChoice = {
   name: 'attributes',
@@ -22,9 +30,9 @@ const cardBackAttributes: CardBackChoice = {
   cost: [],
 };
 
-export const cardFrontAttributesForce: CardFrontChoice = {
-  name: 'force',
-  description: 'You choose the path of strength.',
+export const cardFrontAttributesWarrior: CardFrontChoice = {
+  name: 'sword and shield',
+  description: 'You choose the path of the warrior.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextPage,
@@ -33,11 +41,29 @@ export const cardFrontAttributesForce: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: undefined,
   symbol: undefined,
-  cost: [],
+  cost: [{
+    symbol: SymbolType.GainCards,
+    direction: EffectDirection.Down,
+    cards: [
+      cardDefinitionFinesseMartialTraining,
+      cardDefinitionForceEager,
+      cardDefinitionForceEager,
+      cardDefinitionForceRandom,
+      cardDefinitionForceLazy2x,
+      cardDefinitionHeadbutt,
+      cardDefinitionSlash,
+      cardDefinitionRiposte,
+      cardDefinitionQuckThrust,
+      cardDefinitionClumsyThrust,
+      cardDefinitionTorch,
+      cardDefinitionBlock,
+      cardDefinitionDeflect,
+    ],
+  }],
   benefit: [],
 };
 export const cardFrontAttributesFinesse: CardFrontChoice = {
-  name: 'finesse',
+  name: 'cloak and dagger',
   description: 'You choose the path of finesse.',
   type: CardFaceType.Choice,
   choice: {
@@ -51,8 +77,8 @@ export const cardFrontAttributesFinesse: CardFrontChoice = {
   benefit: [],
 };
 export const cardFrontAttributesMind: CardFrontChoice = {
-  name: 'mind',
-  description: 'You choose the path of intelligence.',
+  name: 'book and staff',
+  description: 'You choose the path of magic.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextPage,
@@ -69,7 +95,7 @@ export const cards = [
   cardBackAttributes, 
 ].flatMap(cardBack => {
   return [
-    cardFrontAttributesForce,
+    cardFrontAttributesWarrior,
     cardFrontAttributesFinesse,
     cardFrontAttributesMind,
   ].map<CardDefinition>(cardFace => {
@@ -80,14 +106,15 @@ export const cards = [
   });
 }).map(definition => {
   return cardDescriptor.freeze({
-    definition,
+    faces: definition.faces,
+    recycleTarget: definition.recycleTarget,
     visibleFaceIndex: 0,
   });
 });
 
 const cardBackFinal: CardBackChoice = {
   name: 'threshold guardian',
-  description: 'You\'ve always hated this bird.',
+  description: 'You\'ve always hated this bird. The feeling is reciprocated.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.ForestPath,
   foreground: undefined,
@@ -97,7 +124,7 @@ const cardBackFinal: CardBackChoice = {
 
 const cardFrontFinal: CardFrontChoice = {
   name: 'rooster',
-  description: 'The rooster eyes you hatefully.',
+  description: 'The rooster eyes you with pure malice.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
   foreground: undefined,
@@ -115,10 +142,8 @@ const cardFrontFinal: CardFrontChoice = {
 };
 
 export const finalCard = cardDescriptor.freeze({
-  definition: {
-    faces: [cardBackFinal, cardFrontFinal],
-    recycleTarget: RecycleTarget.DiscardDeckTop,
-  },
+  faces: [cardBackFinal, cardFrontFinal],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
   visibleFaceIndex: 0,
 });
 

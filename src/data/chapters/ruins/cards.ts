@@ -1,4 +1,5 @@
-import { DamageDown, DamageUp } from "data/effects";
+import { DamageDown, DamageUp, Finesse, Perception } from "data/effects";
+import { cardFrontShrine } from "data/events/shrine/cards";
 import {
   CardBackgroundType,
   CardFaceType,
@@ -23,6 +24,24 @@ const cardBackJammedDoor: CardBackChoice = {
   foreground: undefined,
   symbol: undefined,
   cost: [DamageUp],
+};
+const cardBackLockedDoor: CardBackChoice = {
+  name: 'locked door',
+  description: 'You manage to pick the crude lock.',
+  type: CardFaceType.ChoiceBack,
+  background: CardBackgroundType.Door,
+  foreground: undefined,
+  symbol: undefined,
+  cost: [Finesse],
+};
+const cardBackDarkDoorway: CardBackChoice = {
+  name: 'dark doorway',
+  description: 'Light floods the passageway.',
+  type: CardFaceType.ChoiceBack,
+  background: CardBackgroundType.Door,
+  foreground: undefined,
+  symbol: undefined,
+  cost: [Perception],
 };
 const cardBackDoor: CardBackChoice = {
   name: 'door',
@@ -80,7 +99,7 @@ const cardFrontTrapped: CardFrontChoice = {
 };
 const cardFrontFountain: CardFrontChoice = {
   name: 'fountain',
-  description: 'You are attracted to the noise of bubbling water. A pristine fountain stands amongst the ruins.',
+  description: 'You are drawn to the sound of bubbling water. A pristine fountain stands amongst the ruins.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: CardForegroundType.Fountain,
@@ -99,6 +118,8 @@ const cardFrontFountain: CardFrontChoice = {
 export const cards = [
   cardBackDoor,
   cardBackJammedDoor,
+  cardBackDarkDoorway,
+  cardBackLockedDoor,
 ].flatMap(back => {
   return [
     cardFrontEmpty,
@@ -113,8 +134,11 @@ export const cards = [
 }).concat([{
   faces: [cardBackJammedDoor, cardFrontFountain],
   recycleTarget: RecycleTarget.DiscardDeckTop,
+}, {
+  faces: [cardBackLockedDoor, cardFrontShrine],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
 }]).map<CardState>(definition => ({
-  definition,
+  ...definition,
   visibleFaceIndex: 0,
 }));
 
@@ -149,9 +173,8 @@ const cardFrontFinal: CardFrontChoice = {
 };
 
 export const finalCard = cardDescriptor.freeze({
-  definition: {
-    faces: [cardBackFinal, cardFrontFinal],
-    recycleTarget: RecycleTarget.DiscardDeckTop,
-  },
+  
+  faces: [cardBackFinal, cardFrontFinal],
+  recycleTarget: RecycleTarget.DiscardDeckTop,
   visibleFaceIndex: 0,
 });

@@ -5,6 +5,7 @@ import { UnreachableError } from "base/unreachable_error";
 import { EncounterEventComponent } from "./encounter_event";
 import { createMagicTreeEntity } from "components/entity/magic_tree/create";
 import { createMushroomEntity } from "components/entity/mushroom/create";
+import { createShrineEntity } from "components/entity/shrine/create";
 
 function createEncounterEntity(encounter: EncounterEvent) {
   switch (encounter.eventType) {
@@ -14,6 +15,8 @@ function createEncounterEntity(encounter: EncounterEvent) {
       return createMagicTreeEntity();
     case EventType.Mushroom:
       return createMushroomEntity();
+    case EventType.Shrine:
+      return createShrineEntity();
     default:
       throw new UnreachableError(encounter.eventType);
   }

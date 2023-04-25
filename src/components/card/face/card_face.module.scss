@@ -1,5 +1,7 @@
 @use 'components/constants.module.scss';
 
+$borderColor: #222;
+
 .container {
   position: absolute;
   width: constants.$cardWidth;
@@ -7,6 +9,7 @@
   border-radius: constants.$cardBorderRadius;
   border-width: .1vh;
   border-style: solid;
+  border-color: $borderColor;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -47,6 +50,24 @@
   background-color: #131;
 }
 
+.container.choice {
+  animation-name: choiceBorderFlash;
+  animation-duration: .4s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes choiceBorderFlash {
+  from {
+    border-color: $borderColor;
+  }
+
+  to {
+    border-color: #AAf;
+  }
+}
+
 .symbol {
   position: absolute;
   width: 100%;
@@ -69,7 +90,6 @@
   align-items: stretch;
   color: white;
   text-shadow: black 0 0 .5vmin;
-  border-color: #222;
   padding: .5vmin 0;
   box-sizing: border-box;
 }

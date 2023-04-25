@@ -4,16 +4,16 @@ import { EffectComponent } from "./effect";
 import { EffectUsage } from "rules/cards";
 
 export function EffectStripComponent(props: {
-  effects?: readonly EffectUsage[],
+  usages?: readonly EffectUsage[],
   warnUnused: boolean,
 }) {
   return (
     <div class={styles.container}>
-      <For each={props.effects}>
-        {effect => (
+      <For each={props.usages}>
+        {usage => (
             <EffectComponent
-                effect={effect.effect}
-                used={effect.used}
+                effect={usage.effect}
+                used={usage.used}
                 warning={props.warnUnused}/>
         )}
       </For>

@@ -20,11 +20,11 @@ const cardFrontKick: CardFrontResource = {
   cost: [],
   benefit: [DamageUp],
 };
-const cardTypeKick: CardDefinition = {
+export const cardDefinitionKick: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
   faces: [cardBackKick, cardFrontKick],
 };
 export const cardKick = cardDescriptor.freeze({
-  definition: cardTypeKick,
+  ...cardDefinitionKick,
   visibleFaceIndex: 0,
 });

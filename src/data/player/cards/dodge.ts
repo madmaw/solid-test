@@ -20,11 +20,11 @@ const cardFrontDodge: CardFrontResource = {
   cost: [],
   benefit: [DamageDown],
 };
-const cardTypeDodge: CardDefinition = {
+export const cardDefinitionDodge: CardDefinition = {
   recycleTarget: RecycleTarget.DrawDeckBottom,
   faces: [cardBackDodge, cardFrontDodge],
 };
 export const cardDodge = cardDescriptor.freeze({
-  definition: cardTypeDodge,
+  ...cardDefinitionDodge,
   visibleFaceIndex: 0,
 });
