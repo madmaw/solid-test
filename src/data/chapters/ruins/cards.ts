@@ -83,6 +83,23 @@ const cardFrontRat: CardFrontChoice = {
   cost: [],
   benefit: [],
 };
+const cardFrontSpider: CardFrontChoice = {
+  name: 'giant spider',
+  description: 'There are webs everywhere here.',
+  type: CardFaceType.Choice,
+  background: CardBackgroundType.Passageway,
+  foreground: CardForegroundType.Spider,
+  symbol: undefined,
+  choice: {
+    type: ChoiceType.NextPage,
+    encounter: {
+      type: EncounterType.Battle,
+      monster: MonsterType.Spider,
+    },
+  },
+  cost: [],
+  benefit: [],
+};
 const cardFrontTrapped: CardFrontChoice = {
   name: 'trapped hallway',
   description: 'An arrow flies out of a hidden recess.',
@@ -132,7 +149,6 @@ const cardFrontTreasure: CardFrontChoice = {
   benefit: [],
 };
 
-
 export const cards = [
   cardBackDoor,
   cardBackJammedDoor,
@@ -144,6 +160,7 @@ export const cards = [
     cardFrontRat,
     cardFrontTrapped,
     cardFrontTreasure,
+    cardFrontSpider,
   ].map<CardDefinition>(front => {
     return {
       recycleTarget: RecycleTarget.Draw,

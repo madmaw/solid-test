@@ -148,6 +148,10 @@ $borderColor: #222;
   content: '🧚';
 }
 
+.card-face.foreground.spider::before {
+  content: '🕷️';
+}
+
 .flip {
   width: 100%;
   fill: none; 

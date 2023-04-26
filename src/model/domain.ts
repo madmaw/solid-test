@@ -82,6 +82,7 @@ export const enum CardForegroundType {
   Treasure,
   Dummy,
   Fairy,
+  Spider,
 }
 
 export const enum CardFaceType {
@@ -118,7 +119,7 @@ export const enum MonsterType {
   Rooster,
   Dummy,
   Fairy,
-  
+  Spider,
 };
 
 export const enum EventType {

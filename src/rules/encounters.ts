@@ -12,6 +12,7 @@ import { defaultSnail } from "data/monsters/snail/initial";
 import { defaultRooster } from "data/monsters/rooster/initial";
 import { defaultDummy } from "data/monsters/dummy/initial";
 import { defaultPixie } from "data/monsters/fairy/initial";
+import { defaultSpider } from "data/monsters/spider/initial";
 
 function hydrateMonster(monster: MonsterType): EntityState {
   switch (monster) {
@@ -27,6 +28,8 @@ function hydrateMonster(monster: MonsterType): EntityState {
       return defaultDummy;
     case MonsterType.Fairy:
       return defaultPixie;
+    case MonsterType.Spider:
+      return defaultSpider;
     default:
       throw new UnreachableError(monster);
   }
