@@ -3,7 +3,7 @@ import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, Car
 
 const cardBackMisdirection: CardBackResource = {
   name: 'misdirection',
-  description: 'You hold your clock in front of you.',
+  description: 'You hold your cloak in front of you.',
   type: CardFaceType.ResourceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,
