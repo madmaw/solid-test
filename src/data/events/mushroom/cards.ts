@@ -1,6 +1,6 @@
 import {
-  AgeDown,
-  AgeUp,
+  Youth,
+  Age,
   Finesse,
   Force,
   GainMaxHealth,
@@ -25,12 +25,12 @@ import {
 
 const cardBackMushroomBlue: CardBackChoice = {
   name: 'blue mushroom',
-  description: 'You divine the effect of the mushroom.',
+  description: 'You consider the mushroom.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [Magic],
+  cost: [Mind],
 };
 const cardBackMushroomRed: CardBackChoice = {
   name: 'red mushroom',
@@ -39,7 +39,7 @@ const cardBackMushroomRed: CardBackChoice = {
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [Mind, Finesse],
+  cost: [Perception, Finesse],
 };
 const cardBackMushroomFamiliar: CardBackChoice = {
   name: 'familiar mushroom',
@@ -267,7 +267,7 @@ export const cardFrontMushroomYouth: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [AgeDown, AgeDown],
+  cost: [Youth, Youth],
   benefit: [],
 };
 export const cardFrontMushroomMaturity: CardFrontChoice = {
@@ -280,7 +280,7 @@ export const cardFrontMushroomMaturity: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Mushroom,
   symbol: undefined,
-  cost: [AgeUp],
+  cost: [Age, Age],
   benefit: [],
 };
 export const cardFrontMushroomHealing: CardFrontChoice = {

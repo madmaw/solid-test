@@ -7,5 +7,7 @@ export interface EntityController {
 
   disappear(): Promise<void>;
 
+  takeDamage(): Promise<void>;
+
   die(): Promise<void>;
 }

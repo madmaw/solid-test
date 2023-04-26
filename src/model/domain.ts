@@ -17,7 +17,9 @@ export const enum SymbolType {
   Perception,
   // take pysical damage/heal
   Damage,
-  // get older/younger
+  // get younger
+  Youth,
+  // get older
   Age,
   // draw a card/put a card back
   Draw,

@@ -22,7 +22,7 @@ const cardBackDummy: CardBackChoice = {
 };
 
 export const cardFrontDummyDefend: CardFrontChoice = {
-  name: 'innate hardness',
+  name: 'bark skin',
   description: undefined,
   type: CardFaceType.Choice,
   choice: {
@@ -48,7 +48,7 @@ export const cardFrontDummyHardWork: CardFrontChoice = {
   benefit: [],
 };
 export const cardFrontDummyGiveUp: CardFrontChoice = {
-  name: 'give up',
+  name: 'move on',
   description: '',
   type: CardFaceType.Choice,
   choice: {

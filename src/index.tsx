@@ -23,10 +23,11 @@ import { RenderingSpeaker } from "ui/speaker/rendering_speaker";
 import { SpeechSynthesisWordSplitter } from "ui/speaker/speech_synthesis_word_splitter";
 import { DelayWordSplitter } from "ui/speaker/delay_word_splitter";
 import { PoliteSpeaker } from "ui/speaker/polite_speaker";
+import { BackgroundTrack, SoundManager } from "ui/sounds/sound_manager";
+import { delay } from "base/delay";
 
 window.onload = function () {
-  const backgroundMusic = document.getElementById('bgm') as HTMLAudioElement | null;
-  backgroundMusic?.pause();
+  const soundManager = new SoundManager();
 
   const wordSplitter = new SpeechSynthesisWordSplitter(
       window.speechSynthesis,
@@ -38,7 +39,7 @@ window.onload = function () {
 
   const app = document.getElementById('app')!;
   const game = initialGame;
-  const cardManager = createCardManager(game);
+  const cardManager = createCardManager(game, soundManager);
 
   const navigation = async (to: NavigationTarget): Promise<void> => {
     switch (to.type) {
@@ -49,18 +50,13 @@ window.onload = function () {
           unlockedChapters: 0,
         }), true);
       case NavigationTargetType.Chapter:
-        if (backgroundMusic != null && backgroundMusic.paused) {
-          backgroundMusic.volume = .8;
-          backgroundMusic.play();
-        }
+        soundManager.playBackgroundTrack(BackgroundTrack.Music);
         await tableController.setView(View.Tilted);
         gameManager.maybeCreatePlayer();
         gameManager.createChapter(to.chapterIndex);
         return gameManager.nextPage(undefined, undefined);
       case NavigationTargetType.Death:
-        if (backgroundMusic != null && backgroundMusic.paused) {
-          backgroundMusic.pause();
-        }
+        soundManager.playBackgroundTrack(BackgroundTrack.Ambient);
         await bookController.showSpread(bookSpreadDeathDescriptor.create({
           type: BookSpreadType.Death,
         }));
@@ -94,6 +90,7 @@ window.onload = function () {
   } = createBook({
     pageComponentManager,
     book: game.book,
+    soundManager,
   });
 
   const {
@@ -106,6 +103,7 @@ window.onload = function () {
   const Encounter = createEncounter(encounterBattleManager, encounterEventManager);
   const gameManager = new GameManager(
       speaker,
+      soundManager,
       game,
       navigation,
       tableController,
@@ -192,10 +190,13 @@ window.onload = function () {
       </DragOverlay>
   ), app);
 
-  // TODO load assets
-  setTimeout(async () => {
+  // load assets
+  Promise.all([
+    soundManager.init(),
+    delay(1000),
+  ]).catch(e => console.error(e)).then(() =>{
     navigation({
       type: NavigationTargetType.ToC,
     });
-  }, 2000);
+  });
 };

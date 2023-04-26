@@ -6,8 +6,9 @@ import { CardFaceComponent } from "./face/card_face";
 import { ComponentManager } from "components/component_manager";
 import { createMemo } from "solid-js";
 import { calculateCardEffectUsages, cardFace } from "rules/cards";
+import { SoundManager } from "ui/sounds/sound_manager";
 
-export function createCardManager(game: Game) {
+export function createCardManager(game: Game, soundManager: SoundManager) {
   function createCard(card: Card) {
     const animations = new AnimationManager<Animations>();
     const cardUI = cardUIDescriptor.create({
@@ -46,7 +47,7 @@ export function createCardManager(game: Game) {
       );
     }
   
-    const controller = new CardController(card, cardUI, animations);
+    const controller = new CardController(card, cardUI, animations, soundManager);
   
     return {
       Component,

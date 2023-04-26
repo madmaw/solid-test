@@ -54,10 +54,13 @@ import { chapter as chapterStore } from "data/chapters/store/chapter";
 import { arrayRandomize } from "base/arrays";
 import { Speaker } from "ui/speaker/speaker";
 import { exists } from "base/exists";
+import { SoundEffect, SoundManager } from "ui/sounds/sound_manager";
+import { createFlattenedPromise } from "base/flattened_promise";
 
 export class GameManager {
   constructor(
     private readonly speaker: Speaker,
+    private readonly soundManager: SoundManager,
     private readonly game: Game,
     private readonly navigation: (to: NavigationTarget) => Promise<void>,
     private readonly tableController: TableController,
@@ -105,7 +108,8 @@ export class GameManager {
       if (battle != null) {
         await this.battleEncounterControllerManager.lookupController(battle)?.perform(face);
       }
-      await this.applyCardEffects(cardSlot);
+      const andThen = await this.applyCardEffects(cardSlot);
+      await andThen();
   
       const choice = face.choice;
       switch (choice.type) {
@@ -137,23 +141,29 @@ export class GameManager {
   async applyCardEffects(cardSlot: CardSlot) {
     const targetCard = cardSlot.targetCard;
     const playerCharacter = this.game.playerCharacter;
+    let andThen: Promise<void> = Promise.resolve();
     if (targetCard == null || playerCharacter == null) {
-      return;
+      return () => andThen;
     }
     const targetFace = cardFace(targetCard, false);
     const cardUsages = calculateTargetCardEffectUsages(targetFace, cardSlot, undefined);
-    await this.applyUsages(targetCard, cardUsages.cost, EffectDirection.Down, playerCharacter);
+    const promise1 = await this.applyUsages(targetCard, cardUsages.cost, EffectDirection.Down, playerCharacter);
+    andThen = andThen.then(promise1);
     // is there a monster, and is the slot in the monsters hand?
     const battle = gameEncounterBattle(this.game);
     if (battle == null || this.game.playerHand.indexOf(cardSlot) >= 0) {
-      return;
+      return () => andThen;
     }
-    await this.applyUsages(targetCard, cardUsages.benefit, EffectDirection.Up, battle.monster);
+    const promise2 = await this.applyUsages(targetCard, cardUsages.benefit, EffectDirection.Up, battle.monster);
+    andThen = andThen.then(promise2);
     // also apply the cards
     for (const playedCard of cardSlot.playedCards) {
       const playedCardUsages = calculateCardEffectUsages(this.game, playedCard, undefined);
-      await this.applyUsages(playedCard, playedCardUsages.benefit, EffectDirection.Up, battle.monster);
+      const promise3 = await this.applyUsages(playedCard, playedCardUsages.benefit, EffectDirection.Up, battle.monster);
+      andThen = andThen.then(promise3);
     }
+
+    return () => andThen;
   }
 
   private async applyUsages(
@@ -161,13 +171,14 @@ export class GameManager {
       usages: readonly EffectUsage[],
       direction: EffectDirection.Up | EffectDirection.Down,
       to: Entity,
-  ) {
+  ): Promise<() => Promise<void>> {
     const cardSlot = cardSlotForCard(this.game, card);
     const playerCharacter = this.game.playerCharacter;
     if (playerCharacter == null) {
-      return;
+      return async () => void 0;
     }
     const face = cardFace(card, false);
+    let { promise: andThen, resolve } = createFlattenedPromise<void>();
     await Promise.all([
       (async () => {
         if (face.description
@@ -216,6 +227,10 @@ export class GameManager {
                       Easing.Violent,
                   );
                   to.health--;
+                  const battle = gameEncounterBattle(this.game);
+                  if (to !== playerCharacter && battle != null) {
+                    await this.battleEncounterControllerManager.lookupController(battle)?.takeDamage();
+                  }
                   break;
                 case SymbolType.Healing:
                   if (to.health < to.maxHealth) {
@@ -279,7 +294,7 @@ export class GameManager {
                     );
                   }
                   break;
-                case SymbolType.Age:
+                case SymbolType.Youth:
                   await cardController?.moveTo(
                       '0',
                       direction === EffectDirection.Down ? '20vmin' : '-20vmin',
@@ -287,6 +302,15 @@ export class GameManager {
                       Easing.Gentle,
                   );
                   to.age -= 2;
+                  break;
+                case SymbolType.Age:
+                  await cardController?.moveTo(
+                      '0',
+                      direction === EffectDirection.Down ? '20vmin' : '-20vmin',
+                      '1vmin',
+                      Easing.Violent,
+                  );
+                  to.age ++;
                   break;
                 case SymbolType.GainMaxHealth:
                   await cardController?.moveTo(
@@ -310,7 +334,9 @@ export class GameManager {
                   }
                   break;
                 case SymbolType.Draw:
-                  // TODO
+                  andThen = andThen.then(() => {
+                    return this.drawPlayerCards(1);
+                  });
                   break;
                 case SymbolType.DoubleCard:
                   if (cardSlot != null && cardSlot.playedCards.length > 0) {
@@ -343,6 +369,12 @@ export class GameManager {
       })(),
     ]);
     await this.normalizeBoard();
+    return () => {
+      // start the first promise
+      resolve();
+      // return all the stuff afterward
+      return andThen;
+    };
   }
 
   async maybeCreatePlayer() {
@@ -438,6 +470,7 @@ export class GameManager {
           const card = deck[deck.length - 1];
           if (card != null) {
             cardSlot.targetCard = card;
+            this.soundManager.playEffect(SoundEffect.CardPlacement);
             pageDeckSetter(deck.slice(0, -1));
             const cardController = this.cardControllerManager.lookupController(card);
             // it's no rendered yet, so this should put it at 90 degrees
@@ -450,6 +483,10 @@ export class GameManager {
         }
       }));  
     }
+    this.drawPlayerCards(draw);
+  }
+
+  private async drawPlayerCards(draw: number) {
     const playerHand = this.game.playerHand;
     if (playerHand != null) {
       const availableSlots = playerHand.filter(
@@ -475,6 +512,7 @@ export class GameManager {
                     Easing.Gentle,
                 );
                 cardSlot.targetCard = card;
+                this.soundManager.playEffect(SoundEffect.CardPlacement);
               }),
           );
         });    

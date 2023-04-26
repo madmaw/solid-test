@@ -1,9 +1,14 @@
 @value stroke: #FFF;
-@value fill: transparent;
+@value fill: #000;
+@value fillUsed: transparent;
 @value fillForce: #AA3;
 @value fillFinesse: #4A4;
 @value fillDamage: #A44;
 @value fillMind: #55A;
+@value fillMagic: #3AA;
+@value fillPerception: #777;
+@value fillYouth: #999;
+@value fillAge: #A44;
 
 .container {
   font-size: 2vmin;

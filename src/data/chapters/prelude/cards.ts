@@ -1,8 +1,8 @@
-import { cardDefinitionHeadbutt } from "data/items/headbutt";
 import {
   cardDefinitionForce1,
   cardDefinitionForce3,
   cardDefinitionForce5,
+  cardDefinitionForceFeat,
   cardDefinitionForceLazy2x,
 } from "data/items/force";
 import { cardDefinitionBlock, cardDefinitionDeflect } from "data/items/shield";
@@ -28,13 +28,31 @@ import {
   SymbolType,
   cardDescriptor,
 } from "model/domain";
-import { cardDefinitionFinesseEager, cardDefinitionFinesseMartialTraining } from "data/items/finesse";
+import { 
+  cardDefinitionFinesseFastHands1,
+  cardDefinitionFinesseFastHands3,
+  cardDefinitionFinesseFeat,
+  cardDefinitionFinesseMartialTraining,
+} from "data/items/finesse";
 import { GainMaxHealth, Healing } from "data/effects";
 import { cardDefinitionDodge } from "data/items/dodge";
+import { cardDefinitionCriticalStrike, cardDefinitionPoisonBlade, cardDefinitionStab, cardDefinitionTwinBlades } from "data/items/dagger";
+import { cardDefinitionMisdirection } from "data/items/cloak";
+import { cardDefinitionMindDeepThinking, cardDefinitionMindEager, cardMindCunning } from "data/items/mind";
+import { cardDefinitionPoisonResist } from "data/items/poison";
+import { 
+  cardDefinitionMagicFeat,
+  cardDefinitionMagicIncantation1,
+  cardDefinitionMagicIncantation5,
+} from "data/items/magic";
+import { cardDefinitionMagicBarrier } from "data/items/magic/barrier";
+import { cardDefinitionMagicMissile } from "data/items/magic/missile";
+import { cardDefinitionMagicSight } from "data/items/magic/divination";
+import { cardDefinitionMagicHaste } from "data/items/magic/haste";
 
 const cardBackAttributes: CardBackChoice = {
   name: 'character select',
-  description: undefined,
+  description: 'Choose your background.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,
@@ -58,12 +76,13 @@ export const cardFrontAttributesWarrior: CardFrontChoice = {
     direction: EffectDirection.Down,
     cards: [
       cardDefinitionFinesseMartialTraining,
-      cardDefinitionForce1,
+      cardDefinitionFinesseMartialTraining,
       cardDefinitionForce1,
       cardDefinitionForce3,
       cardDefinitionForce5,
+      cardDefinitionDodge,
+      cardDefinitionForceFeat,
       cardDefinitionForceLazy2x,
-      cardDefinitionHeadbutt,
       cardDefinitionSlash,
       cardDefinitionRiposte,
       cardDefinitionQuckThrust,
@@ -90,10 +109,21 @@ export const cardFrontAttributesFinesse: CardFrontChoice = {
     symbol: SymbolType.GainCards,
     direction: EffectDirection.Down,
     cards: [
-      cardDefinitionFinesseEager,
-      cardDefinitionFinesseEager,
+      cardDefinitionFinesseFastHands1,
+      cardDefinitionFinesseFastHands3,
+      cardDefinitionFinesseFastHands3,
+      cardDefinitionFinesseFeat,
       cardDefinitionDodge,
       cardDefinitionDodge,
+      cardDefinitionStab,
+      cardDefinitionStab,
+      cardMindCunning,
+      cardMindCunning,
+      cardDefinitionPoisonResist,
+      cardDefinitionTwinBlades,
+      cardDefinitionPoisonBlade,
+      cardDefinitionCriticalStrike,
+      cardDefinitionMisdirection,
     ],
   }],
   benefit: [],
@@ -109,7 +139,24 @@ export const cardFrontAttributesMind: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: undefined,
   symbol: undefined,
-  cost: [],
+  cost: [{
+    symbol: SymbolType.GainCards,
+    direction: EffectDirection.Down,
+    cards: [
+      cardDefinitionMindEager,
+      cardDefinitionMindEager,
+      cardDefinitionMindDeepThinking,
+      cardDefinitionMagicFeat,
+      cardDefinitionMagicIncantation1,
+      cardDefinitionMagicIncantation1,
+      cardDefinitionMagicIncantation5,
+      cardDefinitionMagicBarrier,
+      cardDefinitionMagicMissile,
+      cardDefinitionMagicMissile,
+      cardDefinitionMagicSight,
+      cardDefinitionMagicHaste,
+    ],
+  }],
   benefit: [],
 };
 
@@ -136,7 +183,7 @@ export const cards = [
 
 const cardBackFinal: CardBackChoice = {
   name: 'training',
-  description: 'A battered tree stump sits in the yard. It bears the scars of many mock battles.',
+  description: 'A battered tree stump sits in the yard. It bears the scars of many training battles.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,

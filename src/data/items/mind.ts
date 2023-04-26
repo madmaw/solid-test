@@ -1,4 +1,4 @@
-import { Mind } from "data/effects";
+import { Magic, Mind, Perception } from "data/effects";
 import {
   CardBackResource,
   CardBackgroundType,
@@ -27,7 +27,7 @@ const cardFrontMindLazy: CardFrontResource = {
   foreground: undefined,
   symbol: SymbolType.Mind,
   cost: [],
-  benefit: [Mind],
+  benefit: [Mind, Perception],
 };
 export const cardDefinitionMindLazy: CardDefinition = {
   recycleTarget: RecycleTarget.Draw,
@@ -67,5 +67,67 @@ export const cardDefinitionMindEager: CardDefinition = {
 
 export const cardMindEager = cardDescriptor.freeze({
   ...cardDefinitionMindLazy,
+  visibleFaceIndex: 0,
+});
+
+const cardBackMindDeepThinking: CardBackResource = {
+  name: 'deep thinking',
+  description: undefined,
+  type: CardFaceType.ResourceBack,
+  background: CardBackgroundType.Crosshatched,
+  symbol: undefined,
+  foreground: undefined,
+  cost: [],
+};
+const cardFrontMindDeepThinking: CardFrontResource = {
+  name: 'deep thinking',
+  description: 'You consider the problem at hand.',
+  type: CardFaceType.Resource,
+  background: CardBackgroundType.Clear,
+  foreground: undefined,
+  symbol: SymbolType.Mind,
+  cost: [],
+  benefit: [Mind, Mind],
+};
+export const cardDefinitionMindDeepThinking: CardDefinition = {
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 1,
+  faces: [cardBackMindDeepThinking, cardFrontMindDeepThinking],
+};
+
+export const cardMindDeepThinking = cardDescriptor.freeze({
+  ...cardDefinitionMindDeepThinking,
+  visibleFaceIndex: 0,
+});
+
+
+
+const cardBackMindCunning: CardBackResource = {
+  name: 'cunning',
+  description: undefined,
+  type: CardFaceType.ResourceBack,
+  background: CardBackgroundType.Crosshatched,
+  symbol: undefined,
+  foreground: undefined,
+  cost: [],
+};
+const cardFrontMindCunning: CardFrontResource = {
+  name: 'cunning',
+  description: 'Like a fox.',
+  type: CardFaceType.Resource,
+  background: CardBackgroundType.Clear,
+  foreground: undefined,
+  symbol: SymbolType.Mind,
+  cost: [Magic],
+  benefit: [Mind, Perception],
+};
+export const cardDefinitionMindCunning: CardDefinition = {
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 4,
+  faces: [cardBackMindCunning, cardFrontMindCunning],
+};
+
+export const cardMindCunning = cardDescriptor.freeze({
+  ...cardDefinitionMindCunning,
   visibleFaceIndex: 0,
 });

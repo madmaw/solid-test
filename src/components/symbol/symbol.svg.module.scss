@@ -1,0 +1,12 @@
+$symbolWidth: 100%;
+$symbolHeight: 100%;
+
+.svg {
+  width: $symbolWidth;
+  height: $symbolHeight;
+}
+
+.flip {
+  transform-origin: 50% 50%;
+  transform: scaleY(-1);
+}

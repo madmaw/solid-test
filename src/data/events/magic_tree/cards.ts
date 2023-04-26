@@ -1,9 +1,9 @@
 import { 
-  AgeDown,
   Finesse,
   Force, 
   GainMaxHealth, 
   Healing,
+  Youth,
 } from "data/effects";
 import {
   CardBackChoice,
@@ -55,7 +55,7 @@ export const cardFrontMagicTreeGoldenApple: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.MagicTree,
   symbol: undefined,
-  cost: [AgeDown, AgeDown, AgeDown],
+  cost: [Youth, Youth, Youth],
   benefit: [],
 };
 export const cardFrontMagicTreeGreenApple: CardFrontChoice = {

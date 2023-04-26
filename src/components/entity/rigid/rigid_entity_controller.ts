@@ -41,7 +41,12 @@ export class RigidEntityController implements EntityController {
       animation,
       () => this.dynamicEntityController?.perform(face),
     );
-    this.rigidEntityUI.activeAnimation = undefined;
+  }
+
+  async takeDamage(): Promise<void> {
+    await this.performAnimation(
+      Animations.TakeDamage,
+    ); 
   }
 
   async appear() {
@@ -52,7 +57,6 @@ export class RigidEntityController implements EntityController {
         () => this.dynamicEntityController?.appear(),
       );  
     });
-    this.rigidEntityUI.activeAnimation = undefined;
   }
 
   async disappear() {
@@ -62,7 +66,6 @@ export class RigidEntityController implements EntityController {
     );
     batch(() =>{
       this.rigidEntityUI.hidden = true;
-      this.rigidEntityUI.activeAnimation = undefined;  
     });
 
   }
@@ -74,18 +77,18 @@ export class RigidEntityController implements EntityController {
     );
     batch(() =>{
       this.rigidEntityUI.hidden = true;
-      this.rigidEntityUI.activeAnimation = undefined;  
     });
   }
 
   private async performAnimation(
     animation: Animations | undefined,
-    dynamicAnimation: () => Promise<void> | undefined,
+    dynamicAnimation?: () => Promise<void> | undefined,
   ) {
     this.rigidEntityUI.activeAnimation = animation;
     await Promise.all([
       animation != null && this.animations.waitForAnimation(animation),
-      dynamicAnimation(),
+      dynamicAnimation?.(),
     ]);
+    this.rigidEntityUI.activeAnimation = undefined;  
   }
 }

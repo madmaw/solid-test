@@ -4,6 +4,7 @@ import { activeRecordDescriptor } from "model/descriptor/record";
 import { Card} from "model/domain";
 import { optionalDescriptor } from "model/descriptor/option";
 import { delay } from "base/delay";
+import { SoundEffect, SoundManager } from "ui/sounds/sound_manager";
 
 export const enum FlipState {
   Flat = 1,
@@ -45,6 +46,7 @@ export class CardController {
     private readonly card: Card,
     private readonly cardUI: CardUI,
     private readonly animations: AnimationManager<Animations>,
+    private readonly soundManager: SoundManager,
   ) {}
 
   async flip(): Promise<void> {
@@ -103,6 +105,7 @@ export class CardController {
   }
 
   private async internalFlip(doFlip: () => void) {
+    this.soundManager.playEffect(SoundEffect.CardFlip);
     await this.flipUpToVertical();
     doFlip();
     await this.flipDownFromVertical();

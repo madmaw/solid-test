@@ -55,6 +55,35 @@ export const cardForceEager = cardDescriptor.freeze({
   visibleFaceIndex: 0,
 });
 
+const cardBackForceFeat: CardBackResource = {
+  name: 'innate strength',
+  description: undefined,
+  type: CardFaceType.ResourceBack,
+  background: CardBackgroundType.Crosshatched,
+  foreground: undefined,
+  symbol: undefined,
+  cost: [Force, Force],
+};
+const cardFrontForceFeat: CardFrontResource = {
+  name: 'innate strength',
+  description: undefined,
+  type: CardFaceType.Resource,
+  background: CardBackgroundType.Clear,
+  foreground: undefined,
+  symbol: SymbolType.Force,
+  cost: [],
+  benefit: [Force, Force],
+};
+export const cardDefinitionForceFeat: CardDefinition = {
+  recycleTarget: RecycleTarget.Draw,
+  recyclePosition: 7,
+  faces: [cardBackForceFeat, cardFrontForceFeat],
+};
+export const cardForceFeat = cardDescriptor.freeze({
+  ...cardDefinitionForceFeat, 
+  visibleFaceIndex: 0,
+});
+
 const cardBackForceRandom: CardBackResource = {
   name: 'innate strength',
   description: undefined,

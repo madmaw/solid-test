@@ -57,7 +57,7 @@ const cardFrontPath: CardFrontChoice = {
   cost: [],
   benefit: [],
 };
-const cardFrontRat: CardFrontChoice = {
+const cardFrontSnail: CardFrontChoice = {
   name: 'a big snail',
   description: 'The snail inches toward you.',
   type: CardFaceType.Choice,
@@ -147,7 +147,7 @@ export const cards = [
 ].flatMap(back => {
   return [
     cardFrontPath,
-    cardFrontRat,
+    cardFrontSnail,
     cardFrontBrambles,
   ].map<CardDefinition>(front => {
     return {

@@ -84,7 +84,7 @@ const cardFrontQuickThrust: CardFrontResource = {
   background: CardBackgroundType.Clear,
   foreground: undefined,
   symbol: SymbolType.Finesse,
-  cost: [],
+  cost: [Finesse],
   benefit: [DamageUp],
 };
 export const cardDefinitionQuckThrust: CardDefinition = {

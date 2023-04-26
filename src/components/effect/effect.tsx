@@ -8,10 +8,11 @@ const resourceColors: Record<SymbolType, string> = {
   [SymbolType.Force]: styles.fillForce,
   [SymbolType.Finesse]: styles.fillFinesse,
   [SymbolType.Mind]: styles.fillMind,
-  [SymbolType.Magic]: styles.fill,
+  [SymbolType.Magic]: styles.fillMagic,
   [SymbolType.Damage]: styles.fillDamage,
-  [SymbolType.Age]: styles.fill,
-  [SymbolType.Perception]: styles.fill,
+  [SymbolType.Youth]: styles.fillYouth,
+  [SymbolType.Age]: styles.fillAge,
+  [SymbolType.Perception]: styles.fillPerception,
   [SymbolType.Draw]: styles.fill,
   [SymbolType.Poison]: styles.fill,
   [SymbolType.Healing]: styles.fill,
@@ -37,7 +38,7 @@ export function EffectComponent(props: {
     }}>
       <SymbolComponent
           type={props.effect.symbol}
-          fill={props.used ? styles.fill : resourceColors[props.effect.symbol]}
+          fill={props.used ? styles.fillUsed : resourceColors[props.effect.symbol]}
           stroke={styles.stroke}/>
     </div>
   );

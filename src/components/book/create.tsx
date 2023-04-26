@@ -5,13 +5,16 @@ import { AnimationManager } from "ui/animation/animation_manager";
 import { ParentProps } from "solid-js";
 import { ChrononomiconCoverComponent } from "./cover/chrononomicon";
 import { PageComponentManager, PageSide } from "components/page/page_controller";
+import { SoundManager } from "ui/sounds/sound_manager";
 
 export function createBook({
   pageComponentManager,
   book,
+  soundManager,
 }: {
   pageComponentManager: PageComponentManager,
   book: Book,
+  soundManager: SoundManager,
 }) {
   function renderPagePair(spread: BookSpread | undefined): PagePair | undefined {
     if (spread == null) {
@@ -34,6 +37,7 @@ export function createBook({
     bookUI,
     animations,
     pageComponentManager,
+    soundManager,
   );
 
   const Component = (props: ParentProps) => {

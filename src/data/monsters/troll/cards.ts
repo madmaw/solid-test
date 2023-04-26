@@ -20,8 +20,8 @@ const cardBackTrollSurprise: CardBackChoice = {
   cost: [Mind],
 };
 const cardBackTrollRetaliation: CardBackChoice = {
-  name: 'retaliation',
-  description: 'The blow enrages the troll.',
+  name: 'surprise',
+  description: 'The blow catches the troll off guard.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Troll,

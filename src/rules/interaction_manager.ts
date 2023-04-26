@@ -177,7 +177,7 @@ export class InteractionManager {
         const interaction = this.allowedInteraction(targetCardSlot);
         if (draggedCardSlot != targetCardSlot && interaction == Interaction.Drop) {
           // apply effects of dragged card
-          await this.gameManager.applyCardEffects(draggedCardSlot);
+          const andThen = await this.gameManager.applyCardEffects(draggedCardSlot);
 
           batch(() => {
             targetCardSlot.playedCards = [...targetCardSlot.playedCards, draggedCard];
@@ -186,6 +186,7 @@ export class InteractionManager {
           });
 
           await this.gameManager.normalizeBoard();
+          await andThen();
         } else {
           batch(() =>{
             draggedCardSlot.targetCard = draggedCard;

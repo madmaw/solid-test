@@ -7,7 +7,7 @@ import { cards as magicTreeCards } from 'data/events/magic_tree/cards';
 import { cards as mushroomCards, cardIgnore as mushroomIgnore } from 'data/events/mushroom/cards';
 import { cards as shrineCards, cardIgnore as shrineIgnore } from 'data/events/shrine/cards';
 import { cards as itemCards, ignoreCards } from 'data/items/cards';
-import { EncounterDefinition, EncounterState, EncounterType, EntityState, EventType, MonsterType } from "model/domain";
+import { CardState, EncounterDefinition, EncounterState, EncounterType, EntityState, EventType, MonsterType, SymbolType } from "model/domain";
 import { defaultSnail } from "data/monsters/snail/initial";
 import { defaultRooster } from "data/monsters/rooster/initial";
 import { defaultDummy } from "data/monsters/dummy/initial";
@@ -79,7 +79,11 @@ export function hydrateEncounter(encounter: EncounterDefinition): EncounterState
           return {
             type: EncounterType.Event,
             eventType: encounter.event,
-            deck: arrayRandomize(itemCards).slice(0, 3),
+            deck: [
+              getRandomItem(SymbolType.Force, itemCards), 
+              getRandomItem(SymbolType.Finesse, itemCards),
+              getRandomItem(SymbolType.Magic, itemCards),
+            ],
           };
         default:
           throw new UnreachableError(encounter.event);
@@ -87,4 +91,10 @@ export function hydrateEncounter(encounter: EncounterDefinition): EncounterState
     default:
       throw new UnreachableError(encounter);
   }
+}
+
+function getRandomItem(symbol: SymbolType, items: readonly CardState[]) {
+  const symbolItems = items.filter(item => item.faces.some(face => face.symbol === symbol));
+  const usableItems = symbolItems.length > 0 ? symbolItems : items;
+  return arrayRandomize(usableItems)[0];
 }

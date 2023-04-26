@@ -35,13 +35,13 @@ export const DamageDown: Effect = {
   symbol: SymbolType.Damage,
 };
 
-export const AgeUp: Effect = {
-  direction: EffectDirection.Up,
-  symbol: SymbolType.Age,
+export const Youth: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.Youth,
 };
 
-export const AgeDown: Effect = {
-  direction: EffectDirection.Down,
+export const Age: Effect = {
+  direction: EffectDirection.Omni,
   symbol: SymbolType.Age,
 };
 
@@ -78,4 +78,9 @@ export const LoseCards: Effect = {
 export const DoubleCard: Effect = {
   direction: EffectDirection.Omni,
   symbol: SymbolType.DoubleCard,
+};
+
+export const Draw: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.Draw,
 };

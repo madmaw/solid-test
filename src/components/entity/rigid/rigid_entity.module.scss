@@ -52,19 +52,27 @@
 
 .entity.attack {
   animation-name: attackAnimation;
-  animation-timing-function: ease-in;
-  animation-direction: alternate;
-  animation-duration: 150ms;
-  animation-iteration-count: 2;
+  animation-timing-function: ease-in-out;
+  animation-duration: 300ms;
+  transform-origin: bottom;
 }
 
 @keyframes attackAnimation {
   from {
-    transform: translateX(0);
+    transform: rotateX(0) scale(1, 1);
+  }
+
+  25% {
+    transform: rotate(10deg) rotateX(0) scale(1.2, .8);
+
+  }
+
+  50% {
+    transform: rotate(-20deg) rotateX(45) scale(.8, 1.3);
   }
 
   to {
-    transform: translateX(20%);
+    transform: rotateX(0) scale(1, 1);
   }
 }
 
@@ -95,19 +103,27 @@
 
 .entity.block {
   animation-name: blockAnimation;
-  animation-direction: alternate;
-  animation-timing-function: ease-out;
-  animation-iteration-count: 2;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: 1;
   animation-duration: 300ms;
+  transform-origin: bottom;
 }
 
 @keyframes blockAnimation {
   from {
-    transform: scaleX(1);
+    transform: translate(0, 0) scale(1, 1);
+  }
+
+  30% {
+    transform: translate(-5vmin, 0) scale(0.8, 1.2);
+  }
+
+  60% {
+    transform:  translate(-3vmin, 0) scale(1.1, .9);
   }
 
   to {
-    transform: scaleX(.8) rotate(10deg);
+    transform:  translate(0, 0) scale(1, 1);
   }
 }
 
@@ -132,3 +148,30 @@
     transform: translateY(-3vmin) scaleY(1.1);
   }
 }
+
+.entity.take-damage {
+  animation-name: takeDamageAnimation;
+  animation-timing-function: ease-out;
+  animation-duration: 400ms;
+  transform-origin: bottom;
+}
+
+@keyframes takeDamageAnimation {
+  from {
+    transform: rotateX(0) scale(1, 1);
+  }
+
+  30% {
+    transform: rotate(-10deg) rotateX(-40deg) scale(1.1, .9);
+  }
+
+  60% {
+    transform: rotate(10deg) rotateX(0) scale(0.8, 1.2);
+
+  }
+
+  to {
+    transform: rotateX(0) scale(1, 1);
+  }
+}
+

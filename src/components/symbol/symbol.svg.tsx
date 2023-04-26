@@ -1,10 +1,11 @@
 import { ParentProps } from "solid-js";
 
-import styles from './symbol.module.scss';
+import styles from './symbol.svg.module.scss';
 
 export type SymbolProps = {
   fill: string,
   stroke: string,
+  flip?: boolean,
 };
 
 export function SymbolSVGComponent(props: ParentProps<SymbolProps>) {
@@ -16,7 +17,11 @@ export function SymbolSVGComponent(props: ParentProps<SymbolProps>) {
           fill: props.fill,
           stroke: props.stroke,
         }}>
-      {props.children}
+        <g classList={{
+          [styles.flip]: props.flip,
+        }}>
+          {props.children}
+        </g>
     </svg>
   );
 }

@@ -6,6 +6,7 @@ import { activeRecordDescriptor } from "model/descriptor/record";
 import { Book, BookSpread, bookSpreadDescriptor } from "model/domain";
 import { batch } from "solid-js";
 import { AnimationManager } from "ui/animation/animation_manager";
+import { SoundEffect, SoundManager } from "ui/sounds/sound_manager";
 
 export type Animations = 'open' | 'turn' | 'close' | 'midway';
 
@@ -24,10 +25,12 @@ export class BookController {
     private readonly bookUI: BookUI,
     private animations: AnimationManager<Animations>,
     private pageComponentManager:  PageComponentManager,
+    private soundManager: SoundManager,
   ) { }
 
   async showSpread(spread: BookSpread | undefined, turnLeftToRight: boolean = false) {
     if (spread != this.book.spread) {
+      this.soundManager.playEffect(SoundEffect.BookFlip);
       const opening = this.book.spread == null;
       const previousSpread = this.book.spread;
       if (previousSpread != null) {

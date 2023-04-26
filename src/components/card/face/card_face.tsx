@@ -33,6 +33,7 @@ export function CardFaceComponent(props: CardFaceProps & {
         [styles.finesse]: props.face.symbol === SymbolType.Finesse,
         [styles.force]: props.face.symbol === SymbolType.Force,
         [styles.mind]: props.face.symbol === SymbolType.Mind,
+        [styles.magic]: props.face.symbol === SymbolType.Magic,
       }}>
         {props.face.symbol != null && (
             <div class={styles.symbol}>

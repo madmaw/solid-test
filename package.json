@@ -28,6 +28,7 @@
     "@babel/core": "^7.21.4",
     "@parcel/transformer-sass": "^2.8.3",
     "@parcel/validator-typescript": "^2.8.3",
+    "@types/howler": "^2.2.7",
     "babel-preset-solid": "^1.7.2",
     "concurrently": "^8.0.1",
     "del-cli": "^5.0.0",
@@ -41,6 +42,7 @@
     "values": "^0.2.0"
   },
   "dependencies": {
+    "howler": "^2.2.3",
     "solid-js": "^1.7.2"
   },
   "TODO: (chris.g) how do I just set an alias for src?": "",

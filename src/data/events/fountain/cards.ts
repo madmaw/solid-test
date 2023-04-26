@@ -1,9 +1,9 @@
 import {
-  AgeDown,
   Healing,
   Magic,
   Mind,
   PoisonDown,
+  Youth,
 } from "data/effects";
 import {
   CardBackChoice,
@@ -85,7 +85,7 @@ export const cardFrontFountainYouth: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Fountain,
   symbol: undefined,
-  cost: [AgeDown],
+  cost: [Youth, Youth, Youth],
   benefit: [],
 };
 

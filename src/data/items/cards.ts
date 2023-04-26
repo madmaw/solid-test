@@ -1,25 +1,51 @@
-import { CardBackChoice, CardBackgroundType, CardFaceType, CardFrontChoice, ChoiceType, RecycleTarget, cardDescriptor } from "model/domain";
+import { CardBackChoice, CardBackgroundType, CardFaceType, CardFrontChoice, CardState, ChoiceType, RecycleTarget, cardDescriptor } from "model/domain";
 import { cardDodge } from "./dodge";
-import { cardFinesseLazy } from "./finesse";
-import { cardForceLazy } from "./force";
+import { cardFinesse1, cardFinesseFeat, cardFinesseLazy } from "./finesse";
+import { cardForceEager, cardForceFeat, cardForceLazy } from "./force";
 import { cardHeadbutt } from "./headbutt";
 import { cardKick } from "./kick";
 import { cardMindEager } from "./mind";
 import { cardBlock, cardDeflect } from "./shield";
 import { cardTorch } from "./torch";
-import { AgeDown, AgeUp, Healing } from "data/effects";
+import { Youth, Healing } from "data/effects";
+import { cardMisdirection } from "./cloak";
+import { cardCriticalStrike, cardPoisonBlade } from "./dagger";
+import { cardMagicFeat, cardMagicIncantation5 } from "./magic";
+import { cardMagicBarrier } from "./magic/barrier";
+import { cardMagicGrace } from "./magic/grace";
+import { cardMagicStrength } from "./magic/strength";
+import { cardMagicMissile } from "./magic/missile";
+import { cardMagicPoison } from "./magic/poison";
+import { cardMagicSight } from "./magic/divination";
+import { cardFireball } from "./magic/fireball";
 
 
-export const cards = [
+export const cards: readonly CardState[] = [
   cardDodge,
   cardFinesseLazy,
   cardForceLazy,
+  cardForceEager,
   cardHeadbutt,
   cardKick,
   cardMindEager,
   cardBlock,
   cardDeflect,
   cardTorch,
+  cardFinesse1,
+  cardMisdirection,
+  cardFinesseFeat,
+  cardForceFeat,
+  cardPoisonBlade,
+  cardCriticalStrike,
+  cardMagicFeat,
+  cardMagicIncantation5,
+  cardMagicBarrier,
+  cardMagicGrace,
+  cardMagicStrength,
+  cardMagicSight,
+  cardMagicMissile,
+  cardMagicPoison,
+  cardFireball,
 ];
 
 const cardBackItemIgnore: CardBackChoice = {
@@ -48,8 +74,8 @@ const cardFrontItemIgnore: CardFrontChoice = {
 };
 
 const cardFrontItemIgnoreAgeDown: CardFrontChoice = {
-  name: 'ignore',
-  description: 'You feel unburdened.',
+  name: 'potion of youth',
+  description: 'You feel invigorated.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -57,27 +83,13 @@ const cardFrontItemIgnoreAgeDown: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: undefined,
   symbol: undefined,
-  cost: [AgeDown],
-  benefit: [],
-};
-
-const cardFrontItemIgnoreAgeUp: CardFrontChoice = {
-  name: 'ignore',
-  description: 'You feel responsible.',
-  type: CardFaceType.Choice,
-  choice: {
-    type: ChoiceType.NextTurn,
-  },
-  background: CardBackgroundType.Clear,
-  foreground: undefined,
-  symbol: undefined,
-  cost: [AgeUp],
+  cost: [Youth],
   benefit: [],
 };
 
 const cardFrontItemIgnoreHealing: CardFrontChoice = {
-  name: 'ignore',
-  description: 'You feel soothed.',
+  name: 'potion of health',
+  description: 'You feel better.',
   type: CardFaceType.Choice,
   choice: {
     type: ChoiceType.NextTurn,
@@ -93,7 +105,6 @@ const cardFrontItemIgnoreHealing: CardFrontChoice = {
 export const ignoreCards = [
   cardFrontItemIgnore,
   cardFrontItemIgnoreAgeDown,
-  cardFrontItemIgnoreAgeUp,
   cardFrontItemIgnoreHealing,
 ].map(cardFront => (
     cardDescriptor.freeze({
