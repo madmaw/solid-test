@@ -1,5 +1,6 @@
 import { 
   DoubleCard,
+  Duplicate,
   Finesse,
   Force, 
   LoseCards,
@@ -83,7 +84,7 @@ export const cardFrontShrineDuplicate: CardFrontChoice = {
   background: CardBackgroundType.Clear,
   foreground: CardForegroundType.Shrine,
   symbol: undefined,
-  cost: [DoubleCard],
+  cost: [Duplicate],
   benefit: [],
 };
 
