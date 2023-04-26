@@ -14,12 +14,15 @@ const pageHeight = parseInt(constants.pageHeight);
 
 function getEmojis(chapterType: ChapterType) {
   switch (chapterType) {
+    case ChapterType.Tutorial:
+      return ['🪑', '🛏️', '🛋️', '🪴'];
     case ChapterType.Prelude:
+    case ChapterType.Shop:
       return ['🏡', '🏠', '🌴'];
     case ChapterType.Forest:
       return ['🌲'];
     case ChapterType.Ruins:
-      return ['🏚️', '🛖', '🌳'];
+      return ['🏚️', '🛖', '🪨'];
     case ChapterType.Tower:
       return ['x'];
     default:

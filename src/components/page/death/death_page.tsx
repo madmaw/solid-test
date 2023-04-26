@@ -13,13 +13,16 @@ function DeathPageLeftComponent() {
 
 function DeathPageRightComponent(props: {
   navigation: (to: NavigationTarget) => void,
+  onFocusUIElement: (id: unknown) => void,
 }) {
   return (
     <div
         class={styles.container}
         onClick={() => props.navigation({
           type: NavigationTargetType.ToC,
-        })}>
+        })}
+        onFocus={() => props.onFocusUIElement('a')}
+        onMouseOver={() => props.onFocusUIElement('a')}>
       <h2>You have fallen.</h2>
     </div>
   );
@@ -30,7 +33,9 @@ const sideComponents: { [K in PageSide]: Component<PageProps<BookSpreadDeath>>} 
     return <DeathPageLeftComponent/>
   },
   [PageSide.Right]: function (props: PageProps<BookSpreadDeath>) {
-    return <DeathPageRightComponent navigation={props.navigation}/>
+    return <DeathPageRightComponent
+        navigation={props.navigation}
+        onFocusUIElement={props.onFocusUIElement}/>
   },
 }
 
@@ -41,6 +46,7 @@ export function DeathPageComponent(props: PageProps<BookSpreadDeath>) {
       side={props.side}
       spread={props.spread}
       navigation={props.navigation}
+      onFocusUIElement={props.onFocusUIElement}
     />
   );
 

@@ -220,7 +220,7 @@ const cardFrontFinal: CardFrontChoice = {
       type: EncounterType.Battle,
       monster: MonsterType.Troll,
     },
-    targetChapterIndex: 3,
+    targetChapterIndex: 4,
   },
   cost: [],
   benefit: [],

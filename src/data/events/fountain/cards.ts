@@ -19,7 +19,7 @@ import {
 
 const cardBackFountainDrink: CardBackChoice = {
   name: 'drink',
-  description: 'You recall something important.',
+  description: 'You recall a fact about fountains.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,
@@ -28,7 +28,7 @@ const cardBackFountainDrink: CardBackChoice = {
 };
 const cardBackFountainDrink2: CardBackChoice = {
   name: 'drink',
-  description: 'The magic enchoes in the fountain.',
+  description: 'The magic echoes in the fountain.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,

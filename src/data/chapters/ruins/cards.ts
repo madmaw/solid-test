@@ -204,7 +204,7 @@ const cardFrontFinal: CardFrontChoice = {
       // TODO something better
       monster: MonsterType.BigRat,
     },
-    targetChapterIndex: 2,
+    targetChapterIndex: 3,
   },
   cost: [],
   benefit: [],

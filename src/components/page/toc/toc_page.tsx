@@ -17,10 +17,14 @@ function ToCEntryComponent(props: PageToCProps & {
     <li classList={{
       [styles.disabled]: props.spread.unlockedChapters < props.targetChapter
     }}>
-      <a href="#" onClick={() => props.navigation({
-        type: NavigationTargetType.Chapter,
-        chapterIndex: props.targetChapter,
-      })}>{props.name}</a>
+      <a href="#"
+          onClick={() => props.navigation({
+            type: NavigationTargetType.Chapter,
+            chapterIndex: props.targetChapter,
+          })}
+          onFocus={() => props.onFocusUIElement(props.targetChapter)}
+          onMouseOver={() => props.onFocusUIElement(props.targetChapter)}
+      >{props.name}</a>
     </li>
   );
 }
@@ -32,10 +36,12 @@ function ToCPageRightComponent(props: PageToCProps) {
         Table of Contents
       </h2>
       <ol>
-        <ToCEntryComponent targetChapter={0} name="Prologue" {...props}/>
-        <ToCEntryComponent targetChapter={1} name="The Road" {...props}/>
-        <ToCEntryComponent targetChapter={2} name="The Ruins" {...props}/>
-        <ToCEntryComponent targetChapter={3} name="The Tower" {...props}/>
+        <ToCEntryComponent targetChapter={0} name="Tutorial" {...props}/>
+        <li>&nbsp;</li>
+        <ToCEntryComponent targetChapter={1} name="Prologue" {...props}/>
+        <ToCEntryComponent targetChapter={3} name="The Road" {...props}/>
+        <ToCEntryComponent targetChapter={4} name="The Ruins" {...props}/>
+        <ToCEntryComponent targetChapter={5} name="The Tower" {...props}/>
       </ol>
     </div >  
   );
@@ -47,7 +53,8 @@ const sideComponents: { [K in PageSide]: Component<PageToCProps>} = {
     return <ToCPageRightComponent
         side={props.side}
         spread={props.spread}
-        navigation={props.navigation}/>
+        navigation={props.navigation}
+        onFocusUIElement={props.onFocusUIElement}/>
   },
 }
 
@@ -59,6 +66,7 @@ export function ToCPageComponent(props: PageToCProps) {
       side={props.side}
       spread={props.spread}
       navigation={props.navigation}
+      onFocusUIElement={props.onFocusUIElement}
     />
   );
 }

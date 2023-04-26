@@ -52,7 +52,7 @@ import { cardDefinitionMagicHaste } from "data/items/magic/haste";
 
 const cardBackAttributes: CardBackChoice = {
   name: 'character select',
-  description: 'Choose your background.',
+  description: 'Choose your equipment.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Fountain,
@@ -204,7 +204,7 @@ const cardFrontFinal: CardFrontChoice = {
       type: EncounterType.Battle,
       monster: MonsterType.Dummy,
     },
-    targetChapterIndex: 1,
+    targetChapterIndex: 2,
   },
   cost: [],
   benefit: [],

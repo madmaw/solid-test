@@ -9,16 +9,17 @@ import { createDeathPage } from "./death/create";
 
 export function createPageManager(
     navigation: (to: NavigationTarget) => void,
+    onFocusUIElement: (id: unknown) => void,
     game: Game,
 ): PageComponentManager {
   function createPage(spread: BookSpread) {
     switch (spread.type) {
       case BookSpreadType.TableOfContents:
-        return createToCPage(spread, navigation);
+        return createToCPage(spread, navigation, onFocusUIElement);
       case BookSpreadType.Room:
         return createRoomPage(spread, game);
       case BookSpreadType.Death:
-        return createDeathPage(spread, navigation);
+        return createDeathPage(spread, navigation, onFocusUIElement);
       default:
         throw new UnreachableError(spread);
     }

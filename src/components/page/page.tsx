@@ -6,5 +6,6 @@ export type PageProps<T extends BookSpread = BookSpread> = {
   spread: T,
   side: PageSide,
   navigation: (target: NavigationTarget) => void,
+  onFocusUIElement: (id: unknown) => void,
 };
 

@@ -23,7 +23,7 @@ import { RenderingSpeaker } from "ui/speaker/rendering_speaker";
 import { SpeechSynthesisWordSplitter } from "ui/speaker/speech_synthesis_word_splitter";
 import { DelayWordSplitter } from "ui/speaker/delay_word_splitter";
 import { PoliteSpeaker } from "ui/speaker/polite_speaker";
-import { BackgroundTrack, SoundManager } from "ui/sounds/sound_manager";
+import { BackgroundTrack, SoundEffect, SoundManager } from "ui/sounds/sound_manager";
 import { delay } from "base/delay";
 
 window.onload = function () {
@@ -44,10 +44,16 @@ window.onload = function () {
   const navigation = async (to: NavigationTarget): Promise<void> => {
     switch (to.type) {
       case NavigationTargetType.ToC:
+        // reset the player deck and hand
+        game.playerHand.forEach(slot => {
+          slot.targetCard = undefined;
+          slot.playedCards = [];
+        });
+        game.book.cardSlots = [];
         await tableController.setView(View.TopDown);
         return bookController.showSpread(bookSpreadTableOfContentsDescriptor.create({
           type: BookSpreadType.TableOfContents,
-          unlockedChapters: 0,
+          unlockedChapters: 1,
         }), true);
       case NavigationTargetType.Chapter:
         soundManager.playBackgroundTrack(BackgroundTrack.Music);
@@ -68,7 +74,11 @@ window.onload = function () {
 
 
   const pageComponentManager = createPageManager(
-    navigation,
+    (to: NavigationTarget) => {
+      soundManager.playEffect(SoundEffect.UISelect);
+      navigation(to);
+    },
+    () => soundManager.playEffect(SoundEffect.UINavigate),
     game,
   );
 

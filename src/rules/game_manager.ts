@@ -17,6 +17,7 @@ import {
   SymbolType,
   bookSpreadRoomDescriptor,
   cardDescriptor,
+  cardSlotDescriptor,
   chapterDescriptor,
   entityDescriptor,
 } from "model/domain";
@@ -51,6 +52,7 @@ import { chapter as chapterPrelude } from "data/chapters/prelude/chapter";
 import { chapter as chapterForest } from 'data/chapters/forest/chapter';
 import { chapter as chapterRuins } from "data/chapters/ruins/chapter";
 import { chapter as chapterStore } from "data/chapters/store/chapter";
+import { chapter as chapterTutorial } from "data/chapters/tutorial/chapter";
 import { arrayRandomize } from "base/arrays";
 import { Speaker } from "ui/speaker/speaker";
 import { exists } from "base/exists";
@@ -118,6 +120,10 @@ export class GameManager {
           return this.nextPage(choice.encounter, cardSlot);
         case ChoiceType.NextPage:
           return this.nextPage(choice.encounter, cardSlot);
+        case ChoiceType.ToC:
+          return this.navigation({
+            type: NavigationTargetType.ToC,
+          });
         case ChoiceType.NextTurn:
           // TODO
           const {
@@ -229,7 +235,12 @@ export class GameManager {
                   to.health--;
                   const battle = gameEncounterBattle(this.game);
                   if (to !== playerCharacter && battle != null) {
-                    await this.battleEncounterControllerManager.lookupController(battle)?.takeDamage();
+                    this.soundManager.playEffect(
+                      to.health > 0 ? SoundEffect.MonsterDamage : SoundEffect.Victory
+                    );
+                    await this.battleEncounterControllerManager
+                        .lookupController(battle)
+                        ?.takeDamage();
                   }
                   break;
                 case SymbolType.Healing:
@@ -385,10 +396,22 @@ export class GameManager {
   }
 
   async createChapter(chapterIndex: number) {
-    const chapters = [chapterPrelude, chapterStore, chapterForest, chapterRuins];
+    const chapters = [chapterTutorial, chapterPrelude, chapterStore, chapterForest, chapterRuins];
     batch(() => {
       this.game.book.chapter = chapterDescriptor.create(chapters[chapterIndex % chapters.length]);
-      this.game.book.chapter.deck = arrayRandomize(this.game.book.chapter.deck);
+      if (chapterIndex > 0) {
+        this.game.book.chapter.deck = arrayRandomize(this.game.book.chapter.deck);
+        this.game.book.cardSlots = new Array(3).fill(0).map(() => cardSlotDescriptor.create({
+          targetCard: undefined,
+          playedCards: [],
+        }));
+      } else {
+        this.game.book.chapter.deck = [...this.game.book.chapter.deck].reverse();
+        this.game.book.cardSlots = [cardSlotDescriptor.create({
+          targetCard: undefined,
+          playedCards: [],
+        })];
+      }
     });
   }
 
@@ -698,6 +721,7 @@ export class GameManager {
           Easing.Gentle,
           playerSlotIndex < 0 ? 'rotateX(-90deg)' : undefined
       );
+      this.soundManager.playEffect(SoundEffect.CardExit);
     }
   }
 

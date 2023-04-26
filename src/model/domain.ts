@@ -94,11 +94,16 @@ export const enum ChoiceType {
   NextTurn = 1,
   NextPage,
   NextChapter,
+  ToC,
 }
 
 export type ChoiceNextTurn = {
   readonly type: ChoiceType.NextTurn,
 };
+
+export type ChoiceToC = {
+  readonly type: ChoiceType.ToC,
+}
 
 export const enum EncounterType {
   Battle = 1,
@@ -145,7 +150,7 @@ export type ChoiceNextChapter = {
   readonly targetChapterIndex: number,
 };
 
-export type Choice = ChoiceNextTurn | ChoiceNextPage | ChoiceNextChapter;
+export type Choice = ChoiceNextTurn | ChoiceNextPage | ChoiceNextChapter | ChoiceToC;
 
 
 type CardFaceCommon = {
@@ -268,7 +273,9 @@ export const bookSpreadDescriptor = discriminatingUnionDescriptor(
 );
 
 export const enum ChapterType {
+  Tutorial = 0,
   Prelude = 1,
+  Shop,
   Forest,
   Ruins,
   Tower,

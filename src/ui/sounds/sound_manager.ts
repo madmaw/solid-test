@@ -8,10 +8,21 @@ import bookFlip4 from './res/Book_Flip-004.mp3';
 import cardFlip1 from './res/Card_Flip_01.mp3';
 import cardFlip2 from './res/Card_Flip_02.mp3';
 import cardFlip3 from './res/Card_Flip_03.mp3';
+import cardFlip4 from './res/Card_Flip_Timed_01.mp3';
+import cardFlip5 from './res/Card_Flip_Timed_02.mp3';
+import cardFlip6 from './res/Cards_Flip_Extra.mp3';
+import cardExit1 from './res/Cards_Exit-001.mp3';
+import cardExit2 from './res/Cards_Exit-002.mp3';
 import cardPlacement1 from './res/Card_Placement_01.mp3';
 import cardPlacement2 from './res/Card_Placement_02.mp3';
 import cardPlacement3 from './res/Card_Placement_03.mp3';
 import cardPlacement4 from './res/Card_Placement_04.mp3';
+import monsterDamage from './res/Monster Damage.mp3';
+import victory from './res/Victory Sound.mp3';
+import uiSelect from './res/UI_Menu_Select.mp3';
+import uiNavigation1 from './res/UI_Menu_Navigation-001.mp3';
+import uiNavigation2 from './res/UI_Menu_Navigation-002.mp3';
+import uiNavigation3 from './res/UI_Menu_Navigation-003.mp3';
 import { delay } from 'base/delay';
 
 export const enum BackgroundTrack {
@@ -23,7 +34,12 @@ export const enum BackgroundTrack {
 export const enum SoundEffect {
   CardFlip = 1,
   CardPlacement,
+  CardExit,
   BookFlip,
+  MonsterDamage,
+  Victory,
+  UISelect,
+  UINavigate,
 };
 
 const BackgroundVolume = .7;
@@ -50,16 +66,36 @@ export class SoundManager {
     this.soundEffects = new Map([
       [
         SoundEffect.BookFlip, 
-        toSoundEffects(bookFlip1, bookFlip2, bookFlip3, bookFlip4),
+        toSoundEffects([bookFlip1, bookFlip2, bookFlip3, bookFlip4], .5),
       ],
       [
         SoundEffect.CardFlip,
-        toSoundEffects(cardFlip1, cardFlip2, cardFlip3),
+        toSoundEffects([cardFlip1, cardFlip2, cardFlip3, cardFlip4, cardFlip5, cardFlip6], .2),
       ],
       [
         SoundEffect.CardPlacement,
-        toSoundEffects(cardPlacement1, cardPlacement2, cardPlacement3, cardPlacement4),
-      ]
+        toSoundEffects([cardPlacement1, cardPlacement2, cardPlacement3, cardPlacement4], .2),
+      ],
+      [
+        SoundEffect.CardExit,
+        toSoundEffects([cardExit1, cardExit2], .2),
+      ],
+      [
+        SoundEffect.MonsterDamage,
+        toSoundEffects([monsterDamage], 1),
+      ],
+      [
+        SoundEffect.Victory,
+        toSoundEffects([victory], 1),
+      ],
+      [
+        SoundEffect.UISelect,
+        toSoundEffects([uiSelect], 1),
+      ],
+      [
+        SoundEffect.UINavigate,
+        toSoundEffects([uiNavigation1, uiNavigation2, uiNavigation3], .4),
+      ],
     ]);
   }
 
@@ -119,11 +155,11 @@ function load(howl: Howl): Promise<void> {
   });
 }
 
-function toSoundEffects(...srcs: string[]) {
+function toSoundEffects(srcs: readonly string[], volume: number = .2) {
   return srcs.map(src => {
     return new Howl({
       src,
-      volume: .2,
+      volume,
     });  
   });
 }

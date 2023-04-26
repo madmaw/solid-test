@@ -2,10 +2,11 @@ import { ChapterType, chapterDescriptor } from "model/domain";
 import { cards, finalCard } from "./cards";
 
 export const chapter = chapterDescriptor.freeze({
-  type: ChapterType.Shop,
+  type: ChapterType.Tutorial,
   deck: [
     ...cards,
   ],
-  pagesRemaining: 2,
-  finalCard: finalCard,
+  pagesRemaining: cards.length,
+  finalCard,
 });
+

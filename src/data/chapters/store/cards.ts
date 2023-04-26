@@ -72,7 +72,7 @@ const cardFrontFinal: CardFrontChoice = {
       type: EncounterType.Battle,
       monster: MonsterType.Rooster,
     },
-    targetChapterIndex: 2,
+    targetChapterIndex: 3,
   },
   cost: [],
   benefit: [],
