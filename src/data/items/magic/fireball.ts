@@ -1,4 +1,4 @@
-import { DamageUp, Magic, Perception } from "data/effects";
+import { FireUp, Magic, Perception } from "data/effects";
 import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, SymbolType, cardDescriptor } from "model/domain";
 
 const cardBackFireball: CardBackResource = {
@@ -18,7 +18,7 @@ const cardFrontFireball: CardFrontResource = {
   foreground: undefined,
   symbol: SymbolType.Magic,
   cost: [],
-  benefit: [DamageUp, DamageUp, DamageUp, Perception],
+  benefit: [FireUp, FireUp, FireUp, Perception],
 };
 export const cardDefinitionFireball: CardDefinition = {
   recycleTarget: RecycleTarget.Draw,

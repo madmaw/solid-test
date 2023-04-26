@@ -224,7 +224,8 @@ export class GameManager {
                   break;
                 case SymbolType.Damage:
                 case SymbolType.Poison:
-                  // give previous time to move back
+                case SymbolType.Fire:
+                    // give previous time to move back
                   await delay(300);
                   await cardController?.moveTo(
                       '0',

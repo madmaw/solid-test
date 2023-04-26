@@ -80,7 +80,21 @@ export const DoubleCard: Effect = {
   symbol: SymbolType.DoubleCard,
 };
 
+export const Duplicate: Effect = {
+  direction: EffectDirection.Omni,
+  symbol: SymbolType.Duplicate,
+};
+
 export const Draw: Effect = {
   direction: EffectDirection.Omni,
   symbol: SymbolType.Draw,
+};
+
+export const FireUp: Effect = {
+  direction: EffectDirection.Up,
+  symbol: SymbolType.Fire,
+};
+export const FireDown: Effect = {
+  direction: EffectDirection.Down,
+  symbol: SymbolType.Fire,
 };

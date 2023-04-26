@@ -101,6 +101,7 @@ const symbolComponents: Record<SymbolType, Component<SymbolProps> | undefined> =
   [SymbolType.LoseMaxHealth]: () => <>{'-♡'}</>,
   [SymbolType.DoubleCard]: undefined,
   [SymbolType.Duplicate]: undefined,
+  [SymbolType.Fire]: () => <>{'🔥'}</>
 };
 
 

@@ -19,13 +19,13 @@ import {
 } from "model/domain";
 
 const cardBackSpiderLunge: CardBackChoice = {
-  name: 'lunge',
-  description: undefined,
+  name: 'skitter',
+  description: 'The spider skitters away.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: CardForegroundType.Spider,
   symbol: undefined,
-  cost: [],
+  cost: [Finesse],
 };
 const cardBackSpiderHide: CardBackChoice = {
   name: 'hide',

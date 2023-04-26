@@ -152,6 +152,10 @@ $borderColor: #222;
   content: '🕷️';
 }
 
+.card-face.foreground.dragon::before {
+  content: '🐉';
+}
+
 .flip {
   width: 100%;
   fill: none; 

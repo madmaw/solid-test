@@ -7,6 +7,7 @@ import { createRoosterEntity } from "./rooster/create";
 import { createDummyEntity } from "./dummy/create";
 import { createFairyEntity } from "./fairy/create";
 import { createSpiderEntity } from "./spider/create";
+import { createDragonEntity } from "./dragon/create";
 
 export function createMonster(monster: MonsterType) {
   switch(monster) {
@@ -24,6 +25,8 @@ export function createMonster(monster: MonsterType) {
       return createFairyEntity();
     case MonsterType.Spider:
       return createSpiderEntity();
+    case MonsterType.Dragon:
+      return createDragonEntity();
     default:
       throw new UnreachableError(monster);
   }

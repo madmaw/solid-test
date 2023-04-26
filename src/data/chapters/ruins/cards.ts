@@ -208,8 +208,8 @@ const cardBackFinal: CardBackChoice = {
 };
 
 const cardFrontFinal: CardFrontChoice = {
-  name: 'lion',
-  description: 'A lion lies guarding the castle gate. It slowly gets up and pads toward you.',
+  name: 'dragon',
+  description: 'A huge shadow passes overhead. The ground shakes.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.Passageway,
   foreground: undefined,
@@ -218,8 +218,7 @@ const cardFrontFinal: CardFrontChoice = {
     type: ChoiceType.NextChapter,
     encounter: {
       type: EncounterType.Battle,
-      // TODO something better
-      monster: MonsterType.BigRat,
+      monster: MonsterType.Dragon,
     },
     targetChapterIndex: 3,
   },

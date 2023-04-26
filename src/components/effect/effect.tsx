@@ -22,6 +22,7 @@ const resourceColors: Record<SymbolType, string> = {
   [SymbolType.LoseMaxHealth]: styles.fill,
   [SymbolType.DoubleCard]: styles.fill,
   [SymbolType.Duplicate]: styles.fill,
+  [SymbolType.Fire]: styles.fill,
 };
 
 export function EffectComponent(props: {

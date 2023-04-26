@@ -39,6 +39,8 @@ export const enum SymbolType {
   DoubleCard,
   // duplicate cards
   Duplicate,
+  // burn
+  Fire,
 }
 
 export const enum EffectDirection {
@@ -83,6 +85,7 @@ export const enum CardForegroundType {
   Dummy,
   Fairy,
   Spider,
+  Dragon,
 }
 
 export const enum CardFaceType {
@@ -120,6 +123,7 @@ export const enum MonsterType {
   Dummy,
   Fairy,
   Spider,
+  Dragon,
 };
 
 export const enum EventType {

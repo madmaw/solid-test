@@ -73,6 +73,19 @@ export const cardFrontShrineEmpower: CardFrontChoice = {
   cost: [DoubleCard],
   benefit: [],
 };
+export const cardFrontShrineDuplicate: CardFrontChoice = {
+  name: 'duplicate',
+  description: undefined,
+  type: CardFaceType.Choice,
+  choice: {
+    type: ChoiceType.NextTurn,
+  },
+  background: CardBackgroundType.Clear,
+  foreground: CardForegroundType.Shrine,
+  symbol: undefined,
+  cost: [DoubleCard],
+  benefit: [],
+};
 
 export const cards = [
   cardBackShrineOfferFinesse, 
@@ -82,6 +95,7 @@ export const cards = [
   return [
     cardFrontShrineSacrifice,
     cardFrontShrineEmpower,
+    cardFrontShrineDuplicate,
   ].map<CardDefinition>(cardFace => {
     return {
       faces: [cardBack, cardFace],
