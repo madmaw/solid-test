@@ -1,7 +1,7 @@
 import { DamageUp, Force } from "data/effects";
 import { CardBackResource, CardBackgroundType, CardDefinition, CardFaceType, CardFrontResource, RecycleTarget, SymbolType, cardDescriptor } from "model/domain";
 
-const cardBackKick: CardBackResource = {
+export const cardBackKick: CardBackResource = {
   name: 'kick',
   description: 'You prepare to strike.',
   type: CardFaceType.ResourceBack,
@@ -10,7 +10,7 @@ const cardBackKick: CardBackResource = {
   foreground: undefined,
   cost: [Force],
 };
-const cardFrontKick: CardFrontResource = {
+export const cardFrontKick: CardFrontResource = {
   name: 'kick',
   description: 'You deliver a swift kick.',
   type: CardFaceType.Resource,

@@ -6,4 +6,5 @@ export const defaultTroll = entityDescriptor.freeze({
   health: 4,
   maxHealth: 4,
   age: 34,
+  deathDescription: 'The troll sits down heavily and is still.',
 });

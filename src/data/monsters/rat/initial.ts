@@ -6,4 +6,5 @@ export const defaultRat = entityDescriptor.freeze({
   health: 2,
   maxHealth: 2,
   age: 2,
+  deathDescription: 'The rat expires.',
 });

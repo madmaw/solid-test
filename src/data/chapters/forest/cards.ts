@@ -58,7 +58,7 @@ const cardFrontPath: CardFrontChoice = {
   benefit: [],
 };
 const cardFrontSnail: CardFrontChoice = {
-  name: 'a big snail',
+  name: 'a gigantic snail',
   description: 'The snail inches toward you.',
   type: CardFaceType.Choice,
   background: CardBackgroundType.ForestPath,
@@ -74,6 +74,24 @@ const cardFrontSnail: CardFrontChoice = {
   cost: [],
   benefit: [],
 };
+const cardFrontFairy: CardFrontChoice = {
+  name: 'feral pixie',
+  description: 'The pixie flies straight at you, cursing incomprehensibly.',
+  type: CardFaceType.Choice,
+  background: CardBackgroundType.ForestPath,
+  foreground: CardForegroundType.Fairy,
+  symbol: undefined,
+  choice: {
+    type: ChoiceType.NextPage,
+    encounter: {
+      type: EncounterType.Battle,
+      monster: MonsterType.Fairy,
+    },
+  },
+  cost: [],
+  benefit: [],
+};
+
 const cardFrontBrambles: CardFrontChoice = {
   name: 'thicket',
   description: 'The thorns entangle you.',
@@ -148,6 +166,7 @@ export const cards = [
   return [
     cardFrontPath,
     cardFrontSnail,
+    cardFrontFairy,
     cardFrontBrambles,
   ].map<CardDefinition>(front => {
     return {

@@ -56,6 +56,7 @@ export function CardFaceComponent(props: CardFaceProps & {
           [styles.troll]: props.face.foreground === CardForegroundType.Troll,
           [styles.rooster]: props.face.foreground === CardForegroundType.Rooster,
           [styles.mushroom]: props.face.foreground === CardForegroundType.Mushroom,
+          [styles.fairy]: props.face.foreground === CardForegroundType.Fairy,
         }}>
           {props.face.type === CardFaceType.ChoiceBack
               || props.face.type === CardFaceType.ResourceBack

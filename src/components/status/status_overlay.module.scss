@@ -18,6 +18,7 @@ $padding: calc(2vmin);
   flex-direction: row;
   padding: $padding;
   box-sizing: border-box;
+  gap: 1vmin;
 }
 
 .health-container {
@@ -26,6 +27,13 @@ $padding: calc(2vmin);
   flex-direction: row;
   align-items: center;
   justify-content: start;
+}
+
+.age-symbol {
+  flex: 0;
+  min-width: 2vmin;
+  min-height: 2vmin;
+  stroke-width: 1vmin;
 }
 
 .age-container {

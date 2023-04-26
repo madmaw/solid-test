@@ -12,7 +12,7 @@ const cardBackTorch: CardBackResource = {
 };
 const cardFrontTorch: CardFrontResource = {
   name: 'torch',
-  description: 'You beat back beasts and darkness alike.',
+  description: 'You drive back beasts and darkness alike.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,

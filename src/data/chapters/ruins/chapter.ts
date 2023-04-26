@@ -7,5 +7,5 @@ export const chapter = chapterDescriptor.freeze({
     ...cards,
   ],
   finalCard,
-  pagesRemaining: 10,
+  pagesRemaining: 8,
 });

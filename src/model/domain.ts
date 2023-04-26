@@ -1,5 +1,5 @@
 import { listDescriptor } from "./descriptor/list";
-import { LiteralTypeDescriptor, numberDescriptor } from "./descriptor/literals";
+import { LiteralTypeDescriptor, numberDescriptor, stringDescriptor } from "./descriptor/literals";
 import { optionalDescriptor } from "./descriptor/option";
 import { activeRecordDescriptor } from "./descriptor/record";
 import { discriminatingUnionDescriptor } from "./descriptor/union";
@@ -81,6 +81,7 @@ export const enum CardForegroundType {
   Shrine,
   Treasure,
   Dummy,
+  Fairy,
 }
 
 export const enum CardFaceType {
@@ -116,6 +117,8 @@ export const enum MonsterType {
   Troll,
   Rooster,
   Dummy,
+  Fairy,
+  
 };
 
 export const enum EventType {
@@ -234,6 +237,7 @@ export const entityDescriptor = activeRecordDescriptor({
   maxHealth: numberDescriptor,
   deck: deckDescriptor,
   age: numberDescriptor,
+  deathDescription: stringDescriptor,
 });
 
 export const encounterBattleDescriptor = activeRecordDescriptor({

@@ -1,5 +1,6 @@
 import { JSXElement } from 'solid-js';
 import styles from './status_overlay.module.scss';
+import { SymbolYouthComponent } from 'components/symbol/symbol';
 
 export function StatusOverlayComponent(props: {
   health: JSXElement,
@@ -11,6 +12,9 @@ export function StatusOverlayComponent(props: {
       <div class={styles['status-bar']}>
         <div class={styles['health-container']}>
           {props.health}
+        </div>
+        <div class={styles['age-symbol']}>
+          <SymbolYouthComponent fill="transparent" stroke="white"/>
         </div>
         <div class={styles['age-container']}>
           {props.age}

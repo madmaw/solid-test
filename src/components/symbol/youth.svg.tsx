@@ -2,7 +2,7 @@ export function SymbolYouthSVGComponent() {
   return (
       <g>
         <path
-            d="M 20 10 L 80 10 L 80 20 L 20 80 L 20 90 L 80 90 L 80 80 L 20 20 z"/>
+            d="M 30 10 L 70 10 L 70 30 L 30 70 L 30 90 L 70 90 L 70 70 L 30 30 z"/>
       </g>
   );
 }

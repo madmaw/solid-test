@@ -183,7 +183,7 @@ export const cards = [
 
 const cardBackFinal: CardBackChoice = {
   name: 'training',
-  description: 'A battered tree stump sits in the yard. It bears the scars of many training battles.',
+  description: 'A battered tree stump sits in the yard. It bears the scars of its many training partners.',
   type: CardFaceType.ChoiceBack,
   background: CardBackgroundType.Crosshatched,
   foreground: undefined,

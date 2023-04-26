@@ -10,7 +10,7 @@ import {
   cardDescriptor,
 } from "model/domain";
 
-const cardBackForceEager: CardBackResource = {
+export const cardBackForceEager: CardBackResource = {
   name: 'warriors strength',
   description: undefined,
   type: CardFaceType.ResourceBack,
@@ -19,7 +19,7 @@ const cardBackForceEager: CardBackResource = {
   symbol: undefined,
   cost: [],
 };
-const cardFrontForceEager: CardFrontResource = {
+export const cardFrontForceEager: CardFrontResource = {
   name: 'warriors strength',
   description: 'Your martial training means strength is always available.',
   type: CardFaceType.Resource,

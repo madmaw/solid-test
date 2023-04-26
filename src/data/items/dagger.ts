@@ -79,7 +79,7 @@ const cardBackPoisonBlade: CardBackResource = {
 };
 const cardFrontPoisonBlade: CardFrontResource = {
   name: 'poison blade',
-  description: 'You drives the poisoned dagger in.',
+  description: 'You drive the poisoned dagger in.',
   type: CardFaceType.Resource,
   background: CardBackgroundType.Clear,
   foreground: undefined,

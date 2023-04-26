@@ -6,4 +6,5 @@ export const defaultRooster = entityDescriptor.freeze({
   health: 2,
   maxHealth: 2,
   age: 5,
+  deathDescription: 'You feel no pity as the roosters eyes glaze over.',
 });

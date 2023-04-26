@@ -11,6 +11,7 @@ import { CardState, EncounterDefinition, EncounterState, EncounterType, EntitySt
 import { defaultSnail } from "data/monsters/snail/initial";
 import { defaultRooster } from "data/monsters/rooster/initial";
 import { defaultDummy } from "data/monsters/dummy/initial";
+import { defaultPixie } from "data/monsters/fairy/initial";
 
 function hydrateMonster(monster: MonsterType): EntityState {
   switch (monster) {
@@ -24,6 +25,8 @@ function hydrateMonster(monster: MonsterType): EntityState {
       return defaultRooster;
     case MonsterType.Dummy:
       return defaultDummy;
+    case MonsterType.Fairy:
+      return defaultPixie;
     default:
       throw new UnreachableError(monster);
   }

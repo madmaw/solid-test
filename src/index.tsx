@@ -203,7 +203,7 @@ window.onload = function () {
   // load assets
   Promise.all([
     soundManager.init(),
-    delay(1000),
+    delay(3000),
   ]).catch(e => console.error(e)).then(() =>{
     navigation({
       type: NavigationTargetType.ToC,

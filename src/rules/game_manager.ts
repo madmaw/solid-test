@@ -558,6 +558,7 @@ export class GameManager {
     const battle = gameEncounterBattle(this.game);
     let monsterDead = battle != null && battle.monster.health <= 0;
     if (monsterDead && battle) {
+      this.speaker.say(battle.monster.deathDescription);
       await this.battleEncounterControllerManager
           .lookupController(battle)?.die();
     }
@@ -726,6 +727,9 @@ export class GameManager {
   }
 
   private async playerDeath(): Promise<void> {
+    if (this.game.playerCharacter) {
+      this.speaker.say(this.game.playerCharacter.deathDescription);
+    }
     // die
     await this.navigation({
       type: NavigationTargetType.Death,

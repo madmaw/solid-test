@@ -6,4 +6,5 @@ export const defaultDummy = entityDescriptor.freeze({
   health: 6,
   maxHealth: 6,
   age: 600,
+  deathDescription: 'The stump has had enough for today.',
 });

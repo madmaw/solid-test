@@ -6,4 +6,5 @@ export const defaultSnail = entityDescriptor.freeze({
   health: 1,
   maxHealth: 1,
   age: 1,
+  deathDescription: 'The snail collapses in a pile of goop.',
 });

@@ -20,9 +20,9 @@ function getEmojis(chapterType: ChapterType) {
     case ChapterType.Shop:
       return ['🏡', '🏠', '🌴'];
     case ChapterType.Forest:
-      return ['🌲'];
+      return ['🌲', '🌿'];
     case ChapterType.Ruins:
-      return ['🏚️', '🛖', '🪨'];
+      return ['🏚️', '🛖', '🪨', '🌵'];
     case ChapterType.Tower:
       return ['x'];
     default:

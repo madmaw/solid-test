@@ -1,11 +1,16 @@
-.toc {
+@use 'components/constants.module.scss';
+
+.toc, .left {
   position: absolute;
   width: 100%;
-  height: 100%;
   padding: 2vmin 4vmin;
   box-sizing: border-box;
-  font-size: 4vmin;
   pointer-events: all;
+  height: 100%;
+}
+
+.toc {
+  font-size: 4vmin;
 }
 
 h2 {
@@ -33,4 +38,44 @@ h2 {
   color: #AAA;
 }
 
+.left {
+  font-size: 1.5vmin;
+  padding: 5vmin;
+}
 
+.instructions {
+  position: absolute;
+  width: 80%;
+  height: 100%;
+  box-sizing: border-box;
+  transform-origin: center;
+  transform: rotate(3deg);
+  flex: 1;
+  filter: grayscale(.8);
+  color: #555,
+}
+
+.instructions * {
+  font-family: cursive;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  gap: 1vw;
+}
+
+.credits {
+  position: absolute;
+  bottom: 3vmin;
+  width: 100%;
+}
+
+.credits * {
+  font-family: monospace;
+}
+
+.card {
+  width: constants.$cardWidth;
+  height: constants.$cardHeight;
+}
