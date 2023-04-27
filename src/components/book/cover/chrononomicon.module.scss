@@ -1,4 +1,4 @@
-@value foreground: #EEF;
+@value foreground: #CCF;
 
 .container {
   position: absolute;
@@ -10,6 +10,7 @@
 }
 
 .container h1 {
+  font-size: 4vmin;
   animation-name: animateTitle;
   animation-duration: .5s;
   animation-delay: .1s;
@@ -30,8 +31,8 @@
 
 .icon {
   width: 100%;
-  height: 20vmin;
-  padding-top: 10vmin;
+  height: 30vmin;
+  padding-top: 9vmin;
   box-sizing: border-box;
-  
+  stroke-width: .5vmin;
 }

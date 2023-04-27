@@ -48,7 +48,9 @@ function ToCPageLeftComponent() {
         <div class={styles.row} style={{
           transform: 'rotate(-3deg)',
         }}>
-          <div>
+          <div style={{
+            "text-align": "center"
+          }}>
             Back<br/>
             <div class={styles.card}>
               <CardFaceComponent
@@ -61,7 +63,9 @@ function ToCPageLeftComponent() {
               />
             </div>
           </div>
-          <div>
+          <div style={{
+            "text-align": "center"
+          }}>
             Front<br/>
             <div class={styles.card}>
               <CardFaceComponent
@@ -79,7 +83,14 @@ function ToCPageLeftComponent() {
                   warning={false}
               />
             </div>
-            * I think the number on the bottom is where it gets shuffled in the deck??
+          </div>
+          <div style={{ position: 'relative', flex: 1 }}>
+            <div style={{
+              position: 'absolute',
+              bottom: 0,
+            }}>
+              * I think the number on the bottom is where it gets shuffled in the deck??
+            </div>
           </div>
         </div>
         <p>
@@ -89,7 +100,7 @@ function ToCPageLeftComponent() {
         <b>WARNING</b>: this icon ↓ can HURT if it's pointed at you!!
 
         <div class={styles.row} style={{
-          transform: 'rotate(3deg)'
+          transform: 'rotate(-3deg)'
         }}>
           <div class={styles.card}>
             <CardFaceComponent

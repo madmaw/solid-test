@@ -31,8 +31,11 @@ $padding: calc(2vmin);
 
 .age-symbol {
   flex: 0;
-  min-width: 2vmin;
-  min-height: 2vmin;
+  min-width: 3vmin;
+  min-height: 3vmin;
+  width: 2.5vmin;
+  height: 2.5vmin;
+  padding-top: .4vmin;
   stroke-width: 1vmin;
 }
 
